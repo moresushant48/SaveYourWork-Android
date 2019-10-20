@@ -1,4 +1,6 @@
-package com.example.saveyourwork.Model;
+package com.example.saveyourwork.Repository;
+
+import com.example.saveyourwork.Model.User;
 
 import retrofit2.Call;
 import retrofit2.http.GET;

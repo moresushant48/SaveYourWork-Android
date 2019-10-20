@@ -1,4 +1,4 @@
-package com.example.saveyourwork.Model;
+package com.example.saveyourwork.Config;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;

@@ -11,8 +11,8 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.example.saveyourwork.Model.RetrofitConfig;
-import com.example.saveyourwork.Model.UserRepository;
+import com.example.saveyourwork.Config.RetrofitConfig;
+import com.example.saveyourwork.Repository.UserRepository;
 import com.google.android.material.snackbar.Snackbar;
 
 import retrofit2.Call;
