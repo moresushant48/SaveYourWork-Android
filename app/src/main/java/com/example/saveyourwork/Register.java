@@ -12,7 +12,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.saveyourwork.Model.RetrofitConfig;
-import com.example.saveyourwork.Model.User;
 import com.example.saveyourwork.Model.UserRepository;
 import com.google.android.material.snackbar.Snackbar;
 
@@ -59,32 +58,45 @@ public class Register extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                if(TextUtils.isEmpty(editEmail.getText()) && TextUtils.isEmpty(editUsername.getText()) && TextUtils.isEmpty(editPassword.getText())){
+                if(TextUtils.isEmpty(editEmail.getText()) || TextUtils.isEmpty(editUsername.getText()) || TextUtils.isEmpty(editPassword.getText())){
 
-                    editEmail.setError("Enter an E-Mail.");
-                    editPassword.setError("Enter a Username.");
-                    editPassword.setError("Enter a Password.");
+                    if(TextUtils.isEmpty(editEmail.getText())) {
+                        editEmail.setError("Enter an E-Mail.");
+                    }
+                    if(TextUtils.isEmpty(editUsername.getText())) {
+                        editPassword.setError("Enter a Username.");
+                    }
+                    if(TextUtils.isEmpty(editPassword.getText())) {
+                        editPassword.setError("Enter a Password.");
+                    }
 
                 }else {
 
-                    Call<User> user = userRepository.register(editEmail.getText().toString().trim(),
+                    Call<String> register = userRepository.register(editEmail.getText().toString().trim(),
                             editUsername.getText().toString().trim(), editPassword.getText().toString().trim());
 
-                    user.enqueue(new Callback<User>() {
+                    register.enqueue(new Callback<String>() {
                         @Override
-                        public void onResponse(Call<User> call, Response<User> response) {
+                        public void onResponse(Call<String> call, Response<String> response) {
 
-                            if(response.body().getUsername().equals(editUsername.getText().toString().trim())){
-                                Snackbar.make(linearLayout, "Registration Successful : " + response.body().getUsername(), Snackbar.LENGTH_LONG).show();
+                            if(response.body().equals(editEmail.getText().toString().trim()) || response.body().equals(editUsername.getText().toString().trim())) {
+
+                                if (response.body().equals(editEmail.getText().toString().trim())) {
+                                    editEmail.setError("Account exists for your Email.");
+                                }
+                                if (response.body().equals(editUsername.getText().toString().trim())) {
+                                    editUsername.setError("Username is already taken.");
+                                }
+                            }else {
+
+                                Snackbar.make(linearLayout, response.body(), Snackbar.LENGTH_LONG).show();
                             }
-
                         }
 
                         @Override
-                        public void onFailure(Call<User> call, Throwable t) {
+                        public void onFailure(Call<String> call, Throwable t) {
 
-                            Snackbar.make(linearLayout, "Registration failed.",Snackbar.LENGTH_LONG).show();
-
+                            Snackbar.make(linearLayout, "Service Unreachable.", Snackbar.LENGTH_LONG).show();
                         }
                     });
                 }

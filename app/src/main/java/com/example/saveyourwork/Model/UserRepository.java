@@ -15,7 +15,7 @@ public interface UserRepository {
     Call<Boolean> login(@Query("username") String username, @Query("password") String password);
 
     @POST("register")
-    Call<User> register(@Query("email") String email, @Query("username") String username, @Query("password") String password);
+    Call<String> register(@Query("email") String email, @Query("username") String username, @Query("password") String password);
 
     @GET("success")
     Call<String> msg();
