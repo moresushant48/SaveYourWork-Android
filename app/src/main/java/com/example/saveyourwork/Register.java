@@ -12,7 +12,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.saveyourwork.Config.RetrofitConfig;
-import com.example.saveyourwork.Repository.UserRepository;
+import com.example.saveyourwork.Repository.Repository;
 import com.google.android.material.snackbar.Snackbar;
 
 import retrofit2.Call;
@@ -22,7 +22,7 @@ import retrofit2.Response;
 public class Register extends AppCompatActivity {
 
     private RetrofitConfig retrofitConfig;
-    private UserRepository userRepository;
+    private Repository repository;
 
     TextView txtLogin;
     EditText editEmail, editUsername, editPassword;
@@ -35,7 +35,7 @@ public class Register extends AppCompatActivity {
 
         retrofitConfig = new RetrofitConfig();
 
-        userRepository = retrofitConfig.getRetrofit().create(UserRepository.class);
+        repository = retrofitConfig.getRetrofit().create(Repository.class);
 
         final LinearLayout linearLayout = findViewById(R.id.activity_register);
 
@@ -72,7 +72,7 @@ public class Register extends AppCompatActivity {
 
                 }else {
 
-                    Call<String> register = userRepository.register(editEmail.getText().toString().trim(),
+                    Call<String> register = repository.register(editEmail.getText().toString().trim(),
                             editUsername.getText().toString().trim(), editPassword.getText().toString().trim());
 
                     register.enqueue(new Callback<String>() {
