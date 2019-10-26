@@ -1,6 +1,9 @@
 <resources>
     <string name="app_name">SaveYourWork</string>
-
+    <string name="developer_name">Sushant More</string>
+    <string name="developer_username">\@moresushant48</string>
+    <string name="developer_email">moresushant48@gmail.com</string>
+    <string name="purpose">SaveYourWork provides a Convenient and Secure File Sharing Service. Upload your files and be able to access them from anywhere in the world, with ease.</string>
 
     <string name="drawer_open">Open Drawer</string>
     <string name="drawer_close">Close Drawer</string>
