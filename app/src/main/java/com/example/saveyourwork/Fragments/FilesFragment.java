@@ -2,11 +2,10 @@ package com.example.saveyourwork.Fragments;
 
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -20,6 +19,7 @@ import com.example.saveyourwork.Config.RetrofitConfig;
 import com.example.saveyourwork.Model.File;
 import com.example.saveyourwork.R;
 import com.example.saveyourwork.Repository.Repository;
+import com.facebook.shimmer.ShimmerFrameLayout;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -32,7 +32,7 @@ public class FilesFragment extends Fragment implements SwipeRefreshLayout.OnRefr
 
     private ListView listView;
     private SwipeRefreshLayout refreshLayout;
-    private Animation animFadeIn;
+    private ShimmerFrameLayout shimmerFrameLayout;
 
     private ArrayAdapter<String> adapter;
     private Call<File[]> files;
@@ -46,14 +46,13 @@ public class FilesFragment extends Fragment implements SwipeRefreshLayout.OnRefr
 
         view = inflater.inflate(R.layout.fragment_files, container, false);
 
-        animFadeIn = AnimationUtils.loadAnimation(view.getContext(), android.R.anim.fade_in);
-
         listView = view.findViewById(R.id.list_files);
         adapter = new ArrayAdapter<>(view.getContext(), R.layout.list_file_view);
 
         retrofitConfig = new RetrofitConfig();
         repository = retrofitConfig.getRetrofit().create(Repository.class);
 
+        shimmerFrameLayout = view.findViewById(R.id.shimmer_view_container);
         refreshLayout = view.findViewById(R.id.refresh_files);
         refreshLayout.setColorSchemeColors(Color.RED, Color.BLUE, Color.GREEN);
         onRefresh();
@@ -64,6 +63,10 @@ public class FilesFragment extends Fragment implements SwipeRefreshLayout.OnRefr
 
     @Override
     public void onRefresh() {
+
+        shimmerFrameLayout.setVisibility(View.VISIBLE);
+        shimmerFrameLayout.startShimmer();
+
         files = repository.listAllFiles("1");
 
         files.enqueue(new Callback<File[]>() {
@@ -76,9 +79,14 @@ public class FilesFragment extends Fragment implements SwipeRefreshLayout.OnRefr
                     adapter.add(file.getFileName());
                 }
 
-                listView.setVisibility(View.VISIBLE);
                 listView.setAdapter(adapter);
-                listView.startAnimation(animFadeIn);
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        shimmerFrameLayout.stopShimmer();
+                        shimmerFrameLayout.setVisibility(View.GONE);
+                    }
+                }, 1200);
             }
 
             @Override
@@ -89,7 +97,4 @@ public class FilesFragment extends Fragment implements SwipeRefreshLayout.OnRefr
         refreshLayout.setRefreshing(false);
 
     }
-
-
-
 }
