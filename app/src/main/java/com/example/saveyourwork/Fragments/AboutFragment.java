@@ -25,6 +25,7 @@ public class AboutFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_about,container,false);
 
+
         ImageView imageView = view.findViewById(R.id.imgGit);
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override

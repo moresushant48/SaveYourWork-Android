@@ -18,6 +18,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.example.saveyourwork.Config.RetrofitConfig;
 import com.example.saveyourwork.Model.File;
 import com.example.saveyourwork.R;
+import com.example.saveyourwork.Repository.CustomListAdapter;
 import com.example.saveyourwork.Repository.Repository;
 import com.facebook.shimmer.ShimmerFrameLayout;
 
@@ -34,7 +35,7 @@ public class FilesFragment extends Fragment implements SwipeRefreshLayout.OnRefr
     private SwipeRefreshLayout refreshLayout;
     private ShimmerFrameLayout shimmerFrameLayout;
 
-    private ArrayAdapter<String> adapter;
+    private CustomListAdapter adapter;
     private Call<File[]> files;
     private File[] retrievedFiles;
 
@@ -47,7 +48,6 @@ public class FilesFragment extends Fragment implements SwipeRefreshLayout.OnRefr
         view = inflater.inflate(R.layout.fragment_files, container, false);
 
         listView = view.findViewById(R.id.list_files);
-        adapter = new ArrayAdapter<>(view.getContext(), R.layout.list_file_view);
 
         retrofitConfig = new RetrofitConfig();
         repository = retrofitConfig.getRetrofit().create(Repository.class);
@@ -73,11 +73,8 @@ public class FilesFragment extends Fragment implements SwipeRefreshLayout.OnRefr
             @Override
             public void onResponse(Call<File[]> call, Response<File[]> response) {
                 retrievedFiles =  response.body();
-                adapter.clear();
 
-                for(File file : retrievedFiles){
-                    adapter.add(file.getFileName());
-                }
+                adapter = new CustomListAdapter(getActivity(), retrievedFiles);
 
                 listView.setAdapter(adapter);
                 new Handler().postDelayed(new Runnable() {
