@@ -24,23 +24,32 @@
         android:background="@android:color/white"
         android:padding="5dp">
 
-        <TextView
-            android:id="@+id/developer_name"
+        <com.facebook.shimmer.ShimmerFrameLayout
+            android:id="@+id/shimmer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:fontFamily="cursive"
-            android:gravity="center"
-            android:text="@string/developer_name"
-            android:textColor="@android:color/black"
-            android:textSize="30sp"
-            android:textStyle="bold" />
+            app:shimmer_auto_start="true"
+            app:shimmer_duration="1000">
+
+            <TextView
+                android:id="@+id/developer_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="cursive"
+                android:gravity="center"
+                android:text="@string/developer_name"
+                android:textColor="@android:color/black"
+                android:textSize="30sp"
+                android:textStyle="bold" />
+
+            </com.facebook.shimmer.ShimmerFrameLayout>
 
         <TextView
             android:id="@+id/devloper_username"
             style="@style/TextAppearance.AppCompat.Title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/developer_name"
+            android:layout_below="@id/shimmer"
             android:fontFamily="casual"
             android:gravity="center"
             android:text="@string/developer_username"
