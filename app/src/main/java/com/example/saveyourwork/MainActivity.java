@@ -63,6 +63,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 menuItem.setCheckable(true);
                 break;
 
+            case R.id.menuLogin:
+                startActivity(new Intent(this, Login.class));
+
+            case R.id.menuRegister:
+                startActivity(new Intent(this, Register.class));
+
             case R.id.menuAbout:
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new AboutFragment()).commit();
                 menuItem.setCheckable(true);

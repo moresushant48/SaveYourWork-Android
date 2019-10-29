@@ -5,6 +5,17 @@
         android:icon="@drawable/ic_myfiles"
         android:title="My Files"/>
 
+    <item android:title="Authenticate">
+        <menu>
+            <item android:id="@+id/menuLogin"
+                android:icon="@drawable/ic_login"
+                android:title="Login"/>
+            <item android:id="@+id/menuRegister"
+                android:icon="@drawable/ic_register"
+                android:title="Register"/>
+        </menu>
+    </item>
+
     <item android:title="Info">
         <menu>
             <item android:id="@+id/menuAbout"
