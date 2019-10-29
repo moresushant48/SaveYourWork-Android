@@ -24,6 +24,7 @@ public class Login extends AppCompatActivity {
 
     private RetrofitConfig retrofitConfig;
     private Repository repository;
+    private LinearLayout linearLayout;
 
     TextView txtRegister;
     EditText editUsername, editPassword;
@@ -34,11 +35,11 @@ public class Login extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+        linearLayout = findViewById(R.id.activity_login);
+
         retrofitConfig = new RetrofitConfig();
 
         repository = retrofitConfig.getRetrofit().create(Repository.class);
-
-        final LinearLayout linearLayout = findViewById(R.id.activity_login);
 
         editUsername = findViewById(R.id.txtUsername);
         editPassword = findViewById(R.id.txtPassword);
@@ -78,6 +79,7 @@ public class Login extends AppCompatActivity {
                             if(response.body().equals(true)) {
 
                                 Snackbar.make(linearLayout, "Logged in Successfully.", Snackbar.LENGTH_LONG).show();
+                                getSharedPreferences("login",MODE_PRIVATE).edit().putBoolean("isLoggedIn",true).apply();
 
                                 new Handler().postDelayed(new Runnable() {
                                     @Override
@@ -105,6 +107,8 @@ public class Login extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
+
+        Snackbar.make(linearLayout, "Please Login.", Snackbar.LENGTH_LONG).show();
 
     }
 }

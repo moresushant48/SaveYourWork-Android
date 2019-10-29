@@ -1,6 +1,7 @@
 package com.example.saveyourwork;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.MenuItem;
 
@@ -16,6 +17,8 @@ import com.example.saveyourwork.Fragments.FilesFragment;
 import com.google.android.material.navigation.NavigationView;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+
+    boolean isLoggedIn;
 
     DrawerLayout drawerLayout;
 
@@ -65,9 +68,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
             case R.id.menuLogin:
                 startActivity(new Intent(this, Login.class));
+                break;
 
             case R.id.menuRegister:
                 startActivity(new Intent(this, Register.class));
+                break;
+
+            case R.id.menuLogout:
+                getSharedPreferences("login",MODE_PRIVATE).edit().putBoolean("isLoggedIn",false).apply();
+                startActivity(new Intent(this, Login.class));
+                break;
 
             case R.id.menuAbout:
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new AboutFragment()).commit();
@@ -81,10 +91,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     protected void onResume() {
+
+        isLoggedIn = getSharedPreferences("login", MODE_PRIVATE)
+                .getBoolean("isLoggedIn",false);
+
         boolean isFirstRun = getSharedPreferences("PREFERENCE", MODE_PRIVATE)
                 .getBoolean("isFirstRun", true);
 
-        if (isFirstRun) {
+        if (isFirstRun || !isLoggedIn) {
             //show Login activity
             startActivity(new Intent(MainActivity.this, Login.class));
         }
