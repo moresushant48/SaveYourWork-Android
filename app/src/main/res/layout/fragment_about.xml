@@ -6,90 +6,90 @@
     android:orientation="vertical"
     app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"
-        android:background="@android:color/white"
-        android:padding="5dp">
+        android:layout_weight="1.2"
+        android:orientation="vertical"
+        android:paddingTop="@dimen/padding_18"
+        android:paddingBottom="@dimen/padding_8">
 
         <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/imgAvatar"
-            android:layout_width="200dp"
-            android:layout_height="200dp"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_gravity="center"
             android:layout_weight="1"
-            android:paddingTop="@dimen/padding_10"
-            android:background="@android:color/white"
-            android:layout_centerHorizontal="true"
-            android:padding="10dp"
             android:src="@drawable/avatar"
-            app:civ_border_color="@android:color/holo_red_light"
+            app:civ_border_color="@android:color/black"
             app:civ_border_width="2dp" />
 
         <com.facebook.shimmer.ShimmerFrameLayout
-            android:id="@+id/shimmer"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/imgAvatar"
+            android:layout_height="0dp"
+            android:layout_weight="0.4"
             app:shimmer_auto_start="true"
             app:shimmer_duration="1000">
 
             <TextView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:fontFamily="cursive"
                 android:gravity="center"
                 android:text="@string/developer_name"
-                android:textColor="@android:color/black"
-                android:textSize="30sp"
+                android:textSize="32sp"
                 android:textStyle="bold" />
 
-            </com.facebook.shimmer.ShimmerFrameLayout>
+        </com.facebook.shimmer.ShimmerFrameLayout>
 
         <TextView
-            android:id="@+id/devloper_username"
-            style="@style/TextAppearance.AppCompat.Title"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/shimmer"
+            android:layout_height="0dp"
+            android:layout_weight="0.2"
             android:fontFamily="casual"
             android:gravity="center"
             android:text="@string/developer_username"
-            android:textColor="@android:color/darker_gray"
             android:textSize="15sp"
             android:textStyle="bold" />
 
         <ImageView
             android:id="@+id/imgGit"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_below="@id/devloper_username"
-            android:layout_centerInParent="true"
-            android:layout_margin="20dp"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_margin="@dimen/padding_4"
+            android:layout_weight="0.25"
             android:src="@drawable/git" />
 
-    </RelativeLayout>
 
-    <TextView
+    </LinearLayout>
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="0.8"
-        android:background="@android:color/transparent"
-        android:fontFamily="serif"
-        android:padding="15dp"
-        android:text="@string/purpose"
-        android:textAlignment="center"
-        android:textColor="@android:color/darker_gray"
-        android:textSize="18sp" />
+        android:background="@color/whitesmoke"
+        android:orientation="vertical">
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fab"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        android:layout_margin="10dp"
-        android:layout_weight="0"
-        android:backgroundTint="@color/colorPrimary"
-        app:srcCompat="@android:drawable/ic_dialog_email" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="0.8"
+            android:fontFamily="serif"
+            android:gravity="center"
+            android:padding="15dp"
+            android:text="@string/purpose"
+            android:textAlignment="center"
+            android:textColor="@android:color/darker_gray"
+            android:textSize="18sp" />
 
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:layout_margin="10dp"
+            android:layout_weight="0"
+            android:backgroundTint="@color/colorPrimary"
+            app:srcCompat="@android:drawable/ic_dialog_email" />
+
+    </LinearLayout>
 </LinearLayout>
