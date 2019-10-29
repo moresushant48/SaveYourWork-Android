@@ -66,14 +66,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 menuItem.setCheckable(true);
                 break;
 
-            case R.id.menuLogin:
-                startActivity(new Intent(this, Login.class));
-                break;
-
-            case R.id.menuRegister:
-                startActivity(new Intent(this, Register.class));
-                break;
-
             case R.id.menuLogout:
                 getSharedPreferences("login",MODE_PRIVATE).edit().putBoolean("isLoggedIn",false).apply();
                 startActivity(new Intent(this, Login.class));

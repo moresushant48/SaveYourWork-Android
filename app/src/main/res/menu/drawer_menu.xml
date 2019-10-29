@@ -7,12 +7,6 @@
 
     <item android:title="Authenticate">
         <menu>
-            <item android:id="@+id/menuLogin"
-                android:icon="@drawable/ic_login"
-                android:title="Login"/>
-            <item android:id="@+id/menuRegister"
-                android:icon="@drawable/ic_register"
-                android:title="Register"/>
             <item android:id="@+id/menuLogout"
                 android:icon="@drawable/ic_logout"
                 android:title="Logout"/>
