@@ -1,12 +1,13 @@
 package com.example.saveyourwork;
 
+import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.MenuItem;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
@@ -67,8 +68,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 break;
 
             case R.id.menuLogout:
-                getSharedPreferences("login",MODE_PRIVATE).edit().putBoolean("isLoggedIn",false).apply();
-                startActivity(new Intent(this, Login.class));
+                logout();
                 break;
 
             case R.id.menuAbout:
@@ -94,10 +94,29 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             //show Login activity
             startActivity(new Intent(MainActivity.this, Login.class));
         }
-
-
+        
         getSharedPreferences("PREFERENCE", MODE_PRIVATE).edit()
                 .putBoolean("isFirstRun", false).commit();
         super.onResume();
     }
+
+    private AlertDialog.Builder logout(){
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+
+        builder.setTitle("Logout");
+        builder.setMessage("Are you sure you want to logout ?");
+        builder.setNegativeButton("Cancel",null);
+        builder.setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                getSharedPreferences("login",MODE_PRIVATE).edit().putBoolean("isLoggedIn",false).apply();
+                startActivity(new Intent(MainActivity.this, Login.class));
+            }
+        });
+        builder.create().show();
+        return builder;
+
+    }
+
 }
