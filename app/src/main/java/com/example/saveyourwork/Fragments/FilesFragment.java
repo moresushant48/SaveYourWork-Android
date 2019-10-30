@@ -6,9 +6,8 @@ import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
+import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -21,6 +20,7 @@ import com.example.saveyourwork.R;
 import com.example.saveyourwork.Repository.CustomListAdapter;
 import com.example.saveyourwork.Repository.Repository;
 import com.facebook.shimmer.ShimmerFrameLayout;
+import com.google.android.material.snackbar.Snackbar;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -34,6 +34,7 @@ public class FilesFragment extends Fragment implements SwipeRefreshLayout.OnRefr
     private ListView listView;
     private SwipeRefreshLayout refreshLayout;
     private ShimmerFrameLayout shimmerFrameLayout;
+    private LinearLayout linearLayout;
 
     private CustomListAdapter adapter;
     private Call<File[]> files;
@@ -52,6 +53,7 @@ public class FilesFragment extends Fragment implements SwipeRefreshLayout.OnRefr
         retrofitConfig = new RetrofitConfig();
         repository = retrofitConfig.getRetrofit().create(Repository.class);
 
+        linearLayout = view.findViewById(R.id.files_layout);
         shimmerFrameLayout = view.findViewById(R.id.shimmer_view_container);
         refreshLayout = view.findViewById(R.id.refresh_files);
         refreshLayout.setColorSchemeColors(Color.RED, Color.BLUE, Color.GREEN);
@@ -90,7 +92,13 @@ public class FilesFragment extends Fragment implements SwipeRefreshLayout.OnRefr
             public void onFailure(Call<File[]> call, Throwable t) {
                 shimmerFrameLayout.startShimmer();
                 shimmerFrameLayout.setVisibility(View.GONE);
-                Toast.makeText(view.getContext(), "Service unreachable.", Toast.LENGTH_LONG).show();
+                Snackbar.make(linearLayout, "Service Unavailable", Snackbar.LENGTH_INDEFINITE).setAction("Refresh",
+                        new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                onRefresh();
+                            }
+                        }).show();
             }
         });
         refreshLayout.setRefreshing(false);
