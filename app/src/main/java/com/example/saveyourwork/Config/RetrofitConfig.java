@@ -9,13 +9,14 @@ import retrofit2.converter.scalars.ScalarsConverterFactory;
 
 public class RetrofitConfig {
 
-    Gson gson = new GsonBuilder()
+    private Retrofit retrofit;
+    private Gson gson = new GsonBuilder()
             .setLenient()
             .create();
 
     public Retrofit getRetrofit() {
 
-        Retrofit retrofit = new Retrofit.Builder()
+         retrofit = new Retrofit.Builder()
                 .baseUrl("http://192.168.1.110:8888/rest/")
                 .addConverterFactory(ScalarsConverterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create(gson))

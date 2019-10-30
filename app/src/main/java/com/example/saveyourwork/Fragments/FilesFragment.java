@@ -41,15 +41,11 @@ public class FilesFragment extends Fragment implements SwipeRefreshLayout.OnRefr
     private Call<File[]> files;
     private File[] retrievedFiles;
 
-    private View view;
-
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-
-        getActivity().getActionBar().setTitle("My FIles");
-        view = inflater.inflate(R.layout.fragment_files, container, false);
+        View view = inflater.inflate(R.layout.fragment_files, container, false);
 
         listView = view.findViewById(R.id.list_files);
 

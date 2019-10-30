@@ -26,9 +26,9 @@ public class Login extends AppCompatActivity {
     private Repository repository;
     private LinearLayout linearLayout;
 
-    TextView txtRegister;
-    EditText editUsername, editPassword;
-    Button btnLogin;
+    private TextView txtRegister;
+    private EditText editUsername, editPassword;
+    private Button btnLogin;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

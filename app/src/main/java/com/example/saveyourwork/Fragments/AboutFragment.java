@@ -14,16 +14,13 @@ import androidx.fragment.app.Fragment;
 
 import com.example.saveyourwork.R;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
 
 public class AboutFragment extends Fragment {
-
-    private View view;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.fragment_about,container,false);
+        View view = inflater.inflate(R.layout.fragment_about, container,false);
 
 
         ImageView imageView = view.findViewById(R.id.imgGit);

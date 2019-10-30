@@ -96,11 +96,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
         
         getSharedPreferences("PREFERENCE", MODE_PRIVATE).edit()
-                .putBoolean("isFirstRun", false).commit();
+                .putBoolean("isFirstRun", false).apply();
         super.onResume();
     }
 
-    private AlertDialog.Builder logout(){
+    private void logout(){
 
         AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
 
@@ -115,8 +115,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             }
         });
         builder.create().show();
-        return builder;
-
     }
 
 }
