@@ -88,6 +88,8 @@ public class FilesFragment extends Fragment implements SwipeRefreshLayout.OnRefr
 
             @Override
             public void onFailure(Call<File[]> call, Throwable t) {
+                shimmerFrameLayout.startShimmer();
+                shimmerFrameLayout.setVisibility(View.GONE);
                 Toast.makeText(view.getContext(), "Service unreachable.", Toast.LENGTH_LONG).show();
             }
         });
