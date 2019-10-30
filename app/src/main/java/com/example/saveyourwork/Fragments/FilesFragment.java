@@ -1,5 +1,6 @@
 package com.example.saveyourwork.Fragments;
 
+import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
@@ -46,6 +47,8 @@ public class FilesFragment extends Fragment implements SwipeRefreshLayout.OnRefr
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
+
+        getActivity().getActionBar().setTitle("My FIles");
         view = inflater.inflate(R.layout.fragment_files, container, false);
 
         listView = view.findViewById(R.id.list_files);
@@ -69,7 +72,9 @@ public class FilesFragment extends Fragment implements SwipeRefreshLayout.OnRefr
         shimmerFrameLayout.setVisibility(View.VISIBLE);
         shimmerFrameLayout.startShimmer();
 
-        files = repository.listAllFiles("1");
+        int id = getActivity().getSharedPreferences("user", Context.MODE_PRIVATE).getInt("id", -1);
+
+        files = repository.listAllFiles(String.valueOf(id));
 
         files.enqueue(new Callback<File[]>() {
             @Override

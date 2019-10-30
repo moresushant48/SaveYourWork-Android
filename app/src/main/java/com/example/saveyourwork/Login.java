@@ -70,16 +70,21 @@ public class Login extends AppCompatActivity {
                     }
                 }else{
 
-                    Call<Boolean> user = repository.login(editUsername.getText().toString().trim(), editPassword.getText().toString().trim());
+                    Call<Integer> user = repository.login(editUsername.getText().toString().trim(), editPassword.getText().toString().trim());
 
-                    user.enqueue(new Callback<Boolean>() {
+                    user.enqueue(new Callback<Integer>() {
                         @Override
-                        public void onResponse(Call<Boolean> call, Response<Boolean> response) {
+                        public void onResponse(Call<Integer> call, Response<Integer> response) {
 
-                            if(response.body().equals(true)) {
+                            if(response.body().equals(-1)) {
+
+                                Snackbar.make(linearLayout, "Wrong Credentials.", Snackbar.LENGTH_LONG).show();
+
+                            }else{
 
                                 Snackbar.make(linearLayout, "Logged in Successfully.", Snackbar.LENGTH_LONG).show();
-                                getSharedPreferences("login",MODE_PRIVATE).edit().putBoolean("isLoggedIn",true).apply();
+                                getSharedPreferences("user", MODE_PRIVATE).edit().putBoolean("isLoggedIn",true).apply();
+                                getSharedPreferences("user", MODE_PRIVATE).edit().putInt("id",response.body()).apply();
 
                                 new Handler().postDelayed(new Runnable() {
                                     @Override
@@ -88,15 +93,11 @@ public class Login extends AppCompatActivity {
                                         startActivity(new Intent(Login.this, MainActivity.class));
                                     }
                                 }, 2000);
-
-                            }else{
-
-                                Snackbar.make(linearLayout, "Wrong Credentials.", Snackbar.LENGTH_LONG).show();
                             }
                         }
 
                         @Override
-                        public void onFailure(Call<Boolean> call, Throwable t) {
+                        public void onFailure(Call<Integer> call, Throwable t) {
                             Snackbar.make(linearLayout, "Service Unreachable.", Snackbar.LENGTH_LONG).show();
                         }
                     });

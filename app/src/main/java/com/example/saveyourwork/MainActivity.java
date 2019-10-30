@@ -84,7 +84,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     protected void onResume() {
 
-        isLoggedIn = getSharedPreferences("login", MODE_PRIVATE)
+        isLoggedIn = getSharedPreferences("user", MODE_PRIVATE)
                 .getBoolean("isLoggedIn",false);
 
         boolean isFirstRun = getSharedPreferences("PREFERENCE", MODE_PRIVATE)
