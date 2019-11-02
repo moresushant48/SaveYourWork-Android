@@ -1,4 +1,4 @@
-package com.example.saveyourwork.Fragments;
+package io.moresushant48.saveyourwork.Fragments;
 
 import android.content.Intent;
 import android.graphics.Color;
@@ -16,12 +16,12 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-import com.example.saveyourwork.Config.RetrofitConfig;
-import com.example.saveyourwork.Download;
-import com.example.saveyourwork.Model.File;
+import io.moresushant48.saveyourwork.Config.RetrofitConfig;
+import io.moresushant48.saveyourwork.Download;
+import io.moresushant48.saveyourwork.Model.File;
 import com.example.saveyourwork.R;
-import com.example.saveyourwork.Repository.CustomListAdapter;
-import com.example.saveyourwork.Repository.Repository;
+import io.moresushant48.saveyourwork.Repository.CustomListAdapter;
+import io.moresushant48.saveyourwork.Repository.Repository;
 import com.facebook.shimmer.ShimmerFrameLayout;
 import com.google.android.material.snackbar.Snackbar;
 

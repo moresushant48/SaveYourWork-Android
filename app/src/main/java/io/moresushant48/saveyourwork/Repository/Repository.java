@@ -1,7 +1,7 @@
-package com.example.saveyourwork.Repository;
+package io.moresushant48.saveyourwork.Repository;
 
-import com.example.saveyourwork.Model.File;
-import com.example.saveyourwork.Model.User;
+import io.moresushant48.saveyourwork.Model.File;
+import io.moresushant48.saveyourwork.Model.User;
 
 import retrofit2.Call;
 import retrofit2.http.GET;

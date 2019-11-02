@@ -1,4 +1,4 @@
-package com.example.saveyourwork;
+package io.moresushant48.saveyourwork;
 
 import org.junit.Test;
 

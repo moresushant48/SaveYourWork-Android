@@ -1,4 +1,4 @@
-package com.example.saveyourwork;
+package io.moresushant48.saveyourwork;
 
 import android.content.Context;
 
@@ -22,6 +22,6 @@ public class ExampleInstrumentedTest {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getInstrumentation().getTargetContext();
 
-        assertEquals("com.example.saveyourwork", appContext.getPackageName());
+        assertEquals("com.moresushant48.saveyourwork", appContext.getPackageName());
     }
 }

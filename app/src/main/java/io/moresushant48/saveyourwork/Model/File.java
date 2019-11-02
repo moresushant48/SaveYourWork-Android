@@ -1,4 +1,4 @@
-package com.example.saveyourwork.Model;
+package io.moresushant48.saveyourwork.Model;
 
 public class File {
 

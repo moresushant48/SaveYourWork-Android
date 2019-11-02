@@ -1,4 +1,4 @@
-package com.example.saveyourwork.Repository;
+package io.moresushant48.saveyourwork.Repository;
 
 import android.app.Activity;
 import android.content.Context;
@@ -12,7 +12,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.example.saveyourwork.Model.File;
+import io.moresushant48.saveyourwork.Model.File;
 import com.example.saveyourwork.R;
 
 public class CustomListAdapter extends ArrayAdapter<File> {

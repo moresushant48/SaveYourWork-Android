@@ -1,4 +1,4 @@
-package com.example.saveyourwork;
+package io.moresushant48.saveyourwork;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -12,8 +12,11 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.example.saveyourwork.Config.RetrofitConfig;
-import com.example.saveyourwork.Repository.Repository;
+import io.moresushant48.saveyourwork.Config.RetrofitConfig;
+
+import com.example.saveyourwork.R;
+
+import io.moresushant48.saveyourwork.Repository.Repository;
 import com.google.android.material.snackbar.Snackbar;
 
 import retrofit2.Call;

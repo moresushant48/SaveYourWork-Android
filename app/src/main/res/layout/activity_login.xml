@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:background="@color/whitesmoke"
     android:orientation="vertical"
-    tools:context=".Login">
+    tools:context="io.moresushant48.saveyourwork.Login">
 
     <RelativeLayout
         android:layout_width="match_parent"

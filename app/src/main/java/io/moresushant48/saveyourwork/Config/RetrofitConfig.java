@@ -1,4 +1,4 @@
-package com.example.saveyourwork.Config;
+package io.moresushant48.saveyourwork.Config;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;

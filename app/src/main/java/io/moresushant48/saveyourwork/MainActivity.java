@@ -1,4 +1,4 @@
-package com.example.saveyourwork;
+package io.moresushant48.saveyourwork;
 
 import android.Manifest;
 import android.content.DialogInterface;
@@ -16,8 +16,10 @@ import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
-import com.example.saveyourwork.Fragments.AboutFragment;
-import com.example.saveyourwork.Fragments.FilesFragment;
+import io.moresushant48.saveyourwork.Fragments.AboutFragment;
+import io.moresushant48.saveyourwork.Fragments.FilesFragment;
+
+import com.example.saveyourwork.R;
 import com.google.android.material.navigation.NavigationView;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
