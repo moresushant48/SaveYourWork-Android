@@ -1,7 +1,9 @@
 package com.example.saveyourwork;
 
+import android.Manifest;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.MenuItem;
 
@@ -10,6 +12,7 @@ import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
@@ -19,6 +22,7 @@ import com.google.android.material.navigation.NavigationView;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
+    private static final int PERMISSION_STORAGE_CODE = 1000;
     boolean isLoggedIn;
 
     DrawerLayout drawerLayout;
@@ -41,11 +45,32 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
 
+
+
+        if(ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED){
+            String[] permissions = {Manifest.permission.WRITE_EXTERNAL_STORAGE};
+            requestPermissions(permissions, PERMISSION_STORAGE_CODE);
+        }
+
         if(savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new FilesFragment()).commit();
             navigationView.setCheckedItem(R.id.menuFiles);
         }
+    }
 
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+
+        switch (requestCode){
+
+            case PERMISSION_STORAGE_CODE : {
+                if(grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
+                    // nothing special to do here.
+                }else{
+                    this.finish();
+                }
+            }
+        }
     }
 
     @Override
@@ -83,6 +108,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     protected void onResume() {
+
+        getSharedPreferences("app", MODE_PRIVATE).getString("BASE_URL","https://saveyourwork.herokuapp.com/");
 
         isLoggedIn = getSharedPreferences("user", MODE_PRIVATE)
                 .getBoolean("isLoggedIn",false);

@@ -1,12 +1,13 @@
 package com.example.saveyourwork.Fragments;
 
-import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 
@@ -16,6 +17,7 @@ import androidx.fragment.app.Fragment;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.example.saveyourwork.Config.RetrofitConfig;
+import com.example.saveyourwork.Download;
 import com.example.saveyourwork.Model.File;
 import com.example.saveyourwork.R;
 import com.example.saveyourwork.Repository.CustomListAdapter;
@@ -27,7 +29,9 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class FilesFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
+import static android.content.Context.MODE_PRIVATE;
+
+public class FilesFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener, ListView.OnItemClickListener {
 
     private RetrofitConfig retrofitConfig;
     private Repository repository;
@@ -40,6 +44,8 @@ public class FilesFragment extends Fragment implements SwipeRefreshLayout.OnRefr
     private CustomListAdapter adapter;
     private Call<File[]> files;
     private File[] retrievedFiles;
+
+    private String BASE_URL;
 
     @Nullable
     @Override
@@ -59,6 +65,8 @@ public class FilesFragment extends Fragment implements SwipeRefreshLayout.OnRefr
         onRefresh();
         refreshLayout.setOnRefreshListener(this);
 
+        listView.setOnItemClickListener(this);
+
         return view;
     }
 
@@ -68,7 +76,7 @@ public class FilesFragment extends Fragment implements SwipeRefreshLayout.OnRefr
         shimmerFrameLayout.setVisibility(View.VISIBLE);
         shimmerFrameLayout.startShimmer();
 
-        int id = getActivity().getSharedPreferences("user", Context.MODE_PRIVATE).getInt("id", -1);
+        int id = getActivity().getSharedPreferences("user", MODE_PRIVATE).getInt("id", -1);
 
         files = repository.listAllFiles(String.valueOf(id));
 
@@ -103,6 +111,13 @@ public class FilesFragment extends Fragment implements SwipeRefreshLayout.OnRefr
             }
         });
         refreshLayout.setRefreshing(false);
+
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+        Download.enqueueWork(getContext(), Download.class, 1000, new Intent().putExtra("fileName",retrievedFiles[position].getFileName()));
 
     }
 }
