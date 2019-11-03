@@ -10,9 +10,11 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.fragment.app.Fragment;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
@@ -39,7 +41,7 @@ public class FilesFragment extends Fragment implements SwipeRefreshLayout.OnRefr
     private ListView listView;
     private SwipeRefreshLayout refreshLayout;
     private ShimmerFrameLayout shimmerFrameLayout;
-    private LinearLayout linearLayout;
+    private CoordinatorLayout coordinatorLayout;
 
     private CustomListAdapter adapter;
     private Call<File[]> files;
@@ -58,7 +60,7 @@ public class FilesFragment extends Fragment implements SwipeRefreshLayout.OnRefr
         retrofitConfig = new RetrofitConfig();
         repository = retrofitConfig.getRetrofit().create(Repository.class);
 
-        linearLayout = view.findViewById(R.id.files_layout);
+        coordinatorLayout = view.findViewById(R.id.files_layout);
         shimmerFrameLayout = view.findViewById(R.id.shimmer_view_container);
         refreshLayout = view.findViewById(R.id.refresh_files);
         refreshLayout.setColorSchemeColors(Color.RED, Color.BLUE, Color.GREEN);
@@ -73,6 +75,7 @@ public class FilesFragment extends Fragment implements SwipeRefreshLayout.OnRefr
     @Override
     public void onRefresh() {
 
+        listView.setVisibility(View.INVISIBLE);
         shimmerFrameLayout.setVisibility(View.VISIBLE);
         shimmerFrameLayout.startShimmer();
 
@@ -93,6 +96,7 @@ public class FilesFragment extends Fragment implements SwipeRefreshLayout.OnRefr
                     public void run() {
                         shimmerFrameLayout.stopShimmer();
                         shimmerFrameLayout.setVisibility(View.GONE);
+                        listView.setVisibility(View.VISIBLE);
                     }
                 }, 1200);
             }
@@ -101,7 +105,7 @@ public class FilesFragment extends Fragment implements SwipeRefreshLayout.OnRefr
             public void onFailure(Call<File[]> call, Throwable t) {
                 shimmerFrameLayout.startShimmer();
                 shimmerFrameLayout.setVisibility(View.GONE);
-                Snackbar.make(linearLayout, "Service Unavailable", Snackbar.LENGTH_INDEFINITE).setAction("Refresh",
+                Snackbar.make(coordinatorLayout, "Service Unavailable", Snackbar.LENGTH_INDEFINITE).setAction("Refresh",
                         new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
