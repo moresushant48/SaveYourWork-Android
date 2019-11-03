@@ -27,9 +27,8 @@
             android:layout_marginStart="@dimen/padding_4"
             android:layout_weight="1"
             android:gravity="center_vertical"
-            android:text="@string/app_name"
             android:textSize="20sp"
-            android:textStyle="bold" />
+            android:textStyle="normal" />
 
         <TextView
             android:id="@+id/txtSubTitle"
@@ -37,8 +36,7 @@
             android:layout_height="0dp"
             android:layout_marginStart="@dimen/padding_4"
             android:layout_weight="1"
-            android:gravity="center_vertical"
-            android:text="@string/developer_name" />
+            android:gravity="center_vertical" />
 
     </LinearLayout>
 
@@ -46,9 +44,9 @@
         android:id="@+id/imgFileDownload"
         android:layout_width="0dp"
         android:layout_height="40dp"
+        android:layout_gravity="center"
         android:layout_weight="0.15"
-        android:src="@drawable/ic_download"
         android:padding="@dimen/padding_4"
-        android:layout_gravity="center"/>
+        android:src="@drawable/ic_download" />
 
 </LinearLayout>
