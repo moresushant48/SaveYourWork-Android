@@ -8,9 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.RelativeLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -25,20 +23,27 @@ import com.example.saveyourwork.R;
 import io.moresushant48.saveyourwork.Repository.CustomListAdapter;
 import io.moresushant48.saveyourwork.Repository.Repository;
 import com.facebook.shimmer.ShimmerFrameLayout;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
+import io.moresushant48.saveyourwork.Upload;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
 import static android.content.Context.MODE_PRIVATE;
 
-public class FilesFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener, ListView.OnItemClickListener {
+public class FilesFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener, ListView.OnItemClickListener, FloatingActionButton.OnClickListener {
+
+    private static final int PICKFILE_REQUEST_CODE = 100;
+    private static final int DOWNLOAD_JOB_ID = 1000;
+    private static final int UPLOAD_JOB_ID = 1001;
 
     private RetrofitConfig retrofitConfig;
     private Repository repository;
 
     private ListView listView;
+    private FloatingActionButton fabUploadFiles;
     private SwipeRefreshLayout refreshLayout;
     private ShimmerFrameLayout shimmerFrameLayout;
     private CoordinatorLayout coordinatorLayout;
@@ -56,6 +61,7 @@ public class FilesFragment extends Fragment implements SwipeRefreshLayout.OnRefr
         View view = inflater.inflate(R.layout.fragment_files, container, false);
 
         listView = view.findViewById(R.id.list_files);
+        fabUploadFiles = view.findViewById(R.id.fabUploadFiles);
 
         retrofitConfig = new RetrofitConfig();
         repository = retrofitConfig.getRetrofit().create(Repository.class);
@@ -68,6 +74,7 @@ public class FilesFragment extends Fragment implements SwipeRefreshLayout.OnRefr
         refreshLayout.setOnRefreshListener(this);
 
         listView.setOnItemClickListener(this);
+        fabUploadFiles.setOnClickListener(this);
 
         return view;
     }
@@ -121,7 +128,26 @@ public class FilesFragment extends Fragment implements SwipeRefreshLayout.OnRefr
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-        Download.enqueueWork(getContext(), Download.class, 1000, new Intent().putExtra("fileName",retrievedFiles[position].getFileName()));
+        Download.enqueueWork(getContext(), Download.class, DOWNLOAD_JOB_ID, new Intent().putExtra("fileName",retrievedFiles[position].getFileName()));
+    }
 
+    @Override
+    public void onClick(View v) {
+
+        Intent chooseFiles = new Intent(Intent.ACTION_GET_CONTENT);
+        chooseFiles.setType("*/*");
+        chooseFiles.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
+        Intent i = Intent.createChooser(chooseFiles, "Choose file explorer.");
+        startActivityForResult(i, PICKFILE_REQUEST_CODE);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+
+        if(requestCode == PICKFILE_REQUEST_CODE && data != null){
+
+            Upload.enqueueWork(getContext(), Upload.class, UPLOAD_JOB_ID, data);
+            Snackbar.make(coordinatorLayout, "Uploading the file(s).", Snackbar.LENGTH_LONG).show();
+        }
     }
 }
