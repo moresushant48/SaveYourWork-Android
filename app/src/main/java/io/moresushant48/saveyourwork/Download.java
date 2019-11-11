@@ -8,6 +8,8 @@ import android.os.Environment;
 import androidx.annotation.NonNull;
 import androidx.core.app.JobIntentService;
 
+import com.example.saveyourwork.R;
+
 
 public class Download extends JobIntentService {
 
@@ -18,7 +20,7 @@ public class Download extends JobIntentService {
 
         String selectedFileName = intent.getStringExtra("fileName");
 
-        BASE_URL = getSharedPreferences("app",MODE_PRIVATE).getString("BASE_URL",null);
+        BASE_URL = getSharedPreferences("app",MODE_PRIVATE).getString("BASE_URL",getString(R.string.source_heroku));
 
         DownloadManager.Request downloadrequest = new DownloadManager.Request(Uri.parse(BASE_URL + "uploads/" + selectedFileName));
 

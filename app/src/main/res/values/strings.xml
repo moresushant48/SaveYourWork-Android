@@ -7,4 +7,6 @@
     <string name="drawer_open">Open Drawer</string>
     <string name="drawer_close">Close Drawer</string>
 
+    <string name="source_heroku">https://saveyourwork.herokuapp.com/</string>
+
 </resources>

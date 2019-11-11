@@ -111,7 +111,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     protected void onResume() {
 
-        getSharedPreferences("app", MODE_PRIVATE).getString("BASE_URL","https://saveyourwork.herokuapp.com/");
+        getSharedPreferences("app", MODE_PRIVATE).getString("BASE_URL", getString(R.string.source_heroku));
 
         isLoggedIn = getSharedPreferences("user", MODE_PRIVATE)
                 .getBoolean("isLoggedIn",false);
