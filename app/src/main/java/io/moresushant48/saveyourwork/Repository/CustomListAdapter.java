@@ -15,22 +15,33 @@ import com.example.saveyourwork.R;
 public class CustomListAdapter extends RecyclerView.Adapter<CustomListAdapter.CustomListAdapterViewHolder> {
 
     private File[] files;
+    private OnFileListener onFileListener;
 
-    public CustomListAdapter(File[] files) {
+    public CustomListAdapter(File[] files, OnFileListener onFileListener) {
         this.files = files;
+        this.onFileListener = onFileListener;
     }
 
-    public class CustomListAdapterViewHolder extends RecyclerView.ViewHolder {
+    public class CustomListAdapterViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         ImageView imgFile;
         TextView txtMainTitle;
         TextView txtSubTitle;
+        OnFileListener onFileListener;
 
-        public CustomListAdapterViewHolder(@NonNull View itemView) {
+        public CustomListAdapterViewHolder(@NonNull View itemView, OnFileListener onFileListener) {
             super(itemView);
             imgFile = itemView.findViewById(R.id.imgFile);
             txtMainTitle = itemView.findViewById(R.id.txtMainTitle);
             txtSubTitle = itemView.findViewById(R.id.txtSubTitle);
+            this.onFileListener = onFileListener;
+
+            itemView.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View v) {
+            onFileListener.onFileClick(getAdapterPosition());
         }
     }
 
@@ -39,7 +50,7 @@ public class CustomListAdapter extends RecyclerView.Adapter<CustomListAdapter.Cu
     public CustomListAdapterViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
         View view = inflater.inflate(R.layout.list_file_view, parent, false);
-        return new CustomListAdapterViewHolder(view);
+        return new CustomListAdapterViewHolder(view, onFileListener);
     }
 
     @Override
@@ -53,5 +64,9 @@ public class CustomListAdapter extends RecyclerView.Adapter<CustomListAdapter.Cu
     @Override
     public int getItemCount() {
         return files.length;
+    }
+
+    public interface OnFileListener {
+        void onFileClick(int position);
     }
 }

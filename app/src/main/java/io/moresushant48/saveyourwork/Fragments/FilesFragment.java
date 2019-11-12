@@ -7,8 +7,6 @@ import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ListView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -35,7 +33,7 @@ import retrofit2.Response;
 
 import static android.content.Context.MODE_PRIVATE;
 
-public class FilesFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener, ListView.OnItemClickListener, FloatingActionButton.OnClickListener {
+public class FilesFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener, CustomListAdapter.OnFileListener, FloatingActionButton.OnClickListener {
 
     private static final int PICKFILE_REQUEST_CODE = 100;
     private static final int DOWNLOAD_JOB_ID = 1000;
@@ -62,7 +60,7 @@ public class FilesFragment extends Fragment implements SwipeRefreshLayout.OnRefr
 
         recyclerView = view.findViewById(R.id.recyclerView);
         recyclerView.setHasFixedSize(true);
-        recyclerView.setAdapter(new CustomListAdapter(new File[]{}));
+        recyclerView.setAdapter(new CustomListAdapter(new File[]{}, FilesFragment.this));
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
         fabUploadFiles = view.findViewById(R.id.fabUploadFiles);
@@ -98,7 +96,7 @@ public class FilesFragment extends Fragment implements SwipeRefreshLayout.OnRefr
             public void onResponse(Call<File[]> call, Response<File[]> response) {
                 retrievedFiles =  response.body();
 
-                adapter = new CustomListAdapter(retrievedFiles);
+                adapter = new CustomListAdapter(retrievedFiles, FilesFragment.this);
 
                 recyclerView.setAdapter(adapter);
                 new Handler().postDelayed(new Runnable() {
@@ -128,12 +126,6 @@ public class FilesFragment extends Fragment implements SwipeRefreshLayout.OnRefr
     }
 
     @Override
-    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
-        Download.enqueueWork(getContext(), Download.class, DOWNLOAD_JOB_ID, new Intent().putExtra("fileName",retrievedFiles[position].getFileName()));
-    }
-
-    @Override
     public void onClick(View v) {
 
         Intent chooseFiles = new Intent(Intent.ACTION_GET_CONTENT);
@@ -151,5 +143,12 @@ public class FilesFragment extends Fragment implements SwipeRefreshLayout.OnRefr
             Upload.enqueueWork(getContext(), Upload.class, UPLOAD_JOB_ID, data);
             Snackbar.make(coordinatorLayout, "Uploading the file(s).", Snackbar.LENGTH_LONG).show();
         }
+    }
+
+    @Override
+    public void onFileClick(int position) {
+
+        Download.enqueueWork(getContext(), Download.class, DOWNLOAD_JOB_ID, new Intent().putExtra("fileName",retrievedFiles[position].getFileName()));
+        Snackbar.make(coordinatorLayout, "Downloading File(s).", Snackbar.LENGTH_LONG).show();
     }
 }
