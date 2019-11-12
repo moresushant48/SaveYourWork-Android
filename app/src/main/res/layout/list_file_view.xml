@@ -5,7 +5,7 @@
     android:background="?attr/selectableItemBackground"
     android:orientation="horizontal"
     android:paddingTop="@dimen/padding_10"
-    android:paddingBottom="@dimen/padding_10">
+    android:layout_marginBottom="@dimen/padding_10">
 
     <ImageView
         android:id="@+id/imgFile"
@@ -43,6 +43,7 @@
             android:layout_width="wrap_content"
             android:layout_height="1px"
             android:layout_marginTop="2dp"
+            android:layout_gravity="bottom"
             android:background="@color/shimmer" />
 
     </LinearLayout>
