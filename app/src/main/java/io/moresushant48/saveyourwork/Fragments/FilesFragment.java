@@ -14,6 +14,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import io.moresushant48.saveyourwork.Config.RetrofitConfig;
@@ -42,7 +44,7 @@ public class FilesFragment extends Fragment implements SwipeRefreshLayout.OnRefr
     private RetrofitConfig retrofitConfig;
     private Repository repository;
 
-    private ListView listView;
+    private RecyclerView recyclerView;
     private FloatingActionButton fabUploadFiles;
     private SwipeRefreshLayout refreshLayout;
     private ShimmerFrameLayout shimmerFrameLayout;
@@ -52,15 +54,17 @@ public class FilesFragment extends Fragment implements SwipeRefreshLayout.OnRefr
     private Call<File[]> files;
     private File[] retrievedFiles;
 
-    private String BASE_URL;
-
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_files, container, false);
 
-        listView = view.findViewById(R.id.list_files);
+        recyclerView = view.findViewById(R.id.recyclerView);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setAdapter(new CustomListAdapter(new File[]{}));
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+
         fabUploadFiles = view.findViewById(R.id.fabUploadFiles);
 
         retrofitConfig = new RetrofitConfig();
@@ -71,9 +75,8 @@ public class FilesFragment extends Fragment implements SwipeRefreshLayout.OnRefr
         refreshLayout = view.findViewById(R.id.refresh_files);
         refreshLayout.setColorSchemeColors(Color.RED, Color.BLUE, Color.GREEN);
         onRefresh();
-        refreshLayout.setOnRefreshListener(this);
 
-        listView.setOnItemClickListener(this);
+        refreshLayout.setOnRefreshListener(this);
         fabUploadFiles.setOnClickListener(this);
 
         return view;
@@ -82,7 +85,7 @@ public class FilesFragment extends Fragment implements SwipeRefreshLayout.OnRefr
     @Override
     public void onRefresh() {
 
-        listView.setVisibility(View.INVISIBLE);
+        recyclerView.setVisibility(View.INVISIBLE);
         shimmerFrameLayout.setVisibility(View.VISIBLE);
         shimmerFrameLayout.startShimmer();
 
@@ -95,15 +98,15 @@ public class FilesFragment extends Fragment implements SwipeRefreshLayout.OnRefr
             public void onResponse(Call<File[]> call, Response<File[]> response) {
                 retrievedFiles =  response.body();
 
-                adapter = new CustomListAdapter(getActivity(), retrievedFiles);
+                adapter = new CustomListAdapter(retrievedFiles);
 
-                listView.setAdapter(adapter);
+                recyclerView.setAdapter(adapter);
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
                         shimmerFrameLayout.stopShimmer();
                         shimmerFrameLayout.setVisibility(View.GONE);
-                        listView.setVisibility(View.VISIBLE);
+                        recyclerView.setVisibility(View.VISIBLE);
                     }
                 }, 1200);
             }
@@ -122,7 +125,6 @@ public class FilesFragment extends Fragment implements SwipeRefreshLayout.OnRefr
             }
         });
         refreshLayout.setRefreshing(false);
-
     }
 
     @Override
