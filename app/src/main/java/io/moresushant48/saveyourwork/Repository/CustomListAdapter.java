@@ -12,12 +12,14 @@ import androidx.recyclerview.widget.RecyclerView;
 import io.moresushant48.saveyourwork.Model.File;
 import com.example.saveyourwork.R;
 
+import java.util.ArrayList;
+
 public class CustomListAdapter extends RecyclerView.Adapter<CustomListAdapter.CustomListAdapterViewHolder> {
 
-    private File[] files;
+    private ArrayList<File> files;
     private OnFileListener onFileListener;
 
-    public CustomListAdapter(File[] files, OnFileListener onFileListener) {
+    public CustomListAdapter(ArrayList<File> files, OnFileListener onFileListener) {
         this.files = files;
         this.onFileListener = onFileListener;
     }
@@ -29,7 +31,7 @@ public class CustomListAdapter extends RecyclerView.Adapter<CustomListAdapter.Cu
         TextView txtSubTitle;
         OnFileListener onFileListener;
 
-        public CustomListAdapterViewHolder(@NonNull View itemView, OnFileListener onFileListener) {
+        private CustomListAdapterViewHolder(@NonNull View itemView, OnFileListener onFileListener) {
             super(itemView);
             imgFile = itemView.findViewById(R.id.imgFile);
             txtMainTitle = itemView.findViewById(R.id.txtMainTitle);
@@ -56,14 +58,14 @@ public class CustomListAdapter extends RecyclerView.Adapter<CustomListAdapter.Cu
     @Override
     public void onBindViewHolder(@NonNull CustomListAdapterViewHolder holder, int position) {
 
-        holder.txtMainTitle.setText(files[position].getFileName());
-        holder.txtSubTitle.setText(files[position].getFileSize());
+        holder.txtMainTitle.setText(files.get(position).getFileName());
+        holder.txtSubTitle.setText(files.get(position).getFileSize());
         holder.imgFile.setImageResource(R.drawable.ic_file);
     }
 
     @Override
     public int getItemCount() {
-        return files.length;
+        return files.size();
     }
 
     public interface OnFileListener {

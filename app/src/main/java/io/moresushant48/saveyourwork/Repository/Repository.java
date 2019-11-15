@@ -1,5 +1,7 @@
 package io.moresushant48.saveyourwork.Repository;
 
+import java.util.ArrayList;
+
 import io.moresushant48.saveyourwork.Model.File;
 import io.moresushant48.saveyourwork.Model.User;
 
@@ -24,9 +26,12 @@ public interface Repository {
     Call<String> register(@Query("email") String email, @Query("username") String username, @Query("password") String password);
 
     @GET("list-files/{id}")
-    Call<File[]> listAllFiles(@Path("id") String id);
+    Call<ArrayList<File>> listAllFiles(@Path("id") String id);
 
     @Multipart
     @POST("upload-file/{id}")
     Call<Boolean> uploadFile(@Path("id") String id, @Part MultipartBody.Part filePart);
+
+    @GET("delete-file/{fileId}")
+    Call<Boolean> deleteFile(@Path("fileId") Long fileId, @Query("fileName") String fileName);
 }

@@ -15,10 +15,19 @@
         android:usesCleartextTraffic="true">
 
         <service
+            android:name="io.moresushant48.saveyourwork.Download"
+            android:exported="false"
+            android:permission="android.permission.BIND_JOB_SERVICE" />
+
+        <service
             android:name="io.moresushant48.saveyourwork.Upload"
             android:exported="false"
             android:permission="android.permission.BIND_JOB_SERVICE"
             />
+        <service
+            android:name="io.moresushant48.saveyourwork.Delete"
+            android:exported="false"
+            android:permission="android.permission.BIND_JOB_SERVICE" />
 
         <activity android:name="io.moresushant48.saveyourwork.Register" />
         <activity android:name="io.moresushant48.saveyourwork.Login" />
@@ -30,10 +39,7 @@
             </intent-filter>
         </activity>
 
-        <service
-            android:name="io.moresushant48.saveyourwork.Download"
-            android:exported="false"
-            android:permission="android.permission.BIND_JOB_SERVICE" />
+
     </application>
 
 </manifest>
