@@ -8,5 +8,11 @@
     <string name="drawer_close">Close Drawer</string>
 
     <string name="source_heroku">https://saveyourwork.herokuapp.com/</string>
+    <string name="darkMode">Enable Dark Mode</string>
+    <string name="fingerprint">Fingerprint Unlock</string>
+    <string name="fingerprintSummary">Use System Fingerprint to Unlock the App.</string>
+    <string name="security">Security</string>
+    <string name="theme">Theme</string>
+    <string name="darkModeSummary">Immediately applies Dark Mode by restarting app.</string>
 
 </resources>

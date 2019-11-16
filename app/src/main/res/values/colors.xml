@@ -2,7 +2,7 @@
 <resources>
     <color name="colorPrimary">#00bfa5</color>
     <color name="colorPrimaryDark">#008e76</color>
-    <color name="colorAccent">#5df2d6</color>
+    <color name="colorAccent">#148F42</color>
     <color name="whitesmoke">#f8f8ff</color>
 
     <color name="shimmer">#dddddd</color>

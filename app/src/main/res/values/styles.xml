@@ -8,4 +8,6 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="DarkMode" parent="ThemeOverlay.AppCompat.Dark"/>
+    
 </resources>

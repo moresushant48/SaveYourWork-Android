@@ -15,9 +15,11 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.preference.PreferenceManager;
 
 import io.moresushant48.saveyourwork.Fragments.AboutFragment;
 import io.moresushant48.saveyourwork.Fragments.FilesFragment;
+import io.moresushant48.saveyourwork.Fragments.SettingsFragment;
 
 import com.example.saveyourwork.R;
 import com.google.android.material.navigation.NavigationView;
@@ -32,6 +34,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        if(PreferenceManager.getDefaultSharedPreferences(this).getBoolean(getString(R.string.darkMode), false)){
+            setTheme(R.style.DarkMode);
+        }
+
         setContentView(R.layout.activity_main);
 
         Toolbar toolbar = findViewById(R.id.maintoolbar);
@@ -46,8 +53,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
-
-
 
         if(ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED){
             String[] permissions = {Manifest.permission.WRITE_EXTERNAL_STORAGE};
@@ -100,6 +105,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
             case R.id.menuAbout:
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new AboutFragment()).commit();
+                menuItem.setCheckable(true);
+                break;
+
+            case R.id.menuSettings:
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new SettingsFragment()).commit();
                 menuItem.setCheckable(true);
                 break;
         }
