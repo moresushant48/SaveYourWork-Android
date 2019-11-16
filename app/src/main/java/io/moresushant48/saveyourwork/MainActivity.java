@@ -41,6 +41,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         setContentView(R.layout.activity_main);
 
+        askForFingerprint();
+
         Toolbar toolbar = findViewById(R.id.maintoolbar);
         setSupportActionBar(toolbar);
 
@@ -62,6 +64,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         if(savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new FilesFragment()).commit();
             navigationView.setCheckedItem(R.id.menuFiles);
+        }
+    }
+
+    private void askForFingerprint(){
+
+        if(PreferenceManager.getDefaultSharedPreferences(this).getBoolean(getString(R.string.fingerprint), false))
+        {
+            new FingerprintHelper(MainActivity.this).startAuthenticationPrompt();
         }
     }
 

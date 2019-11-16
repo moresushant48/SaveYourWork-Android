@@ -29,7 +29,5 @@ public class SettingsFragment extends PreferenceFragmentCompat {
                 return true;
             }
         });
-
-
     }
 }

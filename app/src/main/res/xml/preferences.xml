@@ -10,8 +10,22 @@
             android:id="@+id/spDarkMode"
             android:defaultValue="false"
             android:key="@string/darkMode"
-            android:title="@string/darkMode"
             android:summary="@string/darkModeSummary"
+            android:title="@string/darkMode"
+            app:iconSpaceReserved="false" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="@string/security"
+        app:iconSpaceReserved="false">
+
+        <SwitchPreference
+            android:id="@+id/spFingerprint"
+            android:defaultValue="false"
+            android:key="@string/fingerprint"
+            android:summary="@string/fingerprintSummary"
+            android:title="@string/fingerprint"
             app:iconSpaceReserved="false" />
 
     </PreferenceCategory>
