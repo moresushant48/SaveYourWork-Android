@@ -14,5 +14,8 @@
     <string name="security">Security</string>
     <string name="theme">Theme</string>
     <string name="darkModeSummary">Immediately applies Dark Mode by restarting app.</string>
+    <string name="fragAbout">About</string>
+    <string name="fragSettings">Settings</string>
+    <string name="fragFiles">My Files</string>
 
 </resources>

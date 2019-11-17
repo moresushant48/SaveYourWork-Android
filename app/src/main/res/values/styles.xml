@@ -6,8 +6,27 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:textColor">@android:color/black</item>
+        <item name="drawerArrowStyle">@style/DrawerArrowStyleLight</item>
     </style>
 
-    <style name="DarkMode" parent="ThemeOverlay.AppCompat.Dark"/>
-    
+    <!-- Theme for Dark Mode-->
+    <style name="DarkMode" parent="ThemeOverlay.AppCompat.Dark">
+        <item name="android:textColor">@android:color/white</item>
+        <item name="drawerArrowStyle">@style/DrawerArrowStyleDark</item>
+    </style>
+
+
+    <!--    Adjust the DrawerArrow Color when Theme is Light. -->
+    <style name="DrawerArrowStyleLight" parent="Widget.AppCompat.DrawerArrowToggle">
+        <item name="color">@android:color/black</item>
+        <item name="spinBars">true</item>
+    </style>
+
+    <!--    Adjust the DrawerArrow Color when Theme is Dark. -->
+    <style name="DrawerArrowStyleDark" parent="Widget.AppCompat.DrawerArrowToggle">
+        <item name="color">@android:color/white</item>
+        <item name="spinBars">true</item>
+    </style>
+
 </resources>
