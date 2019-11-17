@@ -6,7 +6,7 @@
     android:orientation="vertical"
     app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1.2"
@@ -15,22 +15,28 @@
         android:paddingBottom="@dimen/padding_8">
 
         <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/imgAvatar"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
+            android:layout_height="180dp"
+            android:layout_alignParentTop="true"
             android:layout_gravity="center"
-            android:layout_weight="1"
+            android:layout_marginTop="@dimen/padding_10"
+            android:layout_marginBottom="@dimen/padding_10"
             android:src="@drawable/avatar"
-            app:civ_border_color="@android:color/black"
+            app:civ_border_color="@color/shimmer"
             app:civ_border_width="2dp" />
 
         <com.facebook.shimmer.ShimmerFrameLayout
+            android:id="@+id/shimmerLayout"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="0.4"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/imgAvatar"
+            android:layout_margin="@dimen/padding_4"
             app:shimmer_auto_start="true"
             app:shimmer_duration="1000">
 
             <TextView
+                android:id="@+id/devName"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:fontFamily="cursive"
@@ -42,9 +48,10 @@
         </com.facebook.shimmer.ShimmerFrameLayout>
 
         <TextView
+            android:id="@+id/devUsername"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="0.2"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/shimmerLayout"
             android:fontFamily="casual"
             android:gravity="center"
             android:text="@string/developer_username"
@@ -54,19 +61,19 @@
         <ImageView
             android:id="@+id/imgGit"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
+            android:layout_height="45dp"
+            android:layout_below="@id/devUsername"
             android:layout_margin="@dimen/padding_4"
-            android:layout_weight="0.25"
-            android:src="@drawable/git" />
+            android:src="@drawable/git"
+            android:tint="@color/shimmer" />
 
 
-    </LinearLayout>
+    </RelativeLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="0.8"
-        android:background="@color/whitesmoke"
         android:orientation="vertical">
 
         <TextView
