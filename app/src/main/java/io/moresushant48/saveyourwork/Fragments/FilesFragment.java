@@ -14,6 +14,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -63,6 +64,8 @@ public class FilesFragment extends Fragment implements SwipeRefreshLayout.OnRefr
     private ShimmerFrameLayout shimmerFrameLayout;
     private CoordinatorLayout coordinatorLayout;
 
+    private RelativeLayout emptyStorage;
+
     private CustomListAdapter adapter;
     private Call<ArrayList<File>> files;
     private ArrayList<File> retrievedFiles;
@@ -92,6 +95,8 @@ public class FilesFragment extends Fragment implements SwipeRefreshLayout.OnRefr
 
         TextView toolbarTitle = Objects.requireNonNull(container).getRootView().findViewById(R.id.toolbarTitle);
         toolbarTitle.setText(R.string.fragFiles);
+
+        emptyStorage = view.findViewById(R.id.emptyStorage);
 
         // Initialize some variables to use in Deletion Animation.
         deleteDrawable = ContextCompat.getDrawable(getContext(), R.drawable.ic_delete);
@@ -123,6 +128,7 @@ public class FilesFragment extends Fragment implements SwipeRefreshLayout.OnRefr
     @Override
     public void onRefresh() {
 
+        emptyStorage.setVisibility(View.GONE);
         recyclerView.setVisibility(View.INVISIBLE);
         shimmerFrameLayout.setVisibility(View.VISIBLE);
         shimmerFrameLayout.startShimmer();
@@ -146,6 +152,8 @@ public class FilesFragment extends Fragment implements SwipeRefreshLayout.OnRefr
                     public void run() {
                         shimmerFrameLayout.stopShimmer();
                         shimmerFrameLayout.setVisibility(View.GONE);
+                        if(adapter.getItemCount() == 0)
+                            emptyStorage.setVisibility(View.VISIBLE);
                         recyclerView.setVisibility(View.VISIBLE);
                     }
                 }, 1200);

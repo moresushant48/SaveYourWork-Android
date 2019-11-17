@@ -36,6 +36,31 @@
 
     </com.facebook.shimmer.ShimmerFrameLayout>
 
+    <RelativeLayout
+        android:id="@+id/emptyStorage"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center">
+
+        <ImageView
+            android:id="@+id/imgEmotionalFace"
+            android:layout_width="72dp"
+            android:layout_height="72dp"
+            android:layout_centerHorizontal="true"
+            android:src="@drawable/ic_no_files_face"
+            android:tint="@color/shimmer" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/imgEmotionalFace"
+            android:layout_centerHorizontal="true"
+            android:text="@string/empty_storage"
+            android:textSize="24sp" />
+
+
+    </RelativeLayout>
+
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/refresh_files"
         android:layout_width="match_parent"

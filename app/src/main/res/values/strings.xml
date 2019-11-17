@@ -17,5 +17,6 @@
     <string name="fragAbout">About</string>
     <string name="fragSettings">Settings</string>
     <string name="fragFiles">My Files</string>
+    <string name="empty_storage">Empty Storage</string>
 
 </resources>
