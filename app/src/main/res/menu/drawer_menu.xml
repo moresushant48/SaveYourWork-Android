@@ -1,33 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <item android:id="@+id/menuFiles"
+    <item
+        android:id="@+id/menuFiles"
         android:icon="@drawable/ic_myfiles"
-        android:title="My Files"/>
+        android:title="@string/fragFiles" />
 
-    <item android:title="Authenticate">
+    <item android:title="@string/drawer_group_authenticate">
         <menu>
-            <item android:id="@+id/menuLogout"
+            <item
+                android:id="@+id/menuLogout"
                 android:icon="@drawable/ic_logout"
-                android:title="Logout"/>
+                android:title="@string/activityLogout" />
         </menu>
     </item>
 
-    <item android:title="Info">
+    <item android:title="@string/drawer_group_info">
         <menu>
-            <item android:id="@+id/menuAbout"
-                android:icon="@drawable/ic_about"
-                android:title="About"/>
-        </menu>
-    </item>
 
-    <item android:title="">
-        <menu>
-            <item android:id="@+id/menuSettings"
+            <item
+                android:id="@+id/menuAccount"
+                android:icon="@drawable/ic_account"
+                android:title="@string/fragAccount" />
+
+            <item
+                android:id="@+id/menuSettings"
                 android:icon="@drawable/ic_settings"
-                android:title="Settings"/>
+                android:title="@string/fragSettings" />
+
+            <item
+                android:id="@+id/menuAbout"
+                android:icon="@drawable/ic_about"
+                android:title="@string/fragAbout" />
+
         </menu>
     </item>
-
 
 </menu>

@@ -1,22 +1,42 @@
 <resources>
+
+    <!--    Application Level -->
     <string name="app_name">SaveYourWork</string>
     <string name="developer_name">Sushant More</string>
     <string name="developer_username">\@moresushant48</string>
     <string name="purpose">SaveYourWork provides a Convenient and Secure File Sharing Service. Upload your files and be able to access them from anywhere in the world, with ease.</string>
+    <string name="source_heroku">https://saveyourwork.herokuapp.com/</string>
 
+    <!--    Navigation Drawer -->
     <string name="drawer_open">Open Drawer</string>
     <string name="drawer_close">Close Drawer</string>
+    <string name="drawer_group_authenticate">Authentication</string>
+    <string name="drawer_group_info">Info</string>
 
-    <string name="source_heroku">https://saveyourwork.herokuapp.com/</string>
+    <!--    Activity Titles -->
+    <string name="activityLogout">Logout</string>
+
+    <!--    Fragment Titles -->
+    <string name="fragAccount">Account</string>
+    <string name="fragAbout">About</string>
+    <string name="fragSettings">Settings</string>
+    <string name="fragFiles">My Files</string>
+
+    <!--    Theme -->
     <string name="darkMode">Enable Dark Mode</string>
+
+    <!--    Settings -->
     <string name="fingerprint">Fingerprint Unlock</string>
     <string name="fingerprintSummary">Use System Fingerprint to Unlock the App.</string>
     <string name="security">Security</string>
     <string name="theme">Theme</string>
     <string name="darkModeSummary">Immediately applies Dark Mode by restarting app.</string>
-    <string name="fragAbout">About</string>
-    <string name="fragSettings">Settings</string>
-    <string name="fragFiles">My Files</string>
+
+    <!--    Other -->
     <string name="empty_storage">Empty Storage</string>
+
+
+
+
 
 </resources>
