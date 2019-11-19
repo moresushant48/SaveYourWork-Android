@@ -16,8 +16,11 @@ import io.moresushant48.saveyourwork.Config.RetrofitConfig;
 
 import com.example.saveyourwork.R;
 
+import io.moresushant48.saveyourwork.Model.User;
 import io.moresushant48.saveyourwork.Repository.Repository;
 import com.google.android.material.snackbar.Snackbar;
+
+import java.util.Objects;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -73,40 +76,57 @@ public class Login extends AppCompatActivity {
                     }
                 }else{
 
-                    Call<Integer> user = repository.login(editUsername.getText().toString().trim(), editPassword.getText().toString().trim());
+                    Call<User> user = repository.login(editUsername.getText().toString().trim(), editPassword.getText().toString().trim());
 
-                    user.enqueue(new Callback<Integer>() {
+                    user.enqueue(new Callback<User>() {
                         @Override
-                        public void onResponse(Call<Integer> call, Response<Integer> response) {
+                        public void onResponse(Call<User> call, Response<User> response) {
 
-                            if(response.body().equals(-1)) {
+                            User tempUser = Objects.requireNonNull(response.body());
+
+                            if(tempUser.getUsername().equals("void")){
 
                                 Snackbar.make(linearLayout, "Wrong Credentials.", Snackbar.LENGTH_LONG).show();
+                            } else if(tempUser.getUsername().contentEquals(editUsername.getText())) {
 
-                            }else{
-
-                                Snackbar.make(linearLayout, "Logged in Successfully.", Snackbar.LENGTH_LONG).show();
-                                getSharedPreferences("user", MODE_PRIVATE).edit().putBoolean("isLoggedIn",true).apply();
-                                getSharedPreferences("user", MODE_PRIVATE).edit().putInt("id",response.body()).apply();
-
-                                new Handler().postDelayed(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        finish();
-                                        startActivity(new Intent(Login.this, MainActivity.class));
-                                    }
-                                }, 2000);
+                                    loginSuccess(tempUser);
                             }
                         }
 
                         @Override
-                        public void onFailure(Call<Integer> call, Throwable t) {
+                        public void onFailure(Call<User> call, Throwable t) {
                             Snackbar.make(linearLayout, "Service Unreachable.", Snackbar.LENGTH_LONG).show();
                         }
                     });
                 }
             }
         });
+    }
+
+    private void loginSuccess(User tempUser) {
+
+        Snackbar.make(linearLayout, "Logged in Successfully.", Snackbar.LENGTH_LONG).show();
+
+        saveUserInfo(tempUser);
+
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                finish();
+                startActivity(new Intent(Login.this, MainActivity.class));
+            }
+        }, 1200);
+
+    }
+
+    private void saveUserInfo(User tempUser) {
+
+        getSharedPreferences("user", MODE_PRIVATE).edit().putBoolean("isLoggedIn", true).apply();
+
+        getSharedPreferences("user", MODE_PRIVATE).edit().putInt("id", tempUser.getId()).apply();
+        getSharedPreferences("user", MODE_PRIVATE).edit().putString("username", tempUser.getUsername()).apply();
+        getSharedPreferences("user", MODE_PRIVATE).edit().putString("email", tempUser.getEmail()).apply();
+
     }
 
     @Override
