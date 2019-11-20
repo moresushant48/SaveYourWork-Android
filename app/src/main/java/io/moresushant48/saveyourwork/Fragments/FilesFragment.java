@@ -64,7 +64,8 @@ public class FilesFragment extends Fragment implements SwipeRefreshLayout.OnRefr
     private ShimmerFrameLayout shimmerFrameLayout;
     private CoordinatorLayout coordinatorLayout;
 
-    private RelativeLayout emptyStorage;
+    private RelativeLayout
+            emptyStorage;
 
     private CustomListAdapter adapter;
     private Call<ArrayList<File>> files;

@@ -19,6 +19,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.preference.PreferenceManager;
 
 import io.moresushant48.saveyourwork.Fragments.AboutFragment;
+import io.moresushant48.saveyourwork.Fragments.AccountFragment;
 import io.moresushant48.saveyourwork.Fragments.FilesFragment;
 import io.moresushant48.saveyourwork.Fragments.SettingsFragment;
 
@@ -123,6 +124,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
             case R.id.menuSettings:
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new SettingsFragment()).commit();
+                menuItem.setCheckable(true);
+                break;
+
+            case R.id.menuAccount:
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new AccountFragment()).commit();
                 menuItem.setCheckable(true);
                 break;
         }
