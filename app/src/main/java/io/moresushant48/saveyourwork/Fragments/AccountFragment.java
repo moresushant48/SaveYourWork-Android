@@ -14,6 +14,8 @@ import androidx.fragment.app.Fragment;
 
 import com.example.saveyourwork.R;
 
+import java.util.Objects;
+
 public class AccountFragment extends Fragment {
 
     private LinearLayout layout1, layout2;
@@ -37,6 +39,9 @@ public class AccountFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_account, container, false);
+
+        TextView toolbarTitle = Objects.requireNonNull(container).getRootView().findViewById(R.id.toolbarTitle);
+        toolbarTitle.setText(R.string.fragAccount);
 
         // for Username.
         layout1 = view.findViewById(R.id.account_item_1);
