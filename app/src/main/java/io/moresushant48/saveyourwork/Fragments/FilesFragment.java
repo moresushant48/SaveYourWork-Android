@@ -1,5 +1,7 @@
 package io.moresushant48.saveyourwork.Fragments;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -16,6 +18,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -48,7 +51,8 @@ import retrofit2.Response;
 
 import static android.content.Context.MODE_PRIVATE;
 
-public class FilesFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener, CustomListAdapter.OnFileListener, FloatingActionButton.OnClickListener {
+public class FilesFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener,
+        CustomListAdapter.OnFileListener, FloatingActionButton.OnClickListener, CustomListAdapter.OnFileLongClickListener {
 
     private static final int PICKFILE_REQUEST_CODE = 100;
     private static final int DOWNLOAD_JOB_ID = 1000;
@@ -63,9 +67,10 @@ public class FilesFragment extends Fragment implements SwipeRefreshLayout.OnRefr
     private SwipeRefreshLayout refreshLayout;
     private ShimmerFrameLayout shimmerFrameLayout;
     private CoordinatorLayout coordinatorLayout;
+    private RelativeLayout emptyStorage;
 
-    private RelativeLayout
-            emptyStorage;
+    private AlertDialog.Builder onFileLongClickDialog ;
+    private String[] dialogItems = {"Download", "Share", "Delete"};
 
     private CustomListAdapter adapter;
     private Call<ArrayList<File>> files;
@@ -99,6 +104,8 @@ public class FilesFragment extends Fragment implements SwipeRefreshLayout.OnRefr
 
         emptyStorage = view.findViewById(R.id.emptyStorage);
 
+        onFileLongClickDialog = new AlertDialog.Builder(getContext());
+
         // Initialize some variables to use in Deletion Animation.
         deleteDrawable = ContextCompat.getDrawable(getContext(), R.drawable.ic_delete);
         intrinsicWidth = deleteDrawable.getIntrinsicWidth();
@@ -106,7 +113,7 @@ public class FilesFragment extends Fragment implements SwipeRefreshLayout.OnRefr
 
         recyclerView = view.findViewById(R.id.recyclerView);
         recyclerView.setHasFixedSize(true);
-        recyclerView.setAdapter(new CustomListAdapter(new ArrayList<File>(), FilesFragment.this));
+        recyclerView.setAdapter(new CustomListAdapter(new ArrayList<File>(), FilesFragment.this, FilesFragment.this));
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
         fabUploadFiles = view.findViewById(R.id.fabUploadFiles);
@@ -118,6 +125,7 @@ public class FilesFragment extends Fragment implements SwipeRefreshLayout.OnRefr
         shimmerFrameLayout = view.findViewById(R.id.shimmer_view_container);
         refreshLayout = view.findViewById(R.id.refresh_files);
         refreshLayout.setColorSchemeColors(Color.RED, Color.BLUE, Color.GREEN);
+
         onRefresh();
 
         refreshLayout.setOnRefreshListener(this);
@@ -143,7 +151,7 @@ public class FilesFragment extends Fragment implements SwipeRefreshLayout.OnRefr
             public void onResponse(Call<ArrayList<File>> call, Response<ArrayList<File>> response) {
                 retrievedFiles =  response.body();
 
-                adapter = new CustomListAdapter(retrievedFiles, FilesFragment.this);
+                adapter = new CustomListAdapter(retrievedFiles, FilesFragment.this, FilesFragment.this);
                 recyclerView.setAdapter(adapter);
 
                 new ItemTouchHelper(simpleCallback).attachToRecyclerView(recyclerView);
@@ -203,7 +211,30 @@ public class FilesFragment extends Fragment implements SwipeRefreshLayout.OnRefr
         Snackbar.make(coordinatorLayout, "Downloading File(s).", Snackbar.LENGTH_LONG).show();
     }
 
-    ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
+    @Override
+    public void onFileLongClick(final int position) {
+
+        onFileLongClickDialog.setItems(dialogItems, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+                switch (which){
+                    case 0 :
+                        onFileClick(position);
+                        break;
+                    case 1 :
+                        // Nothing as of now.
+                        break;
+                    case 2 :
+                        deleteItemFromListAndDatabase(position);
+                        break;
+                }
+            }
+        }).create().show();
+
+    }
+
+    private ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
         @Override
         public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
             return false;
@@ -211,19 +242,8 @@ public class FilesFragment extends Fragment implements SwipeRefreshLayout.OnRefr
 
         @Override
         public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
-
-            int position = viewHolder.getAdapterPosition();
-
-            Log.e("File Deleted: ", String.valueOf(position));
-            Snackbar.make(coordinatorLayout, "Deleting File(s).", Snackbar.LENGTH_SHORT).show();
-
-            Delete.enqueueWork(getContext(), Delete.class, DELETE_JOB_ID,
-                    new Intent().putExtra("deleteFileId", retrievedFiles.get(position).getId())
-                    .putExtra("deleteFileName", retrievedFiles.get(position).getFileName())
-            );
-
-            retrievedFiles.remove(position);
-            adapter.notifyItemRemoved(position);
+            // Delete list item and Delete file from the server, using Delete Service.
+            deleteItemFromListAndDatabase(viewHolder.getAdapterPosition());
         }
 
         @Override
@@ -261,4 +281,21 @@ public class FilesFragment extends Fragment implements SwipeRefreshLayout.OnRefr
 
         }
     };
+
+    /*
+        Delete list item and Delete file from the server, using Delete Service.
+     */
+    private void deleteItemFromListAndDatabase(int position) {
+
+        Log.e("File Deleted: ", String.valueOf(position));
+        Snackbar.make(coordinatorLayout, "Deleting File(s).", Snackbar.LENGTH_SHORT).show();
+
+        Delete.enqueueWork(getContext(), Delete.class, DELETE_JOB_ID,
+                new Intent().putExtra("deleteFileId", retrievedFiles.get(position).getId())
+                        .putExtra("deleteFileName", retrievedFiles.get(position).getFileName())
+        );
+
+        retrievedFiles.remove(position);
+        adapter.notifyItemRemoved(position);
+    }
 }

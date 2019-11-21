@@ -18,32 +18,43 @@ public class CustomListAdapter extends RecyclerView.Adapter<CustomListAdapter.Cu
 
     private ArrayList<File> files;
     private OnFileListener onFileListener;
+    private OnFileLongClickListener onFileLongClickListener;
 
-    public CustomListAdapter(ArrayList<File> files, OnFileListener onFileListener) {
+    public CustomListAdapter(ArrayList<File> files, OnFileListener onFileListener, OnFileLongClickListener onFileLongClickListener) {
         this.files = files;
         this.onFileListener = onFileListener;
+        this.onFileLongClickListener = onFileLongClickListener;
     }
 
-    public class CustomListAdapterViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    public class CustomListAdapterViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
 
         ImageView imgFile;
         TextView txtMainTitle;
         TextView txtSubTitle;
         OnFileListener onFileListener;
+        OnFileLongClickListener onFileLongClickListener;
 
-        private CustomListAdapterViewHolder(@NonNull View itemView, OnFileListener onFileListener) {
+        private CustomListAdapterViewHolder(@NonNull View itemView, OnFileListener onFileListener, OnFileLongClickListener onFileLongClickListener) {
             super(itemView);
             imgFile = itemView.findViewById(R.id.imgFile);
             txtMainTitle = itemView.findViewById(R.id.txtMainTitle);
             txtSubTitle = itemView.findViewById(R.id.txtSubTitle);
             this.onFileListener = onFileListener;
+            this.onFileLongClickListener = onFileLongClickListener;
 
             itemView.setOnClickListener(this);
+            itemView.setOnLongClickListener(this);
         }
 
         @Override
         public void onClick(View v) {
             onFileListener.onFileClick(getAdapterPosition());
+        }
+
+        @Override
+        public boolean onLongClick(View v) {
+            onFileLongClickListener.onFileLongClick(getAdapterPosition());
+            return true;
         }
     }
 
@@ -52,7 +63,7 @@ public class CustomListAdapter extends RecyclerView.Adapter<CustomListAdapter.Cu
     public CustomListAdapterViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
         View view = inflater.inflate(R.layout.list_file_view, parent, false);
-        return new CustomListAdapterViewHolder(view, onFileListener);
+        return new CustomListAdapterViewHolder(view, onFileListener, onFileLongClickListener);
     }
 
     @Override
@@ -70,5 +81,9 @@ public class CustomListAdapter extends RecyclerView.Adapter<CustomListAdapter.Cu
 
     public interface OnFileListener {
         void onFileClick(int position);
+    }
+
+    public interface OnFileLongClickListener {
+        void onFileLongClick(int position);
     }
 }
