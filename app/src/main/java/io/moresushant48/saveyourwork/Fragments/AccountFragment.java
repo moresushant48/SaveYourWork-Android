@@ -18,6 +18,8 @@ import java.util.Objects;
 
 public class AccountFragment extends Fragment {
 
+    private Context context;
+
     private LinearLayout layout1, layout2;
     private TextView heading, data;
 
@@ -29,7 +31,9 @@ public class AccountFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        id = String.valueOf(getContext().getSharedPreferences("user", Context.MODE_PRIVATE).getInt("id", -1));
+        context = Objects.requireNonNull(getContext());
+
+        id = String.valueOf(context.getSharedPreferences("user", Context.MODE_PRIVATE).getInt("id", -1));
         username = getContext().getSharedPreferences("user", Context.MODE_PRIVATE).getString("username", "null");
         email = getContext().getSharedPreferences("user", Context.MODE_PRIVATE).getString("email", "null");
 

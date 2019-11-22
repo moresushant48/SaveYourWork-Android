@@ -1,6 +1,7 @@
 package io.moresushant48.saveyourwork.Fragments;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Canvas;
@@ -58,6 +59,8 @@ public class FilesFragment extends Fragment implements SwipeRefreshLayout.OnRefr
     private static final int UPLOAD_JOB_ID = 1001;
     private static final int DELETE_JOB_ID = 1002;
 
+    private Context context;
+
     private RetrofitConfig retrofitConfig;
     private Repository repository;
 
@@ -97,23 +100,24 @@ public class FilesFragment extends Fragment implements SwipeRefreshLayout.OnRefr
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_files, container, false);
+        context = Objects.requireNonNull(getContext());
 
         TextView toolbarTitle = Objects.requireNonNull(container).getRootView().findViewById(R.id.toolbarTitle);
         toolbarTitle.setText(R.string.fragFiles);
 
         emptyStorage = view.findViewById(R.id.emptyStorage);
 
-        onFileLongClickDialog = new AlertDialog.Builder(getContext());
+        onFileLongClickDialog = new AlertDialog.Builder(context);
 
         // Initialize some variables to use in Deletion Animation.
-        deleteDrawable = ContextCompat.getDrawable(getContext(), R.drawable.ic_delete);
-        intrinsicWidth = deleteDrawable.getIntrinsicWidth();
+        deleteDrawable = ContextCompat.getDrawable(context, R.drawable.ic_delete);
+        intrinsicWidth = Objects.requireNonNull(deleteDrawable).getIntrinsicWidth();
         intrinsicHeight = deleteDrawable.getIntrinsicHeight();
 
         recyclerView = view.findViewById(R.id.recyclerView);
         recyclerView.setHasFixedSize(true);
         recyclerView.setAdapter(new CustomListAdapter(new ArrayList<File>(), FilesFragment.this, FilesFragment.this));
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        recyclerView.setLayoutManager(new LinearLayoutManager(context));
 
         fabUploadFiles = view.findViewById(R.id.fabUploadFiles);
 
@@ -198,7 +202,7 @@ public class FilesFragment extends Fragment implements SwipeRefreshLayout.OnRefr
 
         if(requestCode == PICKFILE_REQUEST_CODE && data != null){
 
-            Upload.enqueueWork(getContext(), Upload.class, UPLOAD_JOB_ID, data);
+            Upload.enqueueWork(context, Upload.class, UPLOAD_JOB_ID, data);
             Snackbar.make(coordinatorLayout, "Uploading the file(s).", Snackbar.LENGTH_LONG).show();
         }
     }
@@ -206,7 +210,7 @@ public class FilesFragment extends Fragment implements SwipeRefreshLayout.OnRefr
     @Override
     public void onFileClick(int position) {
 
-        Download.enqueueWork(getContext(), Download.class, DOWNLOAD_JOB_ID, new Intent().putExtra("fileName",retrievedFiles.get(position).getFileName()));
+        Download.enqueueWork(context, Download.class, DOWNLOAD_JOB_ID, new Intent().putExtra("fileName",retrievedFiles.get(position).getFileName()));
         Snackbar.make(coordinatorLayout, "Downloading File(s).", Snackbar.LENGTH_LONG).show();
     }
 
@@ -300,7 +304,7 @@ public class FilesFragment extends Fragment implements SwipeRefreshLayout.OnRefr
         Log.e("File Deleted: ", String.valueOf(position));
         Snackbar.make(coordinatorLayout, "Deleting File(s).", Snackbar.LENGTH_SHORT).show();
 
-        Delete.enqueueWork(getContext(), Delete.class, DELETE_JOB_ID,
+        Delete.enqueueWork(context, Delete.class, DELETE_JOB_ID,
                 new Intent().putExtra("deleteFileId", retrievedFiles.get(position).getId())
                         .putExtra("deleteFileName", retrievedFiles.get(position).getFileName())
         );
