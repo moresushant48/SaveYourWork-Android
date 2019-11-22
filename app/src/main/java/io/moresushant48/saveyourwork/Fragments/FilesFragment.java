@@ -18,7 +18,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -223,7 +222,7 @@ public class FilesFragment extends Fragment implements SwipeRefreshLayout.OnRefr
                         onFileClick(position);
                         break;
                     case 1 :
-                        // Nothing as of now.
+                        getSharableLink(position);
                         break;
                     case 2 :
                         deleteItemFromListAndDatabase(position);
@@ -231,6 +230,17 @@ public class FilesFragment extends Fragment implements SwipeRefreshLayout.OnRefr
                 }
             }
         }).create().show();
+
+    }
+
+    private void getSharableLink(int position) {
+
+        String link = getString(R.string.source_heroku) + "uploads/" + retrievedFiles.get(position).getFileName();
+        Intent i = new Intent(Intent.ACTION_SEND);
+        i.setType("text/plain");
+        i.putExtra(Intent.EXTRA_TEXT, "File Name : " + retrievedFiles.get(position).getFileName());
+        i.putExtra(Intent.EXTRA_TEXT, "File Name : " + retrievedFiles.get(position).getFileName() + "\nDownload : " + link);
+        startActivity(Intent.createChooser(i, "Choose"));
 
     }
 
