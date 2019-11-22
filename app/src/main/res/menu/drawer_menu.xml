@@ -6,15 +6,6 @@
         android:icon="@drawable/ic_myfiles"
         android:title="@string/fragFiles" />
 
-    <item android:title="@string/drawer_group_authenticate">
-        <menu>
-            <item
-                android:id="@+id/menuLogout"
-                android:icon="@drawable/ic_logout"
-                android:title="@string/activityLogout" />
-        </menu>
-    </item>
-
     <item android:title="@string/drawer_group_info">
         <menu>
 
@@ -33,6 +24,15 @@
                 android:icon="@drawable/ic_about"
                 android:title="@string/fragAbout" />
 
+        </menu>
+    </item>
+
+    <item android:title="@string/drawer_group_authenticate">
+        <menu>
+            <item
+                android:id="@+id/menuLogout"
+                android:icon="@drawable/ic_logout"
+                android:title="@string/activityLogout" />
         </menu>
     </item>
 
