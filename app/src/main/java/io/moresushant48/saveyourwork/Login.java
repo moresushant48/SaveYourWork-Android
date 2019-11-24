@@ -3,6 +3,7 @@ package io.moresushant48.saveyourwork;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.TextUtils;
@@ -18,6 +19,8 @@ import com.example.saveyourwork.R;
 
 import io.moresushant48.saveyourwork.Model.User;
 import io.moresushant48.saveyourwork.Repository.Repository;
+
+import com.github.ybq.android.spinkit.SpinKitView;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.util.Objects;
@@ -32,6 +35,7 @@ public class Login extends AppCompatActivity {
     private Repository repository;
     private LinearLayout linearLayout;
 
+    private SpinKitView spinKitView;
     private TextView txtRegister;
     private EditText editUsername, editPassword;
     private Button btnLogin;
@@ -46,6 +50,8 @@ public class Login extends AppCompatActivity {
         retrofitConfig = new RetrofitConfig();
 
         repository = retrofitConfig.getRetrofit().create(Repository.class);
+
+        spinKitView = findViewById(R.id.spin_kit);
 
         editUsername = findViewById(R.id.txtUsername);
         editPassword = findViewById(R.id.txtPassword);
@@ -76,6 +82,8 @@ public class Login extends AppCompatActivity {
                     }
                 }else{
 
+                    activateSpinKit();
+
                     Call<User> user = repository.login(editUsername.getText().toString().trim(), editPassword.getText().toString().trim());
 
                     user.enqueue(new Callback<User>() {
@@ -86,10 +94,20 @@ public class Login extends AppCompatActivity {
 
                             if(tempUser.getUsername().equals("void")){
 
-                                Snackbar.make(linearLayout, "Wrong Credentials.", Snackbar.LENGTH_LONG).show();
+                                spinKitView.setColor(Color.RED);
+
+                                new Handler().postDelayed(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        deactivateSpinKit();
+                                        Snackbar.make(linearLayout, "Wrong Credentials.", Snackbar.LENGTH_LONG).show();
+                                    }
+                                }, 1500);
+
+
                             } else if(tempUser.getUsername().contentEquals(editUsername.getText())) {
 
-                                    loginSuccess(tempUser);
+                                loginSuccess(tempUser);
                             }
                         }
 
@@ -103,9 +121,25 @@ public class Login extends AppCompatActivity {
         });
     }
 
+    private void activateSpinKit() {
+        editUsername.setVisibility(View.INVISIBLE);
+        editPassword.setVisibility(View.INVISIBLE);
+        btnLogin.setVisibility(View.INVISIBLE);
+        txtRegister.setVisibility(View.INVISIBLE);
+        spinKitView.setVisibility(View.VISIBLE);
+    }
+
+    private void deactivateSpinKit() {
+        editUsername.setVisibility(View.VISIBLE);
+        editPassword.setVisibility(View.VISIBLE);
+        btnLogin.setVisibility(View.VISIBLE);
+        txtRegister.setVisibility(View.VISIBLE);
+        spinKitView.setVisibility(View.INVISIBLE);
+    }
+
     private void loginSuccess(User tempUser) {
 
-        Snackbar.make(linearLayout, "Logged in Successfully.", Snackbar.LENGTH_LONG).show();
+        spinKitView.setColor(getColor(R.color.colorPrimaryDark));
 
         saveUserInfo(tempUser);
 
@@ -115,7 +149,7 @@ public class Login extends AppCompatActivity {
                 finish();
                 startActivity(new Intent(Login.this, MainActivity.class));
             }
-        }, 1200);
+        }, 1500);
 
     }
 
