@@ -70,6 +70,8 @@ public class Login extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
+                activateSpinKit();
+
                 if(TextUtils.isEmpty(editUsername.getText()) || TextUtils.isEmpty(editPassword.getText())) {
 
                     if (TextUtils.isEmpty(editUsername.getText())) {
@@ -81,8 +83,6 @@ public class Login extends AppCompatActivity {
                         editPassword.setError("Enter your password.");
                     }
                 }else{
-
-                    activateSpinKit();
 
                     Call<User> user = repository.login(editUsername.getText().toString().trim(), editPassword.getText().toString().trim());
 

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/activity_register"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_register"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/whitesmoke"
@@ -21,23 +21,23 @@
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="50dp"
+            android:fontFamily="sans-serif-smallcaps"
             android:text="@string/app_name"
-            android:textSize="35dp"
             android:textColor="@color/whitesmoke"
-            android:fontFamily="sans-serif-smallcaps"/>
+            android:textSize="35dp" />
 
     </RelativeLayout>
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
         android:layout_marginHorizontal="20dp"
         android:layout_marginTop="-80dp"
         android:layout_marginBottom="100dp"
-        android:layout_gravity="bottom"
 
         app:cardBackgroundColor="@android:color/white"
-        app:cardElevation="10dp" >
+        app:cardElevation="10dp">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -49,48 +49,48 @@
                 android:id="@+id/appName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Register"
-                android:textColor="@color/colorPrimary"
                 android:layout_alignParentTop="true"
                 android:layout_centerInParent="true"
                 android:layout_marginBottom="20dp"
-                android:gravity="center"
-                android:textSize="35sp"
                 android:autoSizeTextType="uniform"
-                android:fontFamily="sans-serif-medium"/>
+                android:fontFamily="sans-serif-medium"
+                android:gravity="center"
+                android:text="Register"
+                android:textColor="@color/colorPrimary"
+                android:textSize="35sp" />
 
             <EditText
                 android:id="@+id/editEmail"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/appName"
-                android:background="@drawable/edit_text"
                 android:layout_marginBottom="20dp"
-                android:maxLines="1"
+                android:background="@drawable/edit_text"
+                android:hint="Email"
                 android:inputType="textEmailAddress"
-                android:hint="Email" />
+                android:maxLines="1" />
 
             <EditText
                 android:id="@+id/editUsername"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/editEmail"
-                android:background="@drawable/edit_text"
                 android:layout_marginBottom="20dp"
-                android:maxLines="1"
+                android:background="@drawable/edit_text"
+                android:hint="Username"
                 android:inputType="textPhonetic"
-                android:hint="Username" />
+                android:maxLines="1" />
 
             <EditText
                 android:id="@+id/editPassword"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/editUsername"
-                android:background="@drawable/edit_text"
                 android:layout_marginBottom="20dp"
-                android:maxLines="1"
+                android:background="@drawable/edit_text"
+                android:hint="Password"
                 android:inputType="textPassword"
-                android:hint="Password" />
+                android:maxLines="1" />
 
             <Button
                 android:id="@+id/btnRegister"
@@ -106,11 +106,21 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/btnRegister"
-                android:text="Already a member ? Login."
                 android:gravity="center"
-                android:textColor="@color/colorPrimary"/>
+                android:text="Already a member ? Login."
+                android:textColor="@color/colorPrimary" />
 
         </RelativeLayout>
+
+        <com.github.ybq.android.spinkit.SpinKitView
+            android:id="@+id/spin_kit"
+            style="@style/SpinKitView.Large.WanderingCubes"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:padding="@dimen/padding_18"
+            android:visibility="invisible"
+            app:SpinKit_Color="@color/colorPrimaryDark" />
 
     </androidx.cardview.widget.CardView>
 

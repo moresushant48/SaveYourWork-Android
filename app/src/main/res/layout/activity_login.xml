@@ -108,7 +108,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:padding="@dimen/padding_18"
-            android:visibility="invisible" />
+            android:visibility="invisible"
+            app:SpinKit_Color="@android:color/holo_red_light" />
 
     </androidx.cardview.widget.CardView>
 

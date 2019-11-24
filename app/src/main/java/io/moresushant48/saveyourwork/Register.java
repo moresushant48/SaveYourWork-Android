@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.TextUtils;
 import android.util.Patterns;
 import android.view.View;
@@ -17,6 +18,8 @@ import io.moresushant48.saveyourwork.Config.RetrofitConfig;
 import com.example.saveyourwork.R;
 
 import io.moresushant48.saveyourwork.Repository.Repository;
+
+import com.github.ybq.android.spinkit.SpinKitView;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.util.Objects;
@@ -30,8 +33,9 @@ public class Register extends AppCompatActivity implements Button.OnClickListene
     private RetrofitConfig retrofitConfig;
     private Repository repository;
 
-    LinearLayout linearLayout;
+    private LinearLayout linearLayout;
 
+    private SpinKitView spinKitView;
     TextView txtLogin;
     EditText editEmail, editUsername, editPassword;
     Button btnRegister;
@@ -48,6 +52,7 @@ public class Register extends AppCompatActivity implements Button.OnClickListene
         repository = retrofitConfig.getRetrofit().create(Repository.class);
 
         linearLayout = findViewById(R.id.activity_register);
+        spinKitView = linearLayout.findViewById(R.id.spin_kit);
 
         txtLogin = findViewById(R.id.txtLogin);
 
@@ -90,7 +95,17 @@ public class Register extends AppCompatActivity implements Button.OnClickListene
                         }
                     }else {
 
+                        activateSpinKit();
                         Snackbar.make(linearLayout, result, Snackbar.LENGTH_LONG).show();
+                        
+                        new Handler().postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                deactivateSpinKit();
+
+                                finish();
+                            }
+                        },1500);
                     }
                 }
 
@@ -139,6 +154,24 @@ public class Register extends AppCompatActivity implements Button.OnClickListene
         }
 
         return true;
+    }
+
+    private void activateSpinKit() {
+        editEmail.setVisibility(View.INVISIBLE);
+        editUsername.setVisibility(View.INVISIBLE);
+        editPassword.setVisibility(View.INVISIBLE);
+        btnRegister.setVisibility(View.INVISIBLE);
+        txtLogin.setVisibility(View.INVISIBLE);
+        spinKitView.setVisibility(View.VISIBLE);
+    }
+
+    private void deactivateSpinKit() {
+        editEmail.setVisibility(View.VISIBLE);
+        editUsername.setVisibility(View.VISIBLE);
+        editPassword.setVisibility(View.VISIBLE);
+        btnRegister.setVisibility(View.VISIBLE);
+        txtLogin.setVisibility(View.VISIBLE);
+        spinKitView.setVisibility(View.INVISIBLE);
     }
 
     @Override
