@@ -168,7 +168,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         builder.setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                getSharedPreferences("login",MODE_PRIVATE).edit().putBoolean("isLoggedIn",false).apply();
+                getSharedPreferences("user",MODE_PRIVATE).edit().putBoolean("isLoggedIn",false).apply();
                 startActivity(new Intent(MainActivity.this, Login.class));
             }
         });
