@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -18,18 +19,24 @@ import com.example.saveyourwork.R;
 import io.moresushant48.saveyourwork.Repository.Repository;
 import com.google.android.material.snackbar.Snackbar;
 
+import java.util.Objects;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class Register extends AppCompatActivity {
+public class Register extends AppCompatActivity implements Button.OnClickListener{
 
     private RetrofitConfig retrofitConfig;
     private Repository repository;
 
+    LinearLayout linearLayout;
+
     TextView txtLogin;
     EditText editEmail, editUsername, editPassword;
     Button btnRegister;
+
+    String email, username, password;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,7 +47,7 @@ public class Register extends AppCompatActivity {
 
         repository = retrofitConfig.getRetrofit().create(Repository.class);
 
-        final LinearLayout linearLayout = findViewById(R.id.activity_register);
+        linearLayout = findViewById(R.id.activity_register);
 
         txtLogin = findViewById(R.id.txtLogin);
 
@@ -57,59 +64,86 @@ public class Register extends AppCompatActivity {
             }
         });
 
-        btnRegister.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        btnRegister.setOnClickListener(this);
+    }
 
-                if(TextUtils.isEmpty(editEmail.getText()) || TextUtils.isEmpty(editUsername.getText()) || TextUtils.isEmpty(editPassword.getText())){
+    @Override
+    public void onClick(View v) {
+        if(validateInputs()){
 
-                    if(TextUtils.isEmpty(editEmail.getText())) {
-                        editEmail.setError("Enter an E-Mail.");
-                    }
-                    if(TextUtils.isEmpty(editUsername.getText())) {
-                        editPassword.setError("Enter a Username.");
-                    }
-                    if(TextUtils.isEmpty(editPassword.getText())) {
-                        editPassword.setError("Enter a Password.");
-                    }
+            Call<String> register = repository.register(email,
+                    username, password);
 
-                }else {
+            register.enqueue(new Callback<String>() {
+                @Override
+                public void onResponse(Call<String> call, Response<String> response) {
 
-                    Call<String> register = repository.register(editEmail.getText().toString().trim(),
-                            editUsername.getText().toString().trim(), editPassword.getText().toString().trim());
+                    String result = Objects.requireNonNull(response.body());
 
-                    register.enqueue(new Callback<String>() {
-                        @Override
-                        public void onResponse(Call<String> call, Response<String> response) {
+                    if(result.equals(email) || result.equals(username)) {
 
-                            if(response.body().equals(editEmail.getText().toString().trim()) || response.body().equals(editUsername.getText().toString().trim())) {
-
-                                if (response.body().equals(editEmail.getText().toString().trim())) {
-                                    editEmail.setError("Account exists for your Email.");
-                                }
-                                if (response.body().equals(editUsername.getText().toString().trim())) {
-                                    editUsername.setError("Username is already taken.");
-                                }
-                            }else {
-
-                                Snackbar.make(linearLayout, response.body(), Snackbar.LENGTH_LONG).show();
-                            }
+                        if (result.equals(email)) {
+                            editEmail.setError("Account exists for your Email.");
                         }
-
-                        @Override
-                        public void onFailure(Call<String> call, Throwable t) {
-
-                            Snackbar.make(linearLayout, "Service Unreachable.", Snackbar.LENGTH_LONG).show();
+                        if (result.equals(username)) {
+                            editUsername.setError("Username is already taken.");
                         }
-                    });
+                    }else {
+
+                        Snackbar.make(linearLayout, result, Snackbar.LENGTH_LONG).show();
+                    }
                 }
 
-            }
-        });
+                @Override
+                public void onFailure(Call<String> call, Throwable t) {
+
+                    Snackbar.make(linearLayout, "Service Unreachable.", Snackbar.LENGTH_LONG).show();
+                }
+            });
+        }
+    }
+
+    private boolean validateInputs() {
+
+        editEmail.setError(null);
+        editUsername.setError(null);
+        editPassword.setError(null);
+
+        email = editEmail.getText().toString().trim();
+        username = editUsername.getText().toString().trim();
+        password = editPassword.getText().toString().trim();
+
+        if(TextUtils.isEmpty(email)) {
+            editEmail.setError("Enter an E-Mail.");
+            return false;
+        }
+        if(TextUtils.isEmpty(username)) {
+            editUsername.setError("Enter a Username.");
+            return false;
+        }
+        if(TextUtils.isEmpty(password)) {
+            editPassword.setError("Enter a Password.");
+            return false;
+        }
+        if(!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+            editEmail.setError("Enter valid E-Mail Format.");
+            return false;
+        }
+        if(!username.trim().matches("[a-zA-Z0-9]{4,15}")) {
+            editUsername.setError("Min 4 & Max 15, letters & digits.");
+            return false;
+        }
+        if(!password.trim().matches("[a-zA-Z0-9]{3,15}")) {
+            editPassword.setError("Min 3 & Max 15, letters & digits.");
+            return false;
+        }
+
+        return true;
     }
 
     @Override
     public void onBackPressed() {
 
     }
+
 }
