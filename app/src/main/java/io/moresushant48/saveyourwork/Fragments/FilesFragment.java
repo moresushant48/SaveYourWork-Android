@@ -73,6 +73,8 @@ public class FilesFragment extends Fragment implements SwipeRefreshLayout.OnRefr
 
     private AlertDialog.Builder onFileLongClickDialog ;
     private String[] dialogItems = {"Download", "Share", "Delete"};
+    private File file;
+    private boolean canDelete;
 
     private CustomListAdapter adapter;
     private Call<ArrayList<File>> files;
@@ -299,17 +301,36 @@ public class FilesFragment extends Fragment implements SwipeRefreshLayout.OnRefr
     /*
         Delete list item and Delete file from the server, using Delete Service.
      */
-    private void deleteItemFromListAndDatabase(int position) {
+    private void deleteItemFromListAndDatabase(final int position) {
 
-        Log.e("File Deleted: ", String.valueOf(position));
-        Snackbar.make(coordinatorLayout, "Deleting File(s).", Snackbar.LENGTH_SHORT).show();
-
-        Delete.enqueueWork(context, Delete.class, DELETE_JOB_ID,
-                new Intent().putExtra("deleteFileId", retrievedFiles.get(position).getId())
-                        .putExtra("deleteFileName", retrievedFiles.get(position).getFileName())
-        );
+        file = retrievedFiles.get(position);
 
         retrievedFiles.remove(position);
         adapter.notifyItemRemoved(position);
+
+        canDelete = true;
+
+        Log.e("File Deleted: ", String.valueOf(position));
+        Snackbar snackbar = Snackbar.make(coordinatorLayout, "Deleting File(s).", 2000);
+        snackbar.setAction("Undo", new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                retrievedFiles.add(position, file);
+                adapter.notifyItemInserted(position);
+                canDelete = false;
+            }
+        }).show();
+        
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                if(canDelete) {
+                    Delete.enqueueWork(context, Delete.class, DELETE_JOB_ID,
+                            new Intent().putExtra("deleteFileId", file.getId())
+                                    .putExtra("deleteFileName", file.getFileName()));
+                }
+            }
+        }, 2000);
     }
 }
