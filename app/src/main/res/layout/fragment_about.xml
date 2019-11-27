@@ -82,7 +82,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="0.8"
-                android:fontFamily="serif"
                 android:gravity="center"
                 android:padding="15dp"
                 android:text="@string/purpose"
