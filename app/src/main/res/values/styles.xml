@@ -1,46 +1,23 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+    <style name="AppTheme" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
-        <item name="android:textColorPrimary">@android:color/black</item>
-        <item name="drawerArrowStyle">@style/DrawerArrowStyleLight</item>
         <item name="android:fontFamily">@font/roboto_slab</item>
-        <item name="toolbarStyle">@style/AppTheme.Toolbar</item>
-        <item name="android:colorBackground">@color/whitesmoke</item>
+        <item name="drawerArrowStyle">@style/AppTheme.DrawerArrowStyle</item>
+        <item name="android:windowAnimationStyle">@style/WindowAnimationTransition</item>
     </style>
 
-    <!-- Theme for Dark Mode-->
-    <style name="DarkMode" parent="ThemeOverlay.AppCompat.Dark">
-        <item name="android:textColorPrimary">@android:color/white</item>
-        <item name="drawerArrowStyle">@style/DrawerArrowStyleDark</item>
-        <item name="android:fontFamily">@font/roboto_slab</item>
-        <item name="toolbarStyle">@style/DarkMode.Toolbar</item>
+    <style name="AppTheme.DrawerArrowStyle" parent="Widget.AppCompat.DrawerArrowToggle">
+        <item name="color">@android:color/holo_red_light</item>
     </style>
 
-    <!-- Whitesmoke Toolbar for AppTheme -->
-    <style name="AppTheme.Toolbar" parent="Widget.AppCompat.Toolbar">
-        <item name="android:background">@color/whitesmoke</item>
-    </style>
-
-    <!-- Black Toolbar for DarkMode -->
-    <style name="DarkMode.Toolbar" parent="Widget.AppCompat.Toolbar">
-        <item name="android:background">@android:color/black</item>
-    </style>
-
-    <!--    Adjust the DrawerArrow Color when Theme is Light. -->
-    <style name="DrawerArrowStyleLight" parent="Widget.AppCompat.DrawerArrowToggle">
-        <item name="color">@android:color/black</item>
-        <item name="spinBars">true</item>
-    </style>
-
-    <!--    Adjust the DrawerArrow Color when Theme is Dark. -->
-    <style name="DrawerArrowStyleDark" parent="Widget.AppCompat.DrawerArrowToggle">
-        <item name="color">@android:color/white</item>
-        <item name="spinBars">true</item>
+    <style name="WindowAnimationTransition">
+        <item name="android:windowEnterAnimation">@android:anim/fade_in</item>
+        <item name="android:windowExitAnimation">@android:anim/fade_out</item>
     </style>
 
 </resources>
