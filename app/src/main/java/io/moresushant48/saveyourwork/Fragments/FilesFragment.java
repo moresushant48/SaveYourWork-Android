@@ -323,16 +323,16 @@ public class FilesFragment extends Fragment implements SwipeRefreshLayout.OnRefr
                 canDelete = false;
             }
         }).show();
-        
-        new Handler().postDelayed(new Runnable() {
+
+        snackbar.addCallback(new Snackbar.Callback() {
             @Override
-            public void run() {
+            public void onDismissed(Snackbar transientBottomBar, int event) {
                 if(canDelete) {
                     Delete.enqueueWork(context, Delete.class, DELETE_JOB_ID,
                             new Intent().putExtra("deleteFileId", file.getId())
                                     .putExtra("deleteFileName", file.getFileName()));
                 }
             }
-        }, 2000);
+        });
     }
 }
