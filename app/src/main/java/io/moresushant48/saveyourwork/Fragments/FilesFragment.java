@@ -144,6 +144,7 @@ public class FilesFragment extends Fragment implements SwipeRefreshLayout.OnRefr
 
         emptyStorage.setVisibility(View.GONE);
         recyclerView.setVisibility(View.INVISIBLE);
+        refreshLayout.setVisibility(View.VISIBLE);
         shimmerFrameLayout.setVisibility(View.VISIBLE);
         shimmerFrameLayout.startShimmer();
 
@@ -177,6 +178,7 @@ public class FilesFragment extends Fragment implements SwipeRefreshLayout.OnRefr
             public void onFailure(Call<ArrayList<File>> call, Throwable t) {
                 shimmerFrameLayout.startShimmer();
                 shimmerFrameLayout.setVisibility(View.GONE);
+                refreshLayout.setVisibility(View.INVISIBLE);
                 Snackbar.make(coordinatorLayout, "Service Unavailable", Snackbar.LENGTH_INDEFINITE).setAction("Refresh",
                         new View.OnClickListener() {
                             @Override
