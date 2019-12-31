@@ -10,6 +10,8 @@ public class File {
 
     private String fileSize;
 
+    private Access access;
+
     private User user;
 
     public File(String fileName, String fileType, String fileSize) {
@@ -48,6 +50,14 @@ public class File {
 
     public void setFileSize(String fileSize) {
         this.fileSize = fileSize;
+    }
+
+    public Access getAccess() {
+        return access;
+    }
+
+    public void setAccess(Access access) {
+        this.access = access;
     }
 
     public User getUser() {

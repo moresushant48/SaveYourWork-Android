@@ -10,6 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import io.moresushant48.saveyourwork.Model.File;
+
 import com.example.saveyourwork.R;
 
 import java.util.ArrayList;
@@ -31,6 +32,7 @@ public class CustomListAdapter extends RecyclerView.Adapter<CustomListAdapter.Cu
         ImageView imgFile;
         TextView txtMainTitle;
         TextView txtSubTitle;
+        TextView txtAccess;
         OnFileListener onFileListener;
         OnFileLongClickListener onFileLongClickListener;
 
@@ -39,6 +41,7 @@ public class CustomListAdapter extends RecyclerView.Adapter<CustomListAdapter.Cu
             imgFile = itemView.findViewById(R.id.imgFile);
             txtMainTitle = itemView.findViewById(R.id.txtMainTitle);
             txtSubTitle = itemView.findViewById(R.id.txtSubTitle);
+            txtAccess = itemView.findViewById(R.id.txtAccess);
             this.onFileListener = onFileListener;
             this.onFileLongClickListener = onFileLongClickListener;
 
@@ -71,6 +74,7 @@ public class CustomListAdapter extends RecyclerView.Adapter<CustomListAdapter.Cu
 
         holder.txtMainTitle.setText(files.get(position).getFileName());
         holder.txtSubTitle.setText(files.get(position).getFileSize());
+        holder.txtAccess.setText(files.get(position).getAccess().getAccess());
         holder.imgFile.setImageResource(R.drawable.ic_file);
     }
 
