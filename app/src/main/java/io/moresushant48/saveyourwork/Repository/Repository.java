@@ -34,4 +34,7 @@ public interface Repository {
 
     @GET("delete-file/{fileId}")
     Call<Boolean> deleteFile(@Path("fileId") Long fileId, @Query("fileName") String fileName);
+
+    @POST("user/resetPassword/{userId}")
+    Call<Boolean> resetPassword(@Path("userId") int userId, @Query("password") String password);
 }

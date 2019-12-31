@@ -34,6 +34,16 @@
             android:id="@+id/account_item_2"
             layout="@layout/list_account_details" />
 
+        <Button
+            android:id="@+id/btnResetPassword"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/padding_10"
+            android:background="@drawable/ripple"
+            android:padding="@dimen/padding_10"
+            android:text="@string/resetPassword"
+            android:textSize="20sp" />
+
     </LinearLayout>
 
 </ScrollView>

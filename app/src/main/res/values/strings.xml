@@ -34,9 +34,12 @@
 
     <!--    Other -->
     <string name="empty_storage">Empty Storage</string>
-
-
-
+    <string name="resetPassword">Reset Password</string>
+    <string name="newPassword">New Password</string>
+    <string name="submit">Submit</string>
+    <string name="empty_edittext">Please fill the form properly.</string>
+    <string name="rulesPassword">Note : Minimun 3 - Maximum 15 characters allowed.</string>
+    <string name="currentPassword">Current Password</string>
 
 
 </resources>

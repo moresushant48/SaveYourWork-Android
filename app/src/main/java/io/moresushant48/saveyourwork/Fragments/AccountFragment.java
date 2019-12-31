@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -16,14 +17,17 @@ import com.example.saveyourwork.R;
 
 import java.util.Objects;
 
+import io.moresushant48.saveyourwork.ResetPasswordBottomModal;
+
 public class AccountFragment extends Fragment {
 
     private Context context;
 
     private LinearLayout layout1, layout2;
     private TextView heading, data;
+    private Button btnResetPassword;
 
-    private String id;
+    private int id;
     private String username;
     private String email;
 
@@ -33,10 +37,9 @@ public class AccountFragment extends Fragment {
 
         context = Objects.requireNonNull(getContext());
 
-        id = String.valueOf(context.getSharedPreferences("user", Context.MODE_PRIVATE).getInt("id", -1));
+        id = context.getSharedPreferences("user", Context.MODE_PRIVATE).getInt("id", -1);
         username = getContext().getSharedPreferences("user", Context.MODE_PRIVATE).getString("username", "null");
         email = getContext().getSharedPreferences("user", Context.MODE_PRIVATE).getString("email", "null");
-
     }
 
     @Nullable
@@ -62,6 +65,14 @@ public class AccountFragment extends Fragment {
 
         heading.setText("Email");
         data.setText(email);
+
+        btnResetPassword = view.findViewById(R.id.btnResetPassword);
+        btnResetPassword.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new ResetPasswordBottomModal().show(Objects.requireNonNull(getFragmentManager()), "resetPasswordBottomModal");
+            }
+        });
 
         return view;
     }

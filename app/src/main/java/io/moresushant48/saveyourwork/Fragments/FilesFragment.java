@@ -34,9 +34,12 @@ import io.moresushant48.saveyourwork.Config.RetrofitConfig;
 import io.moresushant48.saveyourwork.Delete;
 import io.moresushant48.saveyourwork.Download;
 import io.moresushant48.saveyourwork.Model.File;
+
 import com.example.saveyourwork.R;
+
 import io.moresushant48.saveyourwork.Repository.CustomListAdapter;
 import io.moresushant48.saveyourwork.Repository.Repository;
+
 import com.facebook.shimmer.ShimmerFrameLayout;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
@@ -71,7 +74,7 @@ public class FilesFragment extends Fragment implements SwipeRefreshLayout.OnRefr
     private CoordinatorLayout coordinatorLayout;
     private RelativeLayout emptyStorage;
 
-    private AlertDialog.Builder onFileLongClickDialog ;
+    private AlertDialog.Builder onFileLongClickDialog;
     private String[] dialogItems = {"Download", "Share", "Delete"};
     private File file;
     private boolean canDelete;
@@ -155,7 +158,7 @@ public class FilesFragment extends Fragment implements SwipeRefreshLayout.OnRefr
         files.enqueue(new Callback<ArrayList<File>>() {
             @Override
             public void onResponse(Call<ArrayList<File>> call, Response<ArrayList<File>> response) {
-                retrievedFiles =  response.body();
+                retrievedFiles = response.body();
 
                 adapter = new CustomListAdapter(retrievedFiles, FilesFragment.this, FilesFragment.this);
                 recyclerView.setAdapter(adapter);
@@ -167,7 +170,7 @@ public class FilesFragment extends Fragment implements SwipeRefreshLayout.OnRefr
                     public void run() {
                         shimmerFrameLayout.stopShimmer();
                         shimmerFrameLayout.setVisibility(View.GONE);
-                        if(adapter.getItemCount() == 0)
+                        if (adapter.getItemCount() == 0)
                             emptyStorage.setVisibility(View.VISIBLE);
                         recyclerView.setVisibility(View.VISIBLE);
                     }
@@ -204,7 +207,7 @@ public class FilesFragment extends Fragment implements SwipeRefreshLayout.OnRefr
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
 
-        if(requestCode == PICKFILE_REQUEST_CODE && data != null){
+        if (requestCode == PICKFILE_REQUEST_CODE && data != null) {
 
             Upload.enqueueWork(context, Upload.class, UPLOAD_JOB_ID, data);
             Snackbar.make(coordinatorLayout, "Uploading the file(s).", Snackbar.LENGTH_LONG).show();
@@ -214,7 +217,7 @@ public class FilesFragment extends Fragment implements SwipeRefreshLayout.OnRefr
     @Override
     public void onFileClick(int position) {
 
-        Download.enqueueWork(context, Download.class, DOWNLOAD_JOB_ID, new Intent().putExtra("fileName",retrievedFiles.get(position).getFileName()));
+        Download.enqueueWork(context, Download.class, DOWNLOAD_JOB_ID, new Intent().putExtra("fileName", retrievedFiles.get(position).getFileName()));
         Snackbar.make(coordinatorLayout, "Downloading File(s).", Snackbar.LENGTH_LONG).show();
     }
 
@@ -225,14 +228,14 @@ public class FilesFragment extends Fragment implements SwipeRefreshLayout.OnRefr
             @Override
             public void onClick(DialogInterface dialog, int which) {
 
-                switch (which){
-                    case 0 :
+                switch (which) {
+                    case 0:
                         onFileClick(position);
                         break;
-                    case 1 :
+                    case 1:
                         getSharableLink(position);
                         break;
-                    case 2 :
+                    case 2:
                         deleteItemFromListAndDatabase(position);
                         break;
                 }
@@ -327,7 +330,7 @@ public class FilesFragment extends Fragment implements SwipeRefreshLayout.OnRefr
         snackbar.addCallback(new Snackbar.Callback() {
             @Override
             public void onDismissed(Snackbar transientBottomBar, int event) {
-                if(canDelete) {
+                if (canDelete) {
                     Delete.enqueueWork(context, Delete.class, DELETE_JOB_ID,
                             new Intent().putExtra("deleteFileId", file.getId())
                                     .putExtra("deleteFileName", file.getFileName()));

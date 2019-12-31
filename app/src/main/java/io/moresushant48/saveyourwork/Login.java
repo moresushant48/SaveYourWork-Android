@@ -72,7 +72,7 @@ public class Login extends AppCompatActivity {
 
                 activateSpinKit();
 
-                if(TextUtils.isEmpty(editUsername.getText()) || TextUtils.isEmpty(editPassword.getText())) {
+                if (TextUtils.isEmpty(editUsername.getText()) || TextUtils.isEmpty(editPassword.getText())) {
 
                     if (TextUtils.isEmpty(editUsername.getText())) {
 
@@ -82,7 +82,7 @@ public class Login extends AppCompatActivity {
 
                         editPassword.setError("Enter your password.");
                     }
-                }else{
+                } else {
 
                     Call<User> user = repository.login(editUsername.getText().toString().trim(), editPassword.getText().toString().trim());
 
@@ -92,7 +92,7 @@ public class Login extends AppCompatActivity {
 
                             User tempUser = Objects.requireNonNull(response.body());
 
-                            if(tempUser.getUsername().equals("void")){
+                            if (tempUser.getUsername().equals("void")) {
 
                                 spinKitView.setColor(Color.RED);
 
@@ -105,7 +105,7 @@ public class Login extends AppCompatActivity {
                                 }, 1500);
 
 
-                            } else if(tempUser.getUsername().contentEquals(editUsername.getText())) {
+                            } else if (tempUser.getUsername().contentEquals(editUsername.getText())) {
 
                                 loginSuccess(tempUser);
                             }
@@ -160,6 +160,7 @@ public class Login extends AppCompatActivity {
         getSharedPreferences("user", MODE_PRIVATE).edit().putInt("id", tempUser.getId()).apply();
         getSharedPreferences("user", MODE_PRIVATE).edit().putString("username", tempUser.getUsername()).apply();
         getSharedPreferences("user", MODE_PRIVATE).edit().putString("email", tempUser.getEmail()).apply();
+        getSharedPreferences("user", MODE_PRIVATE).edit().putString("password", editPassword.getText().toString().trim()).apply();
 
     }
 
