@@ -24,6 +24,7 @@ import androidx.preference.PreferenceManager;
 import io.moresushant48.saveyourwork.Fragments.AboutFragment;
 import io.moresushant48.saveyourwork.Fragments.AccountFragment;
 import io.moresushant48.saveyourwork.Fragments.FilesFragment;
+import io.moresushant48.saveyourwork.Fragments.PublicFilesFragment;
 import io.moresushant48.saveyourwork.Fragments.SettingsFragment;
 
 import com.example.saveyourwork.R;
@@ -113,6 +114,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
             case R.id.menuFiles:
                 getSupportFragmentManager().beginTransaction().setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left).replace(R.id.fragment_container, new FilesFragment()).commit();
+                menuItem.setCheckable(true);
+                break;
+
+            case R.id.menuPublicSearch:
+                getSupportFragmentManager().beginTransaction().setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left).replace(R.id.fragment_container, new PublicFilesFragment()).commit();
                 menuItem.setCheckable(true);
                 break;
 

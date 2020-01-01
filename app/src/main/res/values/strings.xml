@@ -40,6 +40,7 @@
     <string name="empty_edittext">Please fill the form properly.</string>
     <string name="rulesPassword">Note : Minimun 3 - Maximum 15 characters allowed.</string>
     <string name="currentPassword">Current Password</string>
+    <string name="fragPublicSearch">Public</string>
 
 
 </resources>

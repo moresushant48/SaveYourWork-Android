@@ -19,6 +19,9 @@ public interface Repository {
     @GET("{id}")
     Call<User> showUser(@Path("id") String id);
 
+    @GET("user/getUserId")
+    Call<Integer> getUserId(@Query("username") String username);
+
     @POST("login")
     Call<User> login(@Query("username") String username, @Query("password") String password);
 
@@ -27,6 +30,9 @@ public interface Repository {
 
     @GET("list-files/{id}")
     Call<ArrayList<File>> listAllFiles(@Path("id") String id);
+
+    @GET("list-files/public/{userId}")
+    Call<ArrayList<File>> listPublicFiles(@Path("userId") int id);
 
     @Multipart
     @POST("upload-file/{id}")

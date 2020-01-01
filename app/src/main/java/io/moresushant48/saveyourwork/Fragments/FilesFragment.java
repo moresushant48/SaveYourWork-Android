@@ -85,8 +85,6 @@ public class FilesFragment extends Fragment implements SwipeRefreshLayout.OnRefr
     private CustomListAdapter adapter;
     private Call<ArrayList<File>> files;
     private ArrayList<File> retrievedFiles;
-    private Delete delete;
-
 
     private Paint mClearPaint;
     private ColorDrawable mBackground;

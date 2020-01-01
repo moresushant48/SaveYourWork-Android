@@ -6,6 +6,11 @@
         android:icon="@drawable/ic_myfiles"
         android:title="@string/fragFiles" />
 
+    <item
+        android:id="@+id/menuPublicSearch"
+        android:icon="@drawable/ic_public"
+        android:title="@string/fragPublicSearch" />
+
     <item android:title="@string/drawer_group_info">
         <menu>
 
