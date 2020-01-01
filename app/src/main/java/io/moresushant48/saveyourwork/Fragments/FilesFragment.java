@@ -30,9 +30,11 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import io.moresushant48.saveyourwork.AccessChanger;
 import io.moresushant48.saveyourwork.Config.RetrofitConfig;
 import io.moresushant48.saveyourwork.Delete;
 import io.moresushant48.saveyourwork.Download;
+import io.moresushant48.saveyourwork.Model.Access;
 import io.moresushant48.saveyourwork.Model.File;
 
 import com.example.saveyourwork.R;
@@ -61,6 +63,7 @@ public class FilesFragment extends Fragment implements SwipeRefreshLayout.OnRefr
     private static final int DOWNLOAD_JOB_ID = 1000;
     private static final int UPLOAD_JOB_ID = 1001;
     private static final int DELETE_JOB_ID = 1002;
+    private static final int ACCESS_CHANGE_JOB_ID = 1003;
 
     private Context context;
 
@@ -75,7 +78,7 @@ public class FilesFragment extends Fragment implements SwipeRefreshLayout.OnRefr
     private RelativeLayout emptyStorage;
 
     private AlertDialog.Builder onFileLongClickDialog;
-    private String[] dialogItems = {"Download", "Share", "Delete"};
+    private String[] dialogItems = {"Download", "Share", "Delete", "Modify Access"};
     private File file;
     private boolean canDelete;
 
@@ -238,6 +241,8 @@ public class FilesFragment extends Fragment implements SwipeRefreshLayout.OnRefr
                     case 2:
                         deleteItemFromListAndDatabase(position);
                         break;
+                    case 3:
+                        modifyAccess(position);
                 }
             }
         }).create().show();
@@ -253,6 +258,32 @@ public class FilesFragment extends Fragment implements SwipeRefreshLayout.OnRefr
         i.putExtra(Intent.EXTRA_TEXT, "File Name : " + retrievedFiles.get(position).getFileName() + "\nDownload : " + link);
         startActivity(Intent.createChooser(i, "Choose"));
 
+    }
+
+    private void modifyAccess(final int position) {
+
+        final String[] accessList = new String[]{"PRIVATE", "PROTECTED", "PUBLIC"};
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setItems(accessList, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, final int which) {
+                AccessChanger.enqueueWork(context,
+                        AccessChanger.class,
+                        ACCESS_CHANGE_JOB_ID,
+                        new Intent().putExtra("accessId", which + 1)
+                                .putExtra("fileId", retrievedFiles.get(position).getId())
+                                .putExtra("position", String.valueOf(position)));
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        Access access = new Access();
+                        access.setAccess(accessList[which]);
+                        retrievedFiles.get(position).setAccess(access);
+                        adapter.notifyItemChanged(position);
+                    }
+                }, 4000);
+            }
+        }).show();
     }
 
     private ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {

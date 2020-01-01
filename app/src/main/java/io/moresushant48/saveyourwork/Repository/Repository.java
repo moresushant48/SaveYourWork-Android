@@ -37,4 +37,7 @@ public interface Repository {
 
     @POST("user/resetPassword/{userId}")
     Call<Boolean> resetPassword(@Path("userId") int userId, @Query("password") String password);
+
+    @POST("changeAccess/{fileId}")
+    Call<Boolean> changeAccess(@Path("fileId") Long fileId, @Query("accessId") int accessId);
 }
