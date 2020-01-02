@@ -34,19 +34,19 @@ public class Upload extends JobIntentService {
     @Override
     protected void onHandleWork(@NonNull Intent intent) {
 
-        String id = String.valueOf(getSharedPreferences("user", MODE_PRIVATE).getInt("id",-1));
+        String id = String.valueOf(getSharedPreferences("user", MODE_PRIVATE).getInt("id", -1));
 
         retrofitConfig = new RetrofitConfig();
         repository = retrofitConfig.getRetrofit().create(Repository.class);
 
-        if(intent.getClipData() != null){
+        if (intent.getClipData() != null) {
 
-            for(int i=0; i < intent.getClipData().getItemCount(); i++){
+            for (int i = 0; i < intent.getClipData().getItemCount(); i++) {
 
                 uploadFile(id, intent.getClipData().getItemAt(i).getUri());
                 System.out.println("Multiple  : " + intent.getClipData().getItemAt(i).getUri());
             }
-        }else{
+        } else {
 
             uploadFile(id, intent.getData());
             System.out.println("Single : " + intent.getDataString());
@@ -60,14 +60,14 @@ public class Upload extends JobIntentService {
         OutputStream outStream = null;
         InputStream inputStream = null;
         try {
-             inputStream = getContentResolver().openInputStream(uri);
+            inputStream = getContentResolver().openInputStream(uri);
 
             Cursor cursor = getContentResolver().query(uri, null, null, null, null, null);
 
             try {
                 if (cursor != null && cursor.moveToFirst()) {
                     String displayName = cursor.getString(cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME));
-                    file = new File( Environment.getExternalStorageDirectory() + "/" + Environment.DIRECTORY_DOCUMENTS + "/" + displayName);
+                    file = new File(Environment.getExternalStorageDirectory() + "/" + Environment.DIRECTORY_DOCUMENTS + "/" + displayName);
                 }
             } finally {
                 cursor.close();
@@ -92,7 +92,7 @@ public class Upload extends JobIntentService {
         upload.enqueue(new Callback<Boolean>() {
             @Override
             public void onResponse(Call<Boolean> call, Response<Boolean> response) {
-                if(response.body().equals(true))
+                if (response.body().equals(true))
                     Toast.makeText(Upload.this, "Uploaded file(s).", Toast.LENGTH_SHORT).show();
                 else
                     Toast.makeText(Upload.this, "Failed to upload file(s).", Toast.LENGTH_SHORT).show();

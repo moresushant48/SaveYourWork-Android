@@ -20,7 +20,7 @@ public class Download extends JobIntentService {
 
         String selectedFileName = intent.getStringExtra("fileName");
 
-        BASE_URL = getSharedPreferences("app",MODE_PRIVATE).getString("BASE_URL",getString(R.string.source_heroku));
+        BASE_URL = getSharedPreferences("app", MODE_PRIVATE).getString("BASE_URL", getString(R.string.source_heroku));
 
         DownloadManager.Request downloadrequest = new DownloadManager.Request(Uri.parse(BASE_URL + "uploads/" + selectedFileName));
 

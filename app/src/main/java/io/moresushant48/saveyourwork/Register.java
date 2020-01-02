@@ -1,7 +1,5 @@
 package io.moresushant48.saveyourwork;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -13,34 +11,30 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import io.moresushant48.saveyourwork.Config.RetrofitConfig;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.saveyourwork.R;
-
-import io.moresushant48.saveyourwork.Repository.Repository;
-
 import com.github.ybq.android.spinkit.SpinKitView;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.util.Objects;
 
+import io.moresushant48.saveyourwork.Config.RetrofitConfig;
+import io.moresushant48.saveyourwork.Repository.Repository;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class Register extends AppCompatActivity implements Button.OnClickListener{
+public class Register extends AppCompatActivity implements Button.OnClickListener {
 
-    private RetrofitConfig retrofitConfig;
-    private Repository repository;
-
-    private LinearLayout linearLayout;
-
-    private SpinKitView spinKitView;
     TextView txtLogin;
     EditText editEmail, editUsername, editPassword;
     Button btnRegister;
-
     String email, username, password;
+    private RetrofitConfig retrofitConfig;
+    private Repository repository;
+    private LinearLayout linearLayout;
+    private SpinKitView spinKitView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,7 +68,7 @@ public class Register extends AppCompatActivity implements Button.OnClickListene
 
     @Override
     public void onClick(View v) {
-        if(validateInputs()){
+        if (validateInputs()) {
 
             Call<String> register = repository.register(email,
                     username, password);
@@ -85,7 +79,7 @@ public class Register extends AppCompatActivity implements Button.OnClickListene
 
                     String result = Objects.requireNonNull(response.body());
 
-                    if(result.equals(email) || result.equals(username)) {
+                    if (result.equals(email) || result.equals(username)) {
 
                         if (result.equals(email)) {
                             editEmail.setError("Account exists for your Email.");
@@ -93,11 +87,11 @@ public class Register extends AppCompatActivity implements Button.OnClickListene
                         if (result.equals(username)) {
                             editUsername.setError("Username is already taken.");
                         }
-                    }else {
+                    } else {
 
                         activateSpinKit();
                         Snackbar.make(linearLayout, result, Snackbar.LENGTH_LONG).show();
-                        
+
                         new Handler().postDelayed(new Runnable() {
                             @Override
                             public void run() {
@@ -105,7 +99,7 @@ public class Register extends AppCompatActivity implements Button.OnClickListene
 
                                 finish();
                             }
-                        },1500);
+                        }, 1500);
                     }
                 }
 
@@ -128,27 +122,27 @@ public class Register extends AppCompatActivity implements Button.OnClickListene
         username = editUsername.getText().toString().trim();
         password = editPassword.getText().toString().trim();
 
-        if(TextUtils.isEmpty(email)) {
+        if (TextUtils.isEmpty(email)) {
             editEmail.setError("Enter an E-Mail.");
             return false;
         }
-        if(TextUtils.isEmpty(username)) {
+        if (TextUtils.isEmpty(username)) {
             editUsername.setError("Enter a Username.");
             return false;
         }
-        if(TextUtils.isEmpty(password)) {
+        if (TextUtils.isEmpty(password)) {
             editPassword.setError("Enter a Password.");
             return false;
         }
-        if(!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+        if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
             editEmail.setError("Enter valid E-Mail Format.");
             return false;
         }
-        if(!username.trim().matches("[a-zA-Z0-9]{4,15}")) {
+        if (!username.trim().matches("[a-zA-Z0-9]{4,15}")) {
             editUsername.setError("Min 4 & Max 15, letters & digits.");
             return false;
         }
-        if(!password.trim().matches("[a-zA-Z0-9]{3,15}")) {
+        if (!password.trim().matches("[a-zA-Z0-9]{3,15}")) {
             editPassword.setError("Min 3 & Max 15, letters & digits.");
             return false;
         }

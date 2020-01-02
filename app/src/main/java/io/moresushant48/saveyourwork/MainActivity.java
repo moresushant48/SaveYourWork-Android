@@ -4,7 +4,6 @@ import android.Manifest;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.widget.TextView;
@@ -21,14 +20,14 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.preference.PreferenceManager;
 
+import com.example.saveyourwork.R;
+import com.google.android.material.navigation.NavigationView;
+
 import io.moresushant48.saveyourwork.Fragments.AboutFragment;
 import io.moresushant48.saveyourwork.Fragments.AccountFragment;
 import io.moresushant48.saveyourwork.Fragments.FilesFragment;
 import io.moresushant48.saveyourwork.Fragments.PublicFilesFragment;
 import io.moresushant48.saveyourwork.Fragments.SettingsFragment;
-
-import com.example.saveyourwork.R;
-import com.google.android.material.navigation.NavigationView;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -41,7 +40,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        if(PreferenceManager.getDefaultSharedPreferences(this).getBoolean(getString(R.string.darkMode), false)){
+        if (PreferenceManager.getDefaultSharedPreferences(this).getBoolean(getString(R.string.darkMode), false)) {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
         }
 
@@ -64,21 +63,20 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
 
-        if(ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED){
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED) {
             String[] permissions = {Manifest.permission.WRITE_EXTERNAL_STORAGE};
             requestPermissions(permissions, PERMISSION_STORAGE_CODE);
         }
 
-        if(savedInstanceState == null) {
+        if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction().setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN).replace(R.id.fragment_container, new FilesFragment()).commit();
             navigationView.setCheckedItem(R.id.menuFiles);
         }
     }
 
-    private void askForFingerprint(){
+    private void askForFingerprint() {
 
-        if(PreferenceManager.getDefaultSharedPreferences(this).getBoolean(getString(R.string.fingerprint), false))
-        {
+        if (PreferenceManager.getDefaultSharedPreferences(this).getBoolean(getString(R.string.fingerprint), false)) {
             new FingerprintHelper(MainActivity.this).startAuthenticationPrompt();
         }
     }
@@ -86,12 +84,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
 
-        switch (requestCode){
+        switch (requestCode) {
 
-            case PERMISSION_STORAGE_CODE : {
-                if(grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
+            case PERMISSION_STORAGE_CODE: {
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     // nothing special to do here.
-                }else{
+                } else {
                     this.finish();
                 }
             }
@@ -100,7 +98,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     public void onBackPressed() {
-        if(drawerLayout.isDrawerOpen(GravityCompat.START)){
+        if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
             drawerLayout.closeDrawer(GravityCompat.START);
         } else {
             super.onBackPressed();
@@ -110,7 +108,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
 
-        switch (menuItem.getItemId()){
+        switch (menuItem.getItemId()) {
 
             case R.id.menuFiles:
                 getSupportFragmentManager().beginTransaction().setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left).replace(R.id.fragment_container, new FilesFragment()).commit();
@@ -152,7 +150,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         getSharedPreferences("app", MODE_PRIVATE).getString("BASE_URL", getString(R.string.source_heroku));
 
         isLoggedIn = getSharedPreferences("user", MODE_PRIVATE)
-                .getBoolean("isLoggedIn",false);
+                .getBoolean("isLoggedIn", false);
 
         boolean isFirstRun = getSharedPreferences("PREFERENCE", MODE_PRIVATE)
                 .getBoolean("isFirstRun", true);
@@ -161,23 +159,23 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             //show Login activity
             startActivity(new Intent(MainActivity.this, Login.class));
         }
-        
+
         getSharedPreferences("PREFERENCE", MODE_PRIVATE).edit()
                 .putBoolean("isFirstRun", false).apply();
         super.onResume();
     }
 
-    private void logout(){
+    private void logout() {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
 
         builder.setTitle("Logout");
         builder.setMessage("Are you sure you want to logout ?");
-        builder.setNegativeButton("Cancel",null);
+        builder.setNegativeButton("Cancel", null);
         builder.setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                getSharedPreferences("user",MODE_PRIVATE).edit().putBoolean("isLoggedIn",false).apply();
+                getSharedPreferences("user", MODE_PRIVATE).edit().putBoolean("isLoggedIn", false).apply();
                 startActivity(new Intent(MainActivity.this, Login.class));
             }
         });

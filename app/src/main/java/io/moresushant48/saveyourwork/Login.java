@@ -1,7 +1,5 @@
 package io.moresushant48.saveyourwork;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -13,18 +11,17 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import io.moresushant48.saveyourwork.Config.RetrofitConfig;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.saveyourwork.R;
-
-import io.moresushant48.saveyourwork.Model.User;
-import io.moresushant48.saveyourwork.Repository.Repository;
-
 import com.github.ybq.android.spinkit.SpinKitView;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.util.Objects;
 
+import io.moresushant48.saveyourwork.Config.RetrofitConfig;
+import io.moresushant48.saveyourwork.Model.User;
+import io.moresushant48.saveyourwork.Repository.Repository;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;

@@ -17,7 +17,7 @@ public class FingerprintHelper {
         executors = Executors.newSingleThreadExecutor();
     }
 
-    public void startAuthenticationPrompt(){
+    public void startAuthenticationPrompt() {
         BiometricPrompt.PromptInfo promptInfo = new BiometricPrompt.PromptInfo.Builder()
                 .setTitle("Fingerprint Authentication")
                 .setSubtitle("Authenticate yourself to use the app.")

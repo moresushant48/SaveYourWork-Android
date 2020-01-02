@@ -43,7 +43,7 @@ public class Delete extends JobIntentService {
         deleteFile.enqueue(new Callback<Boolean>() {
             @Override
             public void onResponse(Call<Boolean> call, Response<Boolean> response) {
-                Toast.makeText(Delete.this, "Deleted " + fileName , Toast.LENGTH_SHORT).show();
+                Toast.makeText(Delete.this, "Deleted " + fileName, Toast.LENGTH_SHORT).show();
             }
 
             @Override

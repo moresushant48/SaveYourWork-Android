@@ -23,7 +23,7 @@ public class AboutFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_about, container,false);
+        View view = inflater.inflate(R.layout.fragment_about, container, false);
 
         TextView toolbarTitle = Objects.requireNonNull(container).getRootView().findViewById(R.id.toolbarTitle);
         toolbarTitle.setText(R.string.fragAbout);
@@ -44,7 +44,7 @@ public class AboutFragment extends Fragment {
             public void onClick(View view) {
 
                 Intent email = new Intent(Intent.ACTION_SEND);
-                email.putExtra(Intent.EXTRA_EMAIL, new String[] {"moresushant48@gmail.com"});
+                email.putExtra(Intent.EXTRA_EMAIL, new String[]{"moresushant48@gmail.com"});
                 email.setType("message/rfc822");
                 startActivity(email);
 

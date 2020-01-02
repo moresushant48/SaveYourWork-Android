@@ -9,11 +9,11 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import io.moresushant48.saveyourwork.Model.File;
-
 import com.example.saveyourwork.R;
 
 import java.util.ArrayList;
+
+import io.moresushant48.saveyourwork.Model.File;
 
 public class CustomListAdapter extends RecyclerView.Adapter<CustomListAdapter.CustomListAdapterViewHolder> {
 
@@ -25,6 +25,36 @@ public class CustomListAdapter extends RecyclerView.Adapter<CustomListAdapter.Cu
         this.files = files;
         this.onFileListener = onFileListener;
         this.onFileLongClickListener = onFileLongClickListener;
+    }
+
+    @NonNull
+    @Override
+    public CustomListAdapterViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        LayoutInflater inflater = LayoutInflater.from(parent.getContext());
+        View view = inflater.inflate(R.layout.list_file_view, parent, false);
+        return new CustomListAdapterViewHolder(view, onFileListener, onFileLongClickListener);
+    }
+
+    @Override
+    public void onBindViewHolder(@NonNull CustomListAdapterViewHolder holder, int position) {
+
+        holder.txtMainTitle.setText(files.get(position).getFileName());
+        holder.txtSubTitle.setText(files.get(position).getFileSize());
+        holder.txtAccess.setText(files.get(position).getAccess().getAccess());
+        holder.imgFile.setImageResource(R.drawable.ic_file);
+    }
+
+    @Override
+    public int getItemCount() {
+        return files.size();
+    }
+
+    public interface OnFileListener {
+        void onFileClick(int position);
+    }
+
+    public interface OnFileLongClickListener {
+        void onFileLongClick(int position);
     }
 
     public class CustomListAdapterViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
@@ -59,35 +89,5 @@ public class CustomListAdapter extends RecyclerView.Adapter<CustomListAdapter.Cu
             onFileLongClickListener.onFileLongClick(getAdapterPosition());
             return true;
         }
-    }
-
-    @NonNull
-    @Override
-    public CustomListAdapterViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-        View view = inflater.inflate(R.layout.list_file_view, parent, false);
-        return new CustomListAdapterViewHolder(view, onFileListener, onFileLongClickListener);
-    }
-
-    @Override
-    public void onBindViewHolder(@NonNull CustomListAdapterViewHolder holder, int position) {
-
-        holder.txtMainTitle.setText(files.get(position).getFileName());
-        holder.txtSubTitle.setText(files.get(position).getFileSize());
-        holder.txtAccess.setText(files.get(position).getAccess().getAccess());
-        holder.imgFile.setImageResource(R.drawable.ic_file);
-    }
-
-    @Override
-    public int getItemCount() {
-        return files.size();
-    }
-
-    public interface OnFileListener {
-        void onFileClick(int position);
-    }
-
-    public interface OnFileLongClickListener {
-        void onFileLongClick(int position);
     }
 }

@@ -30,18 +30,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-import io.moresushant48.saveyourwork.AccessChanger;
-import io.moresushant48.saveyourwork.Config.RetrofitConfig;
-import io.moresushant48.saveyourwork.Delete;
-import io.moresushant48.saveyourwork.Download;
-import io.moresushant48.saveyourwork.Model.Access;
-import io.moresushant48.saveyourwork.Model.File;
-
 import com.example.saveyourwork.R;
-
-import io.moresushant48.saveyourwork.Repository.CustomListAdapter;
-import io.moresushant48.saveyourwork.Repository.Repository;
-
 import com.facebook.shimmer.ShimmerFrameLayout;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
@@ -49,6 +38,14 @@ import com.google.android.material.snackbar.Snackbar;
 import java.util.ArrayList;
 import java.util.Objects;
 
+import io.moresushant48.saveyourwork.AccessChanger;
+import io.moresushant48.saveyourwork.Config.RetrofitConfig;
+import io.moresushant48.saveyourwork.Delete;
+import io.moresushant48.saveyourwork.Download;
+import io.moresushant48.saveyourwork.Model.Access;
+import io.moresushant48.saveyourwork.Model.File;
+import io.moresushant48.saveyourwork.Repository.CustomListAdapter;
+import io.moresushant48.saveyourwork.Repository.Repository;
 import io.moresushant48.saveyourwork.Upload;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -92,6 +89,53 @@ public class FilesFragment extends Fragment implements SwipeRefreshLayout.OnRefr
     private Drawable deleteDrawable;
     private int intrinsicWidth;
     private int intrinsicHeight;
+    private ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
+        @Override
+        public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+            return false;
+        }
+
+        @Override
+        public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+            // Delete list item and Delete file from the server, using Delete Service.
+            deleteItemFromListAndDatabase(viewHolder.getAdapterPosition());
+        }
+
+        @Override
+        public void onChildDraw(@NonNull Canvas c, @NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
+            super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
+
+            View itemView = viewHolder.itemView;
+            int itemHeight = itemView.getHeight();
+
+            boolean isCancelled = dX == 0 && !isCurrentlyActive;
+
+            if (isCancelled) {
+                clearCanvas(c, itemView.getRight() + dX, (float) itemView.getTop(), (float) itemView.getRight(), (float) itemView.getBottom());
+                super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
+                return;
+            }
+
+            mBackground.setColor(backgroundColor);
+            mBackground.setBounds(itemView.getRight() + (int) dX, itemView.getTop(), itemView.getRight(), itemView.getBottom());
+            mBackground.draw(c);
+
+            int deleteIconTop = itemView.getTop() + (itemHeight - intrinsicHeight) / 2;
+            int deleteIconMargin = (itemHeight - intrinsicHeight) / 2;
+            int deleteIconLeft = itemView.getRight() - deleteIconMargin - intrinsicWidth;
+            int deleteIconRight = itemView.getRight() - deleteIconMargin;
+            int deleteIconBottom = deleteIconTop + intrinsicHeight;
+
+            deleteDrawable.setBounds(deleteIconLeft, deleteIconTop, deleteIconRight, deleteIconBottom);
+            deleteDrawable.draw(c);
+
+        }
+
+        private void clearCanvas(Canvas c, Float left, Float top, Float right, Float bottom) {
+            c.drawRect(left, top, right, bottom, mClearPaint);
+
+        }
+    };
 
     // Constructor
     public FilesFragment() {
@@ -283,54 +327,6 @@ public class FilesFragment extends Fragment implements SwipeRefreshLayout.OnRefr
             }
         }).show();
     }
-
-    private ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
-        @Override
-        public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
-            return false;
-        }
-
-        @Override
-        public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
-            // Delete list item and Delete file from the server, using Delete Service.
-            deleteItemFromListAndDatabase(viewHolder.getAdapterPosition());
-        }
-
-        @Override
-        public void onChildDraw(@NonNull Canvas c, @NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
-            super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
-
-            View itemView = viewHolder.itemView;
-            int itemHeight = itemView.getHeight();
-
-            boolean isCancelled = dX == 0 && !isCurrentlyActive;
-
-            if (isCancelled) {
-                clearCanvas(c, itemView.getRight() + dX, (float) itemView.getTop(), (float) itemView.getRight(), (float) itemView.getBottom());
-                super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
-                return;
-            }
-
-            mBackground.setColor(backgroundColor);
-            mBackground.setBounds(itemView.getRight() + (int) dX, itemView.getTop(), itemView.getRight(), itemView.getBottom());
-            mBackground.draw(c);
-
-            int deleteIconTop = itemView.getTop() + (itemHeight - intrinsicHeight) / 2;
-            int deleteIconMargin = (itemHeight - intrinsicHeight) / 2;
-            int deleteIconLeft = itemView.getRight() - deleteIconMargin - intrinsicWidth;
-            int deleteIconRight = itemView.getRight() - deleteIconMargin;
-            int deleteIconBottom = deleteIconTop + intrinsicHeight;
-
-            deleteDrawable.setBounds(deleteIconLeft, deleteIconTop, deleteIconRight, deleteIconBottom);
-            deleteDrawable.draw(c);
-
-        }
-
-        private void clearCanvas(Canvas c, Float left, Float top, Float right, Float bottom) {
-            c.drawRect(left, top, right, bottom, mClearPaint);
-
-        }
-    };
 
     /*
         Delete list item and Delete file from the server, using Delete Service.

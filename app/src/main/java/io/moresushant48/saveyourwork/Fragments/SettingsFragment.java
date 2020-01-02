@@ -27,7 +27,7 @@ public class SettingsFragment extends PreferenceFragmentCompat {
     }
 
     @Override
-    public void onCreatePreferences(Bundle savedInstanceState, String rootKey)  {
+    public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
         setPreferencesFromResource(R.xml.preferences, rootKey);
 
         SwitchPreference switchPreference = findPreference(getString(R.string.darkMode));
@@ -35,7 +35,7 @@ public class SettingsFragment extends PreferenceFragmentCompat {
             @Override
             public boolean onPreferenceChange(Preference preference, Object newValue) {
 
-                if(((boolean) newValue))
+                if (((boolean) newValue))
                     AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
                 else
                     AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
