@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,6 +22,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.example.saveyourwork.R;
+import com.facebook.shimmer.ShimmerFrameLayout;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
@@ -48,6 +50,7 @@ public class PublicFilesFragment extends Fragment implements CustomListAdapter.O
     private RecyclerView recyclerView;
     private SwipeRefreshLayout refreshLayout;
     private LinearLayout linearLayout;
+    private ShimmerFrameLayout shimmerFrameLayout;
     private SearchView searchUsername;
     private Snackbar serviceUnreachable;
 
@@ -76,6 +79,7 @@ public class PublicFilesFragment extends Fragment implements CustomListAdapter.O
         searchUsername = view.findViewById(R.id.searchUsername);
         refreshLayout = view.findViewById(R.id.refreshPublicFiles);
         linearLayout = view.findViewById(R.id.publicFilesLinearLayout);
+        shimmerFrameLayout = view.findViewById(R.id.shimmer_view_container);
 
         retrofitConfig = new RetrofitConfig();
         repository = retrofitConfig.getRetrofit().create(Repository.class);
@@ -135,6 +139,10 @@ public class PublicFilesFragment extends Fragment implements CustomListAdapter.O
 
     private void getPublicFiles(int userId) {
 
+        recyclerView.setVisibility(View.INVISIBLE);
+        shimmerFrameLayout.setVisibility(View.VISIBLE);
+        shimmerFrameLayout.startShimmer();
+
         Call<ArrayList<File>> listPublicFiles = repository.listPublicFiles(userId);
         listPublicFiles.enqueue(new Callback<ArrayList<File>>() {
             @Override
@@ -144,6 +152,16 @@ public class PublicFilesFragment extends Fragment implements CustomListAdapter.O
                 recyclerView.setAdapter(adapter);
                 if (adapter.getItemCount() == 0)
                     Snackbar.make(linearLayout, queriedUsername + " has no public share.", Snackbar.LENGTH_INDEFINITE).show();
+
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        shimmerFrameLayout.stopShimmer();
+                        shimmerFrameLayout.setVisibility(View.GONE);
+                        recyclerView.setVisibility(View.VISIBLE);
+                    }
+                }, 1200);
+
             }
 
             @Override
