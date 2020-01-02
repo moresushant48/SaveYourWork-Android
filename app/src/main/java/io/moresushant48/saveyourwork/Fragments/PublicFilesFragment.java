@@ -28,6 +28,7 @@ import java.util.Objects;
 
 import io.moresushant48.saveyourwork.Config.RetrofitConfig;
 import io.moresushant48.saveyourwork.Download;
+import io.moresushant48.saveyourwork.GetShareableLink;
 import io.moresushant48.saveyourwork.Model.File;
 import io.moresushant48.saveyourwork.Repository.CustomListAdapter;
 import io.moresushant48.saveyourwork.Repository.Repository;
@@ -177,20 +178,10 @@ public class PublicFilesFragment extends Fragment implements CustomListAdapter.O
                         onFileClick(position);
                         break;
                     case 1:
-                        getSharableLink(position);
+                        new GetShareableLink(context).shareLink(retrievedFiles.get(position).getFileName());
                         break;
                 }
             }
         }).create().show();
-    }
-
-    private void getSharableLink(int position) {
-
-        String link = getString(R.string.source_heroku) + "uploads/" + retrievedFiles.get(position).getFileName();
-        Intent i = new Intent(Intent.ACTION_SEND);
-        i.setType("text/plain");
-        i.putExtra(Intent.EXTRA_TEXT, "File Name : " + retrievedFiles.get(position).getFileName());
-        i.putExtra(Intent.EXTRA_TEXT, "File Name : " + retrievedFiles.get(position).getFileName() + "\nDownload : " + link);
-        startActivity(Intent.createChooser(i, "Choose"));
     }
 }
