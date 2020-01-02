@@ -35,7 +35,7 @@ public interface Repository {
 
     @Multipart
     @POST("upload-file/{id}")
-    Call<Boolean> uploadFile(@Path("id") String id, @Part MultipartBody.Part filePart);
+    Call<Boolean> uploadFile(@Path("id") String id, @Part MultipartBody.Part filePart, @Query("accessId") int accessId);
 
     @GET("delete-file/{fileId}")
     Call<Boolean> deleteFile(@Path("fileId") Long fileId, @Query("fileName") String fileName);

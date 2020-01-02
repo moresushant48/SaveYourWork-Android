@@ -5,6 +5,7 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Environment;
 import android.provider.OpenableColumns;
+import android.util.Log;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -39,22 +40,26 @@ public class Upload extends JobIntentService {
         retrofitConfig = new RetrofitConfig();
         repository = retrofitConfig.getRetrofit().create(Repository.class);
 
+
+        int accessId = intent.getIntExtra("accessId", 1);
+        Log.e("Access Id : ", String.valueOf(accessId));
+
         if (intent.getClipData() != null) {
 
             for (int i = 0; i < intent.getClipData().getItemCount(); i++) {
 
-                uploadFile(id, intent.getClipData().getItemAt(i).getUri());
+                uploadFile(id, intent.getClipData().getItemAt(i).getUri(), accessId);
                 System.out.println("Multiple  : " + intent.getClipData().getItemAt(i).getUri());
             }
         } else {
 
-            uploadFile(id, intent.getData());
+            uploadFile(id, intent.getData(), accessId);
             System.out.println("Single : " + intent.getDataString());
         }
 
     }
 
-    private void uploadFile(String id, Uri uri) {
+    private void uploadFile(String id, Uri uri, int accessId) {
 
         File file = null;
         OutputStream outStream = null;
@@ -87,7 +92,7 @@ public class Upload extends JobIntentService {
 
         MultipartBody.Part filePart = MultipartBody.Part.createFormData("file", file.getName(), RequestBody.create(MediaType.parse("*/*"), file));
 
-        Call<Boolean> upload = repository.uploadFile(id, filePart);
+        Call<Boolean> upload = repository.uploadFile(id, filePart, accessId);
 
         upload.enqueue(new Callback<Boolean>() {
             @Override

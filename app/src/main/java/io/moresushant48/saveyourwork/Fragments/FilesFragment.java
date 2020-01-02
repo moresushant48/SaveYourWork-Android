@@ -32,8 +32,9 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.example.saveyourwork.R;
 import com.facebook.shimmer.ShimmerFrameLayout;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
+import com.leinardi.android.speeddial.SpeedDialActionItem;
+import com.leinardi.android.speeddial.SpeedDialView;
 
 import java.util.ArrayList;
 import java.util.Objects;
@@ -55,7 +56,7 @@ import retrofit2.Response;
 import static android.content.Context.MODE_PRIVATE;
 
 public class FilesFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener,
-        CustomListAdapter.OnFileListener, FloatingActionButton.OnClickListener, CustomListAdapter.OnFileLongClickListener {
+        CustomListAdapter.OnFileListener, SpeedDialView.OnActionSelectedListener, CustomListAdapter.OnFileLongClickListener {
 
     private static final int PICKFILE_REQUEST_CODE = 100;
     private static final int DOWNLOAD_JOB_ID = 1000;
@@ -69,7 +70,7 @@ public class FilesFragment extends Fragment implements SwipeRefreshLayout.OnRefr
     private Repository repository;
 
     private RecyclerView recyclerView;
-    private FloatingActionButton fabUploadFiles;
+    private SpeedDialView fabUploadFiles;
     private SwipeRefreshLayout refreshLayout;
     private ShimmerFrameLayout shimmerFrameLayout;
     private CoordinatorLayout coordinatorLayout;
@@ -79,6 +80,7 @@ public class FilesFragment extends Fragment implements SwipeRefreshLayout.OnRefr
     private String[] dialogItems = {"Download", "Share", "Delete", "Modify Access"};
     private File file;
     private boolean canDelete;
+    private int selectedAccessIdForUpload;
 
     private CustomListAdapter adapter;
     private Call<ArrayList<File>> files;
@@ -171,6 +173,7 @@ public class FilesFragment extends Fragment implements SwipeRefreshLayout.OnRefr
         recyclerView.setLayoutManager(new LinearLayoutManager(context));
 
         fabUploadFiles = view.findViewById(R.id.fabUploadFiles);
+        fabUploadFiles.inflate(R.menu.fab_access_menu);
 
         retrofitConfig = new RetrofitConfig();
         repository = retrofitConfig.getRetrofit().create(Repository.class);
@@ -183,7 +186,7 @@ public class FilesFragment extends Fragment implements SwipeRefreshLayout.OnRefr
         onRefresh();
 
         refreshLayout.setOnRefreshListener(this);
-        fabUploadFiles.setOnClickListener(this);
+        fabUploadFiles.setOnActionSelectedListener(this);
 
         return view;
     }
@@ -197,7 +200,7 @@ public class FilesFragment extends Fragment implements SwipeRefreshLayout.OnRefr
         shimmerFrameLayout.setVisibility(View.VISIBLE);
         shimmerFrameLayout.startShimmer();
 
-        int id = getActivity().getSharedPreferences("user", MODE_PRIVATE).getInt("id", -1);
+        int id = context.getSharedPreferences("user", MODE_PRIVATE).getInt("id", -1);
 
         files = repository.listAllFiles(String.valueOf(id));
 
@@ -241,13 +244,28 @@ public class FilesFragment extends Fragment implements SwipeRefreshLayout.OnRefr
     }
 
     @Override
-    public void onClick(View v) {
+    public boolean onActionSelected(SpeedDialActionItem actionItem) {
 
         Intent chooseFiles = new Intent(Intent.ACTION_GET_CONTENT);
         chooseFiles.setType("*/*");
         chooseFiles.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
         Intent i = Intent.createChooser(chooseFiles, "Choose file explorer.");
+
+        switch (actionItem.getId()) {
+            case R.id.menuPrivate:
+                selectedAccessIdForUpload = 1;
+                break;
+            case R.id.menuProtected:
+                selectedAccessIdForUpload = 2;
+                break;
+            case R.id.menuPublic:
+                selectedAccessIdForUpload = 3;
+                break;
+        }
+
         startActivityForResult(i, PICKFILE_REQUEST_CODE);
+        fabUploadFiles.close();
+        return true;
     }
 
     @Override
@@ -255,6 +273,7 @@ public class FilesFragment extends Fragment implements SwipeRefreshLayout.OnRefr
 
         if (requestCode == PICKFILE_REQUEST_CODE && data != null) {
 
+            data.putExtra("accessId", selectedAccessIdForUpload);
             Upload.enqueueWork(context, Upload.class, UPLOAD_JOB_ID, data);
             Snackbar.make(coordinatorLayout, "Uploading the file(s).", Snackbar.LENGTH_LONG).show();
         }

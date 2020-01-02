@@ -41,6 +41,9 @@
     <string name="rulesPassword">Note : Minimun 3 - Maximum 15 characters allowed.</string>
     <string name="currentPassword">Current Password</string>
     <string name="fragPublicSearch">Public</string>
+    <string name="menuPrivate">Private</string>
+    <string name="menuPublic">Public</string>
+    <string name="menuProtected">Protected</string>
 
 
 </resources>
