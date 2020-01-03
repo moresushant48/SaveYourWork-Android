@@ -8,10 +8,12 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -52,14 +54,18 @@ public class PublicFilesFragment extends Fragment implements CustomListAdapter.O
     private SwipeRefreshLayout refreshLayout;
     private LinearLayout linearLayout;
     private ShimmerFrameLayout shimmerFrameLayout;
-    private SearchView searchUsername;
-    private Snackbar serviceUnreachable;
 
     private ArrayList<File> retrievedFiles;
     private CustomListAdapter adapter;
     private int retrievedUserId;
     private String queriedUsername;
     private String[] dialogItems = {"Download", "Share"};
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
+    }
 
     @Nullable
     @Override
@@ -76,27 +82,12 @@ public class PublicFilesFragment extends Fragment implements CustomListAdapter.O
         recyclerView.setAdapter(new CustomListAdapter(new ArrayList<File>(), PublicFilesFragment.this, PublicFilesFragment.this));
         recyclerView.setLayoutManager(new LinearLayoutManager(context));
 
-        searchUsername = view.findViewById(R.id.searchUsername);
         refreshLayout = view.findViewById(R.id.refreshPublicFiles);
         linearLayout = view.findViewById(R.id.publicFilesLinearLayout);
         shimmerFrameLayout = view.findViewById(R.id.shimmer_view_container);
 
         retrofitConfig = new RetrofitConfig();
         repository = retrofitConfig.getRetrofit().create(Repository.class);
-
-        searchUsername.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                queriedUsername = searchUsername.getQuery().toString().trim();
-                getUserIdFromDB();
-                return false;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                return false;
-            }
-        });
 
         refreshLayout.setOnRefreshListener(this);
 
@@ -139,7 +130,7 @@ public class PublicFilesFragment extends Fragment implements CustomListAdapter.O
 
     private void getPublicFiles(int userId) {
 
-        recyclerView.setVisibility(View.INVISIBLE);
+        refreshLayout.setVisibility(View.GONE);
         shimmerFrameLayout.setVisibility(View.VISIBLE);
         shimmerFrameLayout.startShimmer();
 
@@ -158,7 +149,7 @@ public class PublicFilesFragment extends Fragment implements CustomListAdapter.O
                     public void run() {
                         shimmerFrameLayout.stopShimmer();
                         shimmerFrameLayout.setVisibility(View.GONE);
-                        recyclerView.setVisibility(View.VISIBLE);
+                        refreshLayout.setVisibility(View.VISIBLE);
                     }
                 }, 1200);
 
@@ -201,5 +192,32 @@ public class PublicFilesFragment extends Fragment implements CustomListAdapter.O
                 }
             }
         }).create().show();
+    }
+
+    @Override
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+
+        inflater.inflate(R.menu.search_menu, menu);
+        MenuItem menuItem = menu.findItem(R.id.menuSearch);
+
+        SearchView searchView = (SearchView) menuItem.getActionView();
+        searchView.setQueryHint("Enter an Username");
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                queriedUsername = query.trim();
+                getUserIdFromDB();
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                if (newText.trim().isEmpty())
+                    refreshLayout.setVisibility(View.GONE);
+                return true;
+            }
+        });
+        super.onCreateOptionsMenu(menu, inflater);
     }
 }

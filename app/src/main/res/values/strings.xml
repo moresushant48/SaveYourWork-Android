@@ -44,7 +44,7 @@
     <string name="menuPrivate">Private</string>
     <string name="menuPublic">Public</string>
     <string name="menuProtected">Protected</string>
-    <string name="menuSearchFile">Search File</string>
+    <string name="menuSearch">Search</string>
 
 
 </resources>

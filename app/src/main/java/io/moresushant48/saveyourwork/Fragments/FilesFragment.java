@@ -323,9 +323,9 @@ public class FilesFragment extends Fragment implements SwipeRefreshLayout.OnRefr
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
 
-        inflater.inflate(R.menu.search_files_menu, menu);
+        inflater.inflate(R.menu.search_menu, menu);
 
-        MenuItem menuItem = menu.findItem(R.id.menuSearchFile);
+        MenuItem menuItem = menu.findItem(R.id.menuSearch);
         SearchView searchView = (SearchView) menuItem.getActionView();
 
         searchView.setQueryHint("Type here to Search");
