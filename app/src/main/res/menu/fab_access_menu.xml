@@ -3,14 +3,17 @@
 
     <item
         android:id="@+id/menuPrivate"
+        android:icon="@drawable/ic_lock_private"
         android:title="@string/menuPrivate" />
 
     <item
         android:id="@+id/menuProtected"
+        android:icon="@drawable/ic_lock_protected"
         android:title="@string/menuProtected" />
 
     <item
         android:id="@+id/menuPublic"
+        android:icon="@drawable/ic_lock_public"
         android:title="@string/menuPublic" />
 
 </menu>
