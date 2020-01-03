@@ -1,12 +1,15 @@
 package io.moresushant48.saveyourwork;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -35,8 +38,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     private static final int PERMISSION_STORAGE_CODE = 1000;
     boolean isLoggedIn;
+    private String username, email;
 
     DrawerLayout drawerLayout;
+    private View headerView;
+    private TextView navHeaderUsername, navHeaderEmail;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,7 +63,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         drawerLayout = findViewById(R.id.drawer_layout);
 
         NavigationView navigationView = findViewById(R.id.navView);
+        headerView = navigationView.getHeaderView(0);
         navigationView.setNavigationItemSelectedListener(this);
+
+        username = getSharedPreferences("user", Context.MODE_PRIVATE).getString("username", "null");
+        email = getSharedPreferences("user", Context.MODE_PRIVATE).getString("email", "null");
+        navHeaderUsername = headerView.findViewById(R.id.navHeaderUsername);
+        navHeaderUsername.setText(username);
+        navHeaderEmail = headerView.findViewById(R.id.navHeaderEmail);
+        navHeaderEmail.setText(email);
 
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.drawer_open, R.string.drawer_close);
         drawerLayout.addDrawerListener(toggle);
