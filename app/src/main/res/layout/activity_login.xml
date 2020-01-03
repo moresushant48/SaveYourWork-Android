@@ -5,7 +5,6 @@
     android:id="@+id/activity_login"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/whitesmoke"
     android:orientation="vertical"
     tools:context="io.moresushant48.saveyourwork.Login">
 
@@ -35,14 +34,11 @@
         android:layout_marginHorizontal="20dp"
         android:layout_marginTop="-80dp"
         android:layout_marginBottom="100dp"
-
-        app:cardBackgroundColor="@android:color/white"
         app:cardElevation="10dp">
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="#f8f8ff"
             android:padding="20dp">
 
             <TextView
@@ -52,40 +48,54 @@
                 android:layout_alignParentTop="true"
                 android:layout_centerInParent="true"
                 android:layout_marginBottom="20dp"
-                android:autoSizeTextType="uniform"
                 android:fontFamily="sans-serif-medium"
                 android:gravity="center"
                 android:text="Login"
                 android:textColor="@color/colorPrimary"
                 android:textSize="35sp" />
 
-            <EditText
-                android:id="@+id/txtUsername"
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/txtUsernameLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/appName"
-                android:layout_marginBottom="20dp"
-                android:background="@drawable/edit_text"
-                android:hint="Username"
-                android:inputType="text"
-                android:maxLines="1" />
+                android:layout_below="@id/appName">
 
-            <EditText
-                android:id="@+id/txtPassword"
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/txtUsername"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/appName"
+                    android:layout_marginBottom="@dimen/padding_18"
+                    android:hint="Username"
+                    android:inputType="text"
+                    android:maxLines="1" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/txtPasswordLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/txtUsername"
-                android:layout_marginBottom="20dp"
-                android:background="@drawable/edit_text"
-                android:hint="Password"
-                android:inputType="textPassword"
-                android:maxLines="1" />
+                android:layout_below="@id/txtUsernameLayout"
+                app:passwordToggleEnabled="true">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/txtPassword"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginBottom="@dimen/padding_18"
+                    android:hint="Password"
+                    android:inputType="textPassword"
+                    android:maxLength="15"
+                    android:maxLines="1" />
+
+            </com.google.android.material.textfield.TextInputLayout>
 
             <Button
                 android:id="@+id/btnLogin"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/txtPassword"
+                android:layout_below="@id/txtPasswordLayout"
                 android:layout_marginBottom="20dp"
                 android:background="@drawable/ripple"
                 android:text="Login" />

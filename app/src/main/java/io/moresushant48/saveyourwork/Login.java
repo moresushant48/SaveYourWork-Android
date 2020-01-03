@@ -7,7 +7,6 @@ import android.os.Handler;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -16,6 +15,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.saveyourwork.R;
 import com.github.ybq.android.spinkit.SpinKitView;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
 
 import java.util.Objects;
 
@@ -34,7 +35,8 @@ public class Login extends AppCompatActivity {
 
     private SpinKitView spinKitView;
     private TextView txtRegister;
-    private EditText editUsername, editPassword;
+    private TextInputLayout editUsernameLayout, editPasswordLayout;
+    private TextInputEditText editUsername, editPassword;
     private Button btnLogin;
 
     @Override
@@ -50,6 +52,8 @@ public class Login extends AppCompatActivity {
 
         spinKitView = findViewById(R.id.spin_kit);
 
+        editUsernameLayout = findViewById(R.id.txtUsernameLayout);
+        editPasswordLayout = findViewById(R.id.txtPasswordLayout);
         editUsername = findViewById(R.id.txtUsername);
         editPassword = findViewById(R.id.txtPassword);
 
@@ -89,8 +93,7 @@ public class Login extends AppCompatActivity {
 
                             User tempUser = Objects.requireNonNull(response.body());
 
-                            if (tempUser.getUsername().equals("void")) {
-
+                            if (tempUser.getId() == 0) {
                                 spinKitView.setColor(Color.RED);
 
                                 new Handler().postDelayed(new Runnable() {
@@ -100,9 +103,7 @@ public class Login extends AppCompatActivity {
                                         Snackbar.make(linearLayout, "Wrong Credentials.", Snackbar.LENGTH_LONG).show();
                                     }
                                 }, 1500);
-
-
-                            } else if (tempUser.getUsername().contentEquals(editUsername.getText())) {
+                            } else {
 
                                 loginSuccess(tempUser);
                             }
@@ -119,6 +120,8 @@ public class Login extends AppCompatActivity {
     }
 
     private void activateSpinKit() {
+        editUsernameLayout.setVisibility(View.INVISIBLE);
+        editPasswordLayout.setVisibility(View.INVISIBLE);
         editUsername.setVisibility(View.INVISIBLE);
         editPassword.setVisibility(View.INVISIBLE);
         btnLogin.setVisibility(View.INVISIBLE);
@@ -127,6 +130,8 @@ public class Login extends AppCompatActivity {
     }
 
     private void deactivateSpinKit() {
+        editUsernameLayout.setVisibility(View.VISIBLE);
+        editPasswordLayout.setVisibility(View.VISIBLE);
         editUsername.setVisibility(View.VISIBLE);
         editPassword.setVisibility(View.VISIBLE);
         btnLogin.setVisibility(View.VISIBLE);
