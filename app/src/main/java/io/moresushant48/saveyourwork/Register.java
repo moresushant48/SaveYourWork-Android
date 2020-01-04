@@ -7,7 +7,6 @@ import android.text.TextUtils;
 import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -16,6 +15,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.saveyourwork.R;
 import com.github.ybq.android.spinkit.SpinKitView;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
 
 import java.util.Objects;
 
@@ -28,7 +29,8 @@ import retrofit2.Response;
 public class Register extends AppCompatActivity implements Button.OnClickListener {
 
     TextView txtLogin;
-    EditText editEmail, editUsername, editPassword;
+    TextInputLayout editEmailLayout, editUsernameLayout, editPasswordLayout;
+    TextInputEditText editEmail, editUsername, editPassword;
     Button btnRegister;
     String email, username, password;
     private RetrofitConfig retrofitConfig;
@@ -50,6 +52,9 @@ public class Register extends AppCompatActivity implements Button.OnClickListene
 
         txtLogin = findViewById(R.id.txtLogin);
 
+        editEmailLayout = findViewById(R.id.editEmailLayout);
+        editUsernameLayout = findViewById(R.id.editUsernameLayout);
+        editPasswordLayout = findViewById(R.id.editPasswordLayout);
         editEmail = findViewById(R.id.editEmail);
         editUsername = findViewById(R.id.editUsername);
         editPassword = findViewById(R.id.editPassword);
@@ -151,6 +156,9 @@ public class Register extends AppCompatActivity implements Button.OnClickListene
     }
 
     private void activateSpinKit() {
+        editEmailLayout.setVisibility(View.INVISIBLE);
+        editUsernameLayout.setVisibility(View.INVISIBLE);
+        editPasswordLayout.setVisibility(View.INVISIBLE);
         editEmail.setVisibility(View.INVISIBLE);
         editUsername.setVisibility(View.INVISIBLE);
         editPassword.setVisibility(View.INVISIBLE);
@@ -160,6 +168,9 @@ public class Register extends AppCompatActivity implements Button.OnClickListene
     }
 
     private void deactivateSpinKit() {
+        editEmailLayout.setVisibility(View.VISIBLE);
+        editUsernameLayout.setVisibility(View.VISIBLE);
+        editPasswordLayout.setVisibility(View.VISIBLE);
         editEmail.setVisibility(View.VISIBLE);
         editUsername.setVisibility(View.VISIBLE);
         editPassword.setVisibility(View.VISIBLE);

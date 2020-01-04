@@ -5,44 +5,27 @@
     android:id="@+id/activity_register"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/whitesmoke"
     android:orientation="vertical"
     tools:context="io.moresushant48.saveyourwork.Register">
 
-    <RelativeLayout
+    <View
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:background="@color/colorPrimary">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="50dp"
-            android:fontFamily="sans-serif-smallcaps"
-            android:text="@string/app_name"
-            android:textColor="@color/whitesmoke"
-            android:textSize="35dp" />
-
-    </RelativeLayout>
+        android:background="@color/colorPrimary" />
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
         android:layout_marginHorizontal="20dp"
-        android:layout_marginTop="-80dp"
+        android:layout_marginTop="-50dp"
         android:layout_marginBottom="100dp"
-
-        app:cardBackgroundColor="@android:color/white"
         app:cardElevation="10dp">
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="#f8f8ff"
             android:padding="20dp">
 
             <TextView
@@ -52,51 +35,69 @@
                 android:layout_alignParentTop="true"
                 android:layout_centerInParent="true"
                 android:layout_marginBottom="20dp"
-                android:autoSizeTextType="uniform"
                 android:fontFamily="sans-serif-medium"
                 android:gravity="center"
                 android:text="Register"
                 android:textColor="@color/colorPrimary"
                 android:textSize="35sp" />
 
-            <EditText
-                android:id="@+id/editEmail"
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/editEmailLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/appName"
-                android:layout_marginBottom="20dp"
-                android:background="@drawable/edit_text"
-                android:hint="Email"
-                android:inputType="textEmailAddress"
-                android:maxLines="1" />
+                android:layout_below="@id/appName">
 
-            <EditText
-                android:id="@+id/editUsername"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/editEmail"
-                android:layout_marginBottom="20dp"
-                android:background="@drawable/edit_text"
-                android:hint="Username"
-                android:inputType="textPhonetic"
-                android:maxLines="1" />
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/editEmail"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginBottom="@dimen/padding_18"
+                    android:hint="Email"
+                    android:inputType="textEmailAddress"
+                    android:maxLines="1" />
 
-            <EditText
-                android:id="@+id/editPassword"
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/editUsernameLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/editUsername"
-                android:layout_marginBottom="20dp"
-                android:background="@drawable/edit_text"
-                android:hint="Password"
-                android:inputType="textPassword"
-                android:maxLines="1" />
+                android:layout_below="@id/editEmailLayout">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/editUsername"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginBottom="@dimen/padding_18"
+                    android:hint="Username"
+                    android:inputType="textPhonetic"
+                    android:maxLines="1" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/editPasswordLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/editUsernameLayout"
+                app:passwordToggleEnabled="true">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/editPassword"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginBottom="@dimen/padding_18"
+                    android:hint="Password"
+                    android:inputType="textPassword"
+                    android:maxLines="1" />
+
+            </com.google.android.material.textfield.TextInputLayout>
 
             <Button
                 android:id="@+id/btnRegister"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/editPassword"
+                android:layout_below="@id/editPasswordLayout"
                 android:layout_marginBottom="20dp"
                 android:background="@drawable/ripple"
                 android:text="Submit" />
