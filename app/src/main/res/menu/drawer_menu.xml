@@ -11,6 +11,11 @@
         android:icon="@drawable/ic_public"
         android:title="@string/fragPublicSearch" />
 
+    <item
+        android:id="@+id/menuSharedSearch"
+        android:icon="@drawable/ic_shared"
+        android:title="@string/fragSharedSearch" />
+
     <item android:title="@string/drawer_group_info">
         <menu>
 

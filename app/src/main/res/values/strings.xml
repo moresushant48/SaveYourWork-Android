@@ -21,9 +21,17 @@
     <string name="fragAbout">About</string>
     <string name="fragSettings">Settings</string>
     <string name="fragFiles">My Files</string>
+    <string name="fragPublicSearch">Public</string>
+    <string name="fragSharedSearch">Shared</string>
 
     <!--    Theme -->
     <string name="darkMode">Enable Dark Mode</string>
+
+    <!--   Menu -->
+    <string name="menuPrivate">Private</string>
+    <string name="menuPublic">Public</string>
+    <string name="menuProtected">Protected</string>
+    <string name="menuSearch">Search</string>
 
     <!--    Settings -->
     <string name="fingerprint">Fingerprint Unlock</string>
@@ -40,11 +48,5 @@
     <string name="empty_edittext">Please fill the form properly.</string>
     <string name="rulesPassword">Note : Minimun 3 - Maximum 15 characters allowed.</string>
     <string name="currentPassword">Current Password</string>
-    <string name="fragPublicSearch">Public</string>
-    <string name="menuPrivate">Private</string>
-    <string name="menuPublic">Public</string>
-    <string name="menuProtected">Protected</string>
-    <string name="menuSearch">Search</string>
-
 
 </resources>

@@ -165,7 +165,7 @@ public class FilesFragment extends Fragment implements SwipeRefreshLayout.OnRefr
         View view = inflater.inflate(R.layout.fragment_files, container, false);
         context = Objects.requireNonNull(getContext());
 
-        Objects.requireNonNull(((AppCompatActivity) Objects.requireNonNull(getActivity())).getSupportActionBar()).setTitle("My Files");
+        Objects.requireNonNull(((AppCompatActivity) Objects.requireNonNull(getActivity())).getSupportActionBar()).setTitle(getString(R.string.fragFiles));
 
         emptyStorage = view.findViewById(R.id.emptyStorage);
 

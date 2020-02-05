@@ -72,7 +72,7 @@ public class PublicFilesFragment extends Fragment implements CustomListAdapter.O
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_public_files, container, false);
 
-        Objects.requireNonNull(((AppCompatActivity) Objects.requireNonNull(getActivity())).getSupportActionBar()).setTitle("Public Files");
+        Objects.requireNonNull(((AppCompatActivity) Objects.requireNonNull(getActivity())).getSupportActionBar()).setTitle(getString(R.string.fragPublicSearch));
 
         context = view.getContext();
         onFileLongClickDialog = new AlertDialog.Builder(context);
