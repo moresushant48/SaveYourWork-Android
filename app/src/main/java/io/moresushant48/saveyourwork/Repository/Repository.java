@@ -33,6 +33,12 @@ public interface Repository {
     @GET("list-files/public/{userId}")
     Call<ArrayList<File>> listPublicFiles(@Path("userId") int id);
 
+    @GET("list-files/shared/{userId}")
+    Call<ArrayList<File>> listSharedFiles(@Path("userId") int id);
+
+    @GET("user/account/getKey/{userId}")
+    Call<String> getSharedKey(@Path("userId") int id);
+
     @Multipart
     @POST("upload-file/{id}")
     Call<Boolean> uploadFile(@Path("id") String id, @Part MultipartBody.Part filePart, @Query("accessId") int accessId);

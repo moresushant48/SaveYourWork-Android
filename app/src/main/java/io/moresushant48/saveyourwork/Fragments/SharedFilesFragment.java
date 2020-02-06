@@ -12,7 +12,10 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -32,7 +35,6 @@ import java.util.Objects;
 
 import io.moresushant48.saveyourwork.Config.RetrofitConfig;
 import io.moresushant48.saveyourwork.Download;
-import io.moresushant48.saveyourwork.GetShareableLink;
 import io.moresushant48.saveyourwork.Model.File;
 import io.moresushant48.saveyourwork.Repository.CustomListAdapter;
 import io.moresushant48.saveyourwork.Repository.Repository;
@@ -40,7 +42,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class PublicFilesFragment extends Fragment implements CustomListAdapter.OnFileListener, CustomListAdapter.OnFileLongClickListener, SwipeRefreshLayout.OnRefreshListener {
+public class SharedFilesFragment extends Fragment implements CustomListAdapter.OnFileListener, CustomListAdapter.OnFileLongClickListener, SwipeRefreshLayout.OnRefreshListener {
 
     private static final int DOWNLOAD_JOB_ID = 1000;
     private Context context;
@@ -58,7 +60,8 @@ public class PublicFilesFragment extends Fragment implements CustomListAdapter.O
     private CustomListAdapter adapter;
     private int retrievedUserId;
     private String queriedUsername;
-    private String[] dialogItems = {"Download", "Share"};
+    private String[] dialogItems = {"Download"};
+    private View loadingView;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -69,24 +72,26 @@ public class PublicFilesFragment extends Fragment implements CustomListAdapter.O
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_public_files, container, false);
+        View view = inflater.inflate(R.layout.fragment_shared_files, container, false);
 
-        Objects.requireNonNull(((AppCompatActivity) Objects.requireNonNull(getActivity())).getSupportActionBar()).setTitle(getString(R.string.fragPublicSearch));
+        Objects.requireNonNull(((AppCompatActivity) Objects.requireNonNull(getActivity())).getSupportActionBar()).setTitle(getString(R.string.fragSharedSearch));
 
         context = view.getContext();
         onFileLongClickDialog = new AlertDialog.Builder(context);
 
-        recyclerView = view.findViewById(R.id.recyclerViewPublicFiles);
+        recyclerView = view.findViewById(R.id.recyclerViewSharedFiles);
         recyclerView.setHasFixedSize(true);
-        recyclerView.setAdapter(new CustomListAdapter(new ArrayList<>(), PublicFilesFragment.this, PublicFilesFragment.this));
+        recyclerView.setAdapter(new CustomListAdapter(new ArrayList<>(), SharedFilesFragment.this, SharedFilesFragment.this));
         recyclerView.setLayoutManager(new LinearLayoutManager(context));
 
-        refreshLayout = view.findViewById(R.id.refreshPublicFiles);
-        linearLayout = view.findViewById(R.id.publicFilesLinearLayout);
+        refreshLayout = view.findViewById(R.id.refreshSharedFiles);
+        linearLayout = view.findViewById(R.id.sharedFilesLinearLayout);
         shimmerFrameLayout = view.findViewById(R.id.shimmer_view_container);
 
         retrofitConfig = new RetrofitConfig();
         repository = retrofitConfig.getRetrofit().create(Repository.class);
+
+        loadingView = view.findViewById(R.id.loadingRelLayout);
 
         refreshLayout.setOnRefreshListener(this);
 
@@ -96,58 +101,108 @@ public class PublicFilesFragment extends Fragment implements CustomListAdapter.O
     @Override
     public void onRefresh() {
 
-        getPublicFiles(retrievedUserId);
+        getSharedFiles(retrievedUserId);
     }
 
     private void getUserIdFromDB() {
+
+        loadingView.setVisibility(View.VISIBLE);
 
         final Call<Integer> getUserId = repository.getUserId(queriedUsername);
         getUserId.enqueue(new Callback<Integer>() {
             @Override
             public void onResponse(Call<Integer> call, Response<Integer> response) {
-                if (Objects.equals(response.body(), 0))
+                if (Objects.equals(response.body(), 0)) {
                     Snackbar.make(linearLayout, "No such user exists.", Snackbar.LENGTH_LONG).show();
+                    loadingView.setVisibility(View.GONE);
+                }
                 else {
                     retrievedUserId = Objects.requireNonNull(response.body());
                     Log.e("Retrived User Id : ", String.valueOf(retrievedUserId));
-                    getPublicFiles(retrievedUserId);
+                    getSharedKeyFromDB(response.body()); // @Param 1 - userId retrived from the db.
                 }
             }
 
             @Override
             public void onFailure(Call<Integer> call, Throwable t) {
-                Snackbar.make(linearLayout, "Service Unavailable", Snackbar.LENGTH_INDEFINITE).setAction("Refresh",v -> { onRefresh(); }).show();
+                loadingView.setVisibility(View.VISIBLE);
+                Snackbar.make(linearLayout, "Service Unavailable", Snackbar.LENGTH_INDEFINITE).setAction("Refresh",
+                        v -> onRefresh()).show();
             }
         });
     }
 
-    private void getPublicFiles(int userId) {
+    private void getSharedKeyFromDB(int userId) {
+
+        Call<String> getSharedKey = repository.getSharedKey(userId);
+        getSharedKey.enqueue(new Callback<String>() {
+            @Override
+            public void onResponse(Call<String> call, Response<String> response) {
+                if(Objects.requireNonNull(response.body()).length() == 6) {
+                    isSharedKeyRight(response.body().trim(), userId);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<String> call, Throwable t) {
+                loadingView.setVisibility(View.GONE);
+                Snackbar.make(linearLayout, "Service Unavailable", Snackbar.LENGTH_INDEFINITE).show();
+            }
+        });
+
+    }
+
+    private void isSharedKeyRight(String retrievedKey, int userId) {
+
+        loadingView.setVisibility(View.GONE);
+
+        View view = LayoutInflater.from(getContext()).inflate(R.layout.key_input, null);
+        EditText inputKey = view.findViewById(R.id.edKey);
+
+        new AlertDialog.Builder(getContext())
+                .setTitle("Key")
+                .setMessage("Enter Shared Password / Key.")
+                .setView(view)
+                .setPositiveButton("Confirm", (dialog, which) -> {
+                    if(inputKey.getText().toString().trim().equals(retrievedKey)) {
+                        getSharedFiles(userId);
+                    }
+                    else {
+                        Toast.makeText(getContext(), "Wrong Password/Key.", Toast.LENGTH_LONG).show();
+                    }
+                })
+                .setCancelable(true).create().show();
+
+    }
+
+    private void getSharedFiles(int userId) {
 
         refreshLayout.setVisibility(View.GONE);
         shimmerFrameLayout.setVisibility(View.VISIBLE);
         shimmerFrameLayout.startShimmer();
 
-        Call<ArrayList<File>> listPublicFiles = repository.listPublicFiles(userId);
-        listPublicFiles.enqueue(new Callback<ArrayList<File>>() {
+        Call<ArrayList<File>> listSharedFiles = repository.listSharedFiles(userId);
+        listSharedFiles.enqueue(new Callback<ArrayList<File>>() {
             @Override
             public void onResponse(Call<ArrayList<File>> call, Response<ArrayList<File>> response) {
                 retrievedFiles = response.body();
-                adapter = new CustomListAdapter(retrievedFiles, PublicFilesFragment.this, PublicFilesFragment.this);
+                adapter = new CustomListAdapter(retrievedFiles, SharedFilesFragment.this, SharedFilesFragment.this);
                 recyclerView.setAdapter(adapter);
                 if (adapter.getItemCount() == 0)
-                    Snackbar.make(linearLayout, queriedUsername + " has no public share.", Snackbar.LENGTH_INDEFINITE).show();
+                    Snackbar.make(linearLayout, queriedUsername + " has no Shared files.", Snackbar.LENGTH_INDEFINITE).show();
 
-                new Handler().postDelayed( () -> {
-                        shimmerFrameLayout.stopShimmer();
-                        shimmerFrameLayout.setVisibility(View.GONE);
-                        refreshLayout.setVisibility(View.VISIBLE);
+                new Handler().postDelayed(() -> {
+                    shimmerFrameLayout.stopShimmer();
+                    shimmerFrameLayout.setVisibility(View.GONE);
+                    refreshLayout.setVisibility(View.VISIBLE);
                 }, 1200);
 
             }
 
             @Override
             public void onFailure(Call<ArrayList<File>> call, Throwable t) {
-                Snackbar.make(linearLayout, "Service Unavailable", Snackbar.LENGTH_INDEFINITE).setAction("Refresh",v -> { onRefresh();}).show();
+                Snackbar.make(linearLayout, "Service Unavailable", Snackbar.LENGTH_INDEFINITE).setAction("Refresh",
+                        v -> onRefresh()).show();
             }
         });
         refreshLayout.setRefreshing(false);
@@ -164,14 +219,11 @@ public class PublicFilesFragment extends Fragment implements CustomListAdapter.O
     public void onFileLongClick(final int position) {
         onFileLongClickDialog.setItems(dialogItems, (dialog, which) -> {
 
-            switch (which) {
-                case 0:
-                    onFileClick(position);
-                    break;
-                case 1:
-                    new GetShareableLink(context).shareLink(retrievedFiles.get(position).getFileName());
-                    break;
-            }
+                switch (which) {
+                    case 0:
+                        onFileClick(position);
+                        break;
+                }
         }).create().show();
     }
 
@@ -201,4 +253,5 @@ public class PublicFilesFragment extends Fragment implements CustomListAdapter.O
         });
         super.onCreateOptionsMenu(menu, inflater);
     }
+
 }

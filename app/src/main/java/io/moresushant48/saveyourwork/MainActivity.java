@@ -33,6 +33,7 @@ import io.moresushant48.saveyourwork.Fragments.AccountFragment;
 import io.moresushant48.saveyourwork.Fragments.FilesFragment;
 import io.moresushant48.saveyourwork.Fragments.PublicFilesFragment;
 import io.moresushant48.saveyourwork.Fragments.SettingsFragment;
+import io.moresushant48.saveyourwork.Fragments.SharedFilesFragment;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -131,6 +132,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
             case R.id.menuPublicSearch:
                 getSupportFragmentManager().beginTransaction().setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left).replace(R.id.fragment_container, new PublicFilesFragment()).commit();
+                menuItem.setCheckable(true);
+                break;
+
+            case R.id.menuSharedSearch:
+                getSupportFragmentManager().beginTransaction().setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left).replace(R.id.fragment_container, new SharedFilesFragment()).commit();
                 menuItem.setCheckable(true);
                 break;
 
