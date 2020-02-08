@@ -16,7 +16,7 @@ import retrofit2.http.Query;
 public interface Repository {
 
     @GET("{id}")
-    Call<User> showUser(@Path("id") String id);
+    Call<User> getUser(@Path("id") int id);
 
     @GET("user/getUserId")
     Call<Integer> getUserId(@Query("username") String username);
@@ -38,6 +38,9 @@ public interface Repository {
 
     @GET("user/account/getKey/{userId}")
     Call<String> getSharedKey(@Path("userId") int id);
+
+    @GET("user/account/genKey/{userId}")
+    Call<String> genSharedKey(@Path("userId") int id);
 
     @Multipart
     @POST("upload-file/{id}")
