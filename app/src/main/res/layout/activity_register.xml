@@ -1,127 +1,126 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/activity_register"
+    android:id="@+id/register_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context="io.moresushant48.saveyourwork.Register">
+    android:gravity="center"
+    tools:context="io.moresushant48.saveyourwork.Login">
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:background="@color/colorPrimary" />
+    <ImageView
+        android:id="@+id/artRegister"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:src="@drawable/art_register" />
 
-    <androidx.cardview.widget.CardView
+    <RelativeLayout
+        android:id="@+id/form"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
-        android:layout_marginHorizontal="20dp"
-        android:layout_marginTop="-50dp"
-        android:layout_marginBottom="100dp"
-        app:cardElevation="10dp">
+        android:layout_below="@id/artRegister"
+        android:layout_centerHorizontal="true"
+        android:orientation="vertical"
+        android:padding="@dimen/padding_18">
 
-        <RelativeLayout
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/editEmailLayout"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:padding="20dp">
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_margin="@dimen/padding_8"
+            app:startIconDrawable="@drawable/ic_email">
 
-            <TextView
-                android:id="@+id/appName"
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/editEmail"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_alignParentTop="true"
-                android:layout_centerInParent="true"
-                android:layout_marginBottom="20dp"
-                android:fontFamily="sans-serif-medium"
-                android:gravity="center"
-                android:text="Register"
-                android:textColor="@color/colorPrimary"
-                android:textSize="35sp" />
+                android:background="@drawable/round_corners"
+                android:hint="Email"
+                android:inputType="text"
+                android:maxLines="1" />
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/editEmailLayout"
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/editUsernameLayout"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/editEmailLayout"
+            android:layout_margin="@dimen/padding_8"
+            app:startIconDrawable="@drawable/ic_account">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/editUsername"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/appName">
+                android:background="@drawable/round_corners"
+                android:hint="Username"
+                android:inputType="text"
+                android:maxLines="1" />
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/editEmail"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginBottom="@dimen/padding_18"
-                    android:hint="Email"
-                    android:inputType="textEmailAddress"
-                    android:maxLines="1" />
+        </com.google.android.material.textfield.TextInputLayout>
 
-            </com.google.android.material.textfield.TextInputLayout>
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/editPasswordLayout"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/editUsernameLayout"
+            android:layout_margin="@dimen/padding_8"
+            app:passwordToggleEnabled="true"
+            app:startIconDrawable="@drawable/ic_key">
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/editUsernameLayout"
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/editPassword"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/editEmailLayout">
+                android:layout_height="match_parent"
+                android:background="@drawable/round_corners"
+                android:hint="Password"
+                android:inputType="textPassword"
+                android:maxLength="15"
+                android:maxLines="1" />
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/editUsername"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginBottom="@dimen/padding_18"
-                    android:hint="Username"
-                    android:inputType="textPhonetic"
-                    android:maxLines="1" />
+        </com.google.android.material.textfield.TextInputLayout>
 
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/editPasswordLayout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/editUsernameLayout"
-                app:passwordToggleEnabled="true">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/editPassword"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginBottom="@dimen/padding_18"
-                    android:hint="Password"
-                    android:inputType="textPassword"
-                    android:maxLines="1" />
-
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <Button
-                android:id="@+id/btnRegister"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/editPasswordLayout"
-                android:layout_marginBottom="20dp"
-                android:text="Submit" />
-
-            <TextView
-                android:id="@+id/txtLogin"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/btnRegister"
-                android:gravity="center"
-                android:text="Already a member ? Login."
-                android:textColor="@color/colorPrimary" />
-
-        </RelativeLayout>
-
-        <com.github.ybq.android.spinkit.SpinKitView
-            android:id="@+id/spin_kit"
-            style="@style/SpinKitView.Large.WanderingCubes"
+        <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+            android:id="@+id/btnRegister"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:padding="@dimen/padding_18"
-            android:visibility="invisible"
-            app:SpinKit_Color="@color/colorPrimaryDark" />
+            android:layout_below="@id/editPasswordLayout"
+            android:layout_centerHorizontal="true"
+            android:layout_margin="@dimen/padding_10"
+            android:gravity="center"
+            android:text="@string/register"
+            android:textColor="@android:color/white"
+            android:textSize="14sp" />
 
-    </androidx.cardview.widget.CardView>
+        <TextView
+            android:id="@+id/txtLogin"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/btnRegister"
+            android:layout_margin="@dimen/padding_10"
+            android:gravity="center"
+            android:text="Already a memeber ? Login"
+            android:textColor="@color/colorPrimary" />
 
-</LinearLayout>
+    </RelativeLayout>
+
+    <com.github.ybq.android.spinkit.SpinKitView
+        android:id="@+id/spin_kit"
+        style="@style/SpinKitView.Large.ChasingDots"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/artRegister"
+        android:layout_centerInParent="true"
+        android:layout_marginTop="24dp"
+        android:padding="@dimen/padding_18"
+        android:visibility="invisible"
+        app:SpinKit_Color="@android:color/holo_red_light" />
+
+</RelativeLayout>

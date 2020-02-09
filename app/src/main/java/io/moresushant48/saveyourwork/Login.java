@@ -7,7 +7,7 @@ import android.os.Handler;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
-import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -31,7 +31,7 @@ public class Login extends AppCompatActivity {
 
     private RetrofitConfig retrofitConfig;
     private Repository repository;
-    private LinearLayout linearLayout;
+    private RelativeLayout loginLayout, formLayout;
 
     private SpinKitView spinKitView;
     private TextView txtRegister;
@@ -44,7 +44,8 @@ public class Login extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        linearLayout = findViewById(R.id.activity_login);
+        loginLayout = findViewById(R.id.login_layout);
+        formLayout = findViewById(R.id.form);
 
         retrofitConfig = new RetrofitConfig();
 
@@ -71,8 +72,6 @@ public class Login extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                activateSpinKit();
-
                 if (TextUtils.isEmpty(editUsername.getText()) || TextUtils.isEmpty(editPassword.getText())) {
 
                     if (TextUtils.isEmpty(editUsername.getText())) {
@@ -84,6 +83,8 @@ public class Login extends AppCompatActivity {
                         editPassword.setError("Enter your password.");
                     }
                 } else {
+
+                    activateSpinKit();
 
                     Call<User> user = repository.login(editUsername.getText().toString().trim(), editPassword.getText().toString().trim());
 
@@ -100,7 +101,7 @@ public class Login extends AppCompatActivity {
                                     @Override
                                     public void run() {
                                         deactivateSpinKit();
-                                        Snackbar.make(linearLayout, "Wrong Credentials.", Snackbar.LENGTH_LONG).show();
+                                        Snackbar.make(loginLayout, "Wrong Credentials.", Snackbar.LENGTH_LONG).show();
                                     }
                                 }, 1500);
                             } else {
@@ -111,7 +112,7 @@ public class Login extends AppCompatActivity {
 
                         @Override
                         public void onFailure(Call<User> call, Throwable t) {
-                            Snackbar.make(linearLayout, "Service Unreachable.", Snackbar.LENGTH_LONG).show();
+                            Snackbar.make(loginLayout, "Service Unreachable.", Snackbar.LENGTH_LONG).show();
                         }
                     });
                 }
@@ -120,22 +121,12 @@ public class Login extends AppCompatActivity {
     }
 
     private void activateSpinKit() {
-        editUsernameLayout.setVisibility(View.INVISIBLE);
-        editPasswordLayout.setVisibility(View.INVISIBLE);
-        editUsername.setVisibility(View.INVISIBLE);
-        editPassword.setVisibility(View.INVISIBLE);
-        btnLogin.setVisibility(View.INVISIBLE);
-        txtRegister.setVisibility(View.INVISIBLE);
+        formLayout.setVisibility(View.INVISIBLE);
         spinKitView.setVisibility(View.VISIBLE);
     }
 
     private void deactivateSpinKit() {
-        editUsernameLayout.setVisibility(View.VISIBLE);
-        editPasswordLayout.setVisibility(View.VISIBLE);
-        editUsername.setVisibility(View.VISIBLE);
-        editPassword.setVisibility(View.VISIBLE);
-        btnLogin.setVisibility(View.VISIBLE);
-        txtRegister.setVisibility(View.VISIBLE);
+        formLayout.setVisibility(View.VISIBLE);
         spinKitView.setVisibility(View.INVISIBLE);
     }
 
@@ -169,7 +160,7 @@ public class Login extends AppCompatActivity {
     @Override
     public void onBackPressed() {
 
-        Snackbar.make(linearLayout, "Please Login.", Snackbar.LENGTH_LONG).show();
+        Snackbar.make(loginLayout, "Please Login.", Snackbar.LENGTH_LONG).show();
 
     }
 }

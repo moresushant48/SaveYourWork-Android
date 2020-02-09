@@ -50,5 +50,7 @@
     <string name="currentPassword">Current Password</string>
     <string name="loading">Loading..</string>
     <string name="genKey">New Shared Key</string>
+    <string name="login">Login</string>
+    <string name="register">Register</string>
 
 </resources>

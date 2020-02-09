@@ -8,6 +8,7 @@ import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -35,7 +36,7 @@ public class Register extends AppCompatActivity implements Button.OnClickListene
     String email, username, password;
     private RetrofitConfig retrofitConfig;
     private Repository repository;
-    private LinearLayout linearLayout;
+    private RelativeLayout registerLayout;
     private SpinKitView spinKitView;
 
     @Override
@@ -47,8 +48,8 @@ public class Register extends AppCompatActivity implements Button.OnClickListene
 
         repository = retrofitConfig.getRetrofit().create(Repository.class);
 
-        linearLayout = findViewById(R.id.activity_register);
-        spinKitView = linearLayout.findViewById(R.id.spin_kit);
+        registerLayout = findViewById(R.id.register_layout);
+        spinKitView = registerLayout.findViewById(R.id.spin_kit);
 
         txtLogin = findViewById(R.id.txtLogin);
 
@@ -95,7 +96,7 @@ public class Register extends AppCompatActivity implements Button.OnClickListene
                     } else {
 
                         activateSpinKit();
-                        Snackbar.make(linearLayout, result, Snackbar.LENGTH_LONG).show();
+                        Snackbar.make(registerLayout, result, Snackbar.LENGTH_LONG).show();
 
                         new Handler().postDelayed(new Runnable() {
                             @Override
@@ -111,7 +112,7 @@ public class Register extends AppCompatActivity implements Button.OnClickListene
                 @Override
                 public void onFailure(Call<String> call, Throwable t) {
 
-                    Snackbar.make(linearLayout, "Service Unreachable.", Snackbar.LENGTH_LONG).show();
+                    Snackbar.make(registerLayout, "Service Unreachable.", Snackbar.LENGTH_LONG).show();
                 }
             });
         }
