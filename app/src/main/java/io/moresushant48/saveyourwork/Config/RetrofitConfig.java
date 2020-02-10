@@ -17,7 +17,7 @@ public class RetrofitConfig {
     public Retrofit getRetrofit() {
 
         retrofit = new Retrofit.Builder()
-                .baseUrl("http://192.168.1.110:8888/rest/")
+                .baseUrl("https://saveyourwork.herokuapp.com/rest/")
                 .addConverterFactory(ScalarsConverterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .build();
