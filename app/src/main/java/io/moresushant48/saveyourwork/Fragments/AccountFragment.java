@@ -2,14 +2,12 @@ package io.moresushant48.saveyourwork.Fragments;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -19,7 +17,6 @@ import androidx.fragment.app.Fragment;
 
 import com.example.saveyourwork.R;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.Objects;
 
@@ -39,13 +36,11 @@ public class AccountFragment extends Fragment {
     private Context context;
 
     private LinearLayout layout1, layout2;
-    private TextView txtUsername, txtEmail, txtSharedKey;
-    private FloatingActionButton btnResetKey;
+    private TextView txtUsername, txtEmail, txtPublicPass;
+    private ImageView imgResetPublicPass;
     private ExtendedFloatingActionButton btnResetPassword;
 
     private int id;
-    private String username;
-    private String email;;
     private User user;
 
     @Override
@@ -65,7 +60,7 @@ public class AccountFragment extends Fragment {
         userCall.enqueue(new Callback<User>() {
             @Override
             public void onResponse(Call<User> call, Response<User> response) {
-                if(Objects.requireNonNull(response.body()).getId() == id){
+                if (Objects.requireNonNull(response.body()).getId() == id) {
                     user = response.body();
                     setDataIntoViews();
                 }
@@ -88,18 +83,17 @@ public class AccountFragment extends Fragment {
 
         txtUsername = view.findViewById(R.id.username);
         txtEmail = view.findViewById(R.id.email);
-        txtSharedKey = view.findViewById(R.id.sharedKey);
+        txtPublicPass = view.findViewById(R.id.publicPass);
+
+        imgResetPublicPass = view.findViewById(R.id.imgResetPublicPass);
 
         btnResetPassword = view.findViewById(R.id.btnResetPassword);
-        btnResetKey = view.findViewById(R.id.btnResetKey);
 
         btnResetPassword.setOnClickListener(v ->
-            new ResetPasswordBottomModal().show(Objects.requireNonNull(getFragmentManager()), "resetPasswordBottomModal")
+                new ResetPasswordBottomModal().show(Objects.requireNonNull(getParentFragmentManager()), "resetPasswordBottomModal")
         );
 
-        btnResetKey.setOnClickListener(v -> {
-            generateResetKey();
-        });
+        imgResetPublicPass.setOnClickListener(v -> generateResetKey());
 
         return view;
     }
@@ -107,7 +101,7 @@ public class AccountFragment extends Fragment {
     private void generateResetKey() {
 
 
-        new AlertDialog.Builder(getContext())
+        new AlertDialog.Builder(Objects.requireNonNull(getContext()))
                 .setTitle("Generate Key")
                 .setMessage("Do your really want to generate a new Shared Key ?")
                 .setPositiveButton("Yes", (dialog, which) -> {
@@ -119,7 +113,7 @@ public class AccountFragment extends Fragment {
                         @Override
                         public void onResponse(Call<String> call, Response<String> response) {
                             assert response.body() != null;
-                            txtSharedKey.setText(response.body().trim());
+                            txtPublicPass.setText(response.body().trim());
                         }
 
                         @Override
@@ -140,6 +134,6 @@ public class AccountFragment extends Fragment {
         txtEmail.setText(user.getEmail());
 
         // for Shared KEY.
-        txtSharedKey.setText(user.getPublicPass());
+        txtPublicPass.setText(user.getPublicPass());
     }
 }

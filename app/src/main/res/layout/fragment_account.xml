@@ -1,96 +1,137 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:background="@color/colorPrimary"
-        android:elevation="2dp">
-
-    </View>
-
-    <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/imgUserAvatar"
-        android:layout_width="match_parent"
-        android:layout_height="180dp"
-        android:layout_marginTop="-100dp"
-        android:elevation="2dp"
-        android:src="@drawable/avatar"
-        app:civ_border_color="@android:color/white"
-        app:civ_border_width="5dp" />
+    android:layout_height="match_parent">
 
     <RelativeLayout
+        android:id="@+id/content"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="3">
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:padding="@dimen/padding_4">
 
-        <RelativeLayout
+        <ImageView
+            android:id="@+id/artAccount"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:padding="@dimen/padding_10">
+            android:layout_centerHorizontal="true"
+            android:layout_margin="@dimen/padding_4"
+            android:contentDescription="@null"
+            android:src="@drawable/art_account" />
+
+        <RelativeLayout
+            android:id="@+id/usernameLayout"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_below="@id/artAccount"
+            android:layout_marginStart="@dimen/padding_18"
+            android:layout_marginTop="@dimen/padding_8"
+            android:background="@drawable/left_corner_circle"
+            android:padding="@dimen/padding_10"
+            app:layout_constraintEnd_toEndOf="parent">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="@dimen/padding_10"
+                android:contentDescription="@null"
+                android:src="@drawable/ic_account"
+                android:tint="@color/colorAccent" />
 
             <TextView
                 android:id="@+id/username"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentTop="true"
-                android:layout_centerHorizontal="true"
-                android:layout_marginBottom="@dimen/padding_18"
-                android:drawableTop="@drawable/ic_account"
-                android:drawableTint="@color/shimmer"
-                android:text="@string/loading"
-                android:textSize="22sp" />
+                android:layout_centerInParent="true"
+                android:text="@string/loading" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/emailLayout"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_below="@id/usernameLayout"
+            android:layout_alignParentStart="true"
+            android:layout_marginTop="@dimen/padding_8"
+            android:layout_marginEnd="@dimen/padding_18"
+            android:background="@drawable/right_corner_circle"
+            android:padding="@dimen/padding_10"
+            app:layout_constraintEnd_toEndOf="parent">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="@dimen/padding_10"
+                android:contentDescription="@null"
+                android:src="@drawable/ic_email"
+                android:tint="@color/colorAccent" />
 
             <TextView
                 android:id="@+id/email"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/username"
-                android:layout_centerHorizontal="true"
-                android:layout_marginBottom="@dimen/padding_18"
-                android:drawableTop="@drawable/ic_email"
-                android:drawableTint="@color/shimmer"
-                android:text="@string/loading"
-                android:textSize="22sp" />
-
-            <TextView
-                android:id="@+id/sharedKey"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/email"
-                android:layout_centerHorizontal="true"
-                android:drawableTop="@drawable/ic_key"
-                android:drawableTint="@color/shimmer"
-                android:text="@string/loading"
-                android:textSize="22sp" />
-
-            <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:id="@+id/btnResetKey"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/sharedKey"
-                android:layout_centerHorizontal="true"
-                android:backgroundTint="@android:color/white"
-                android:src="@drawable/ic_refresh" />
-
-            <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-                android:id="@+id/btnResetPassword"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/btnResetKey"
-                android:layout_centerHorizontal="true"
-                android:layout_margin="@dimen/padding_18"
-                android:textAlignment="center"
-                android:text="@string/resetPassword"
-                android:textColor="@android:color/white" />
+                android:layout_centerInParent="true"
+                android:text="@string/loading" />
 
         </RelativeLayout>
-    </RelativeLayout>
 
-</LinearLayout>
+        <RelativeLayout
+            android:id="@+id/resetKeyLayout"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_below="@id/emailLayout"
+            android:layout_marginStart="@dimen/padding_18"
+            android:layout_marginTop="@dimen/padding_8"
+            android:background="@drawable/left_corner_circle"
+            android:padding="@dimen/padding_10"
+            app:layout_constraintEnd_toEndOf="parent">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="@dimen/padding_10"
+                android:contentDescription="@null"
+                android:src="@drawable/ic_key"
+                android:tint="@color/colorAccent" />
+
+            <TextView
+                android:id="@+id/publicPass"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="@string/loading" />
+
+            <ImageView
+                android:id="@+id/imgResetPublicPass"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="@dimen/padding_10"
+                android:contentDescription="@null"
+                android:src="@drawable/ic_refresh"
+                android:tint="@color/colorAccent" />
+
+        </RelativeLayout>
+
+        <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+            android:id="@+id/btnResetPassword"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/padding_10"
+            android:layout_below="@id/resetKeyLayout"
+            android:layout_centerHorizontal="true"
+            android:text="@string/resetPassword"
+            android:textAlignment="center"
+            android:textColor="@android:color/white" />
+
+    </RelativeLayout>
+</ScrollView>
