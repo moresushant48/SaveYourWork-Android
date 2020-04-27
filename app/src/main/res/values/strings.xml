@@ -52,5 +52,6 @@
     <string name="genKey">New Shared Key</string>
     <string name="login">Login</string>
     <string name="register">Register</string>
+    <string name="delete_account">Delete Account</string>
 
 </resources>

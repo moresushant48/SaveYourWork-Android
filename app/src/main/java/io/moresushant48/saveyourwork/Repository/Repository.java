@@ -42,6 +42,9 @@ public interface Repository {
     @GET("user/account/genKey/{userId}")
     Call<String> genSharedKey(@Path("userId") int id);
 
+    @GET("user/account/delete/{userId}")
+    Call<Boolean> deleteAccount(@Path("userId") int id);
+
     @Multipart
     @POST("upload-file/{id}")
     Call<Boolean> uploadFile(@Path("id") String id, @Part MultipartBody.Part filePart, @Query("accessId") int accessId);

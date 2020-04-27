@@ -14,7 +14,7 @@
         <ImageView
             android:id="@+id/artAccount"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="180dp"
             android:layout_centerHorizontal="true"
             android:layout_margin="@dimen/padding_4"
             android:contentDescription="@null"
@@ -126,12 +126,24 @@
             android:id="@+id/btnResetPassword"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/padding_10"
             android:layout_below="@id/resetKeyLayout"
             android:layout_centerHorizontal="true"
+            android:layout_margin="@dimen/padding_10"
             android:text="@string/resetPassword"
             android:textAlignment="center"
             android:textColor="@android:color/white" />
+
+        <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+            android:id="@+id/btnDeleteAccount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/btnResetPassword"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="@dimen/padding_10"
+            android:text="@string/delete_account"
+            android:textAlignment="center"
+            android:textColor="@android:color/white"
+            app:backgroundTint="@android:color/holo_red_light" />
 
     </RelativeLayout>
 </ScrollView>
