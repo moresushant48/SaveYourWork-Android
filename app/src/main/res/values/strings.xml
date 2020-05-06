@@ -54,4 +54,7 @@
     <string name="register">Register</string>
     <string name="delete_account">Delete Account</string>
 
+    <string name="msg_token_fmt" translatable="false">InstanceID Token: %s</string>
+    <string name="default_notification_channel_id">saveyourwork</string>
+
 </resources>

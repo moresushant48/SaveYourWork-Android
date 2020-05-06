@@ -6,18 +6,17 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.view.Menu;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
-import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
@@ -27,6 +26,9 @@ import androidx.preference.PreferenceManager;
 
 import com.example.saveyourwork.R;
 import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.iid.FirebaseInstanceId;
+
+import java.util.Objects;
 
 import io.moresushant48.saveyourwork.Fragments.AboutFragment;
 import io.moresushant48.saveyourwork.Fragments.AccountFragment;
@@ -38,10 +40,10 @@ import io.moresushant48.saveyourwork.Fragments.SharedFilesFragment;
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private static final int PERMISSION_STORAGE_CODE = 1000;
+    private static final String TAG = "MainActivity";
     boolean isLoggedIn;
-    private String username, email;
-
     DrawerLayout drawerLayout;
+    private String username, email;
     private View headerView;
     private TextView navHeaderUsername, navHeaderEmail;
 
@@ -87,6 +89,25 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             getSupportFragmentManager().beginTransaction().setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN).replace(R.id.fragment_container, new FilesFragment()).commit();
             navigationView.setCheckedItem(R.id.menuFiles);
         }
+
+        displayFirebaseInstanceId();
+    }
+
+    private void displayFirebaseInstanceId() {
+        FirebaseInstanceId.getInstance().getInstanceId()
+                .addOnCompleteListener(task -> {
+                    if (!task.isSuccessful()) {
+                        Log.w(TAG, "getInstanceId failed", task.getException());
+                        return;
+                    }
+
+                    // Get new Instance ID token
+                    String token = Objects.requireNonNull(task.getResult()).getToken();
+
+                    // Log and toast
+                    String msg = getString(R.string.msg_token_fmt, token);
+                    Log.d(TAG, msg);
+                });
     }
 
     private void askForFingerprint() {

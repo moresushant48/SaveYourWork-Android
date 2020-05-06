@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "315585334193",
+    "firebase_url": "https://saveyourwork-45106.firebaseio.com",
+    "project_id": "saveyourwork-45106",
+    "storage_bucket": "saveyourwork-45106.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:315585334193:android:e0af9e4348c261af5f0b90",
+        "android_client_info": {
+          "package_name": "io.moresushant48.saveyourwork"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "315585334193-o8tdb34fham6ooq6hrmqp31rr2fenvvf.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBO6BQYQcEEvYz7tChaJJ-LJkscE6vKpcw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "315585334193-o8tdb34fham6ooq6hrmqp31rr2fenvvf.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
